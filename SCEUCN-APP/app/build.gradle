@@ -1,19 +1,14 @@
-plugins {
-    id 'com.zeroc.gradle.ice-builder.slice' version '1.4.7' apply false
-}
 
 apply plugin: 'com.android.application'
 apply plugin: 'com.zeroc.gradle.ice-builder.slice'
 
-
 slice {
     java {
-        //files = [file("../slice/Printer.ice"), file("../slice/Model.ice")]
-        //args = "--debug"
+        files = [file("../slice/Model.ice")]
+        args = "--debug"
         logger.lifecycle("File: ${files}")
     }
 }
-
 
 android {
     compileSdkVersion 28
