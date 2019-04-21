@@ -4,8 +4,11 @@ apply plugin: 'com.zeroc.gradle.ice-builder.slice'
 
 slice {
     java {
+        // Compilar todos los archivos Ice que esten en este directorio.
+        //srcDir = "../slice/"
+
         files = [file("../slice/Model.ice")]
-        args = "--debug"
+        //args = "--debug"
         logger.lifecycle("File: ${files}")
     }
 }
