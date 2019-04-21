@@ -1,4 +1,4 @@
-//["java:package:cl.disc.ucn.pdis.sceucn"]
+["java:package:cl.disc.ucn.pdis.sceucn"]
 module model
 {
     enum TipoVehiculo {Auto, Camioneta, Moto}
