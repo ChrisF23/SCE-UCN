@@ -11,6 +11,10 @@ slice {
         //args = "--debug"
         logger.lifecycle("File: ${files}")
     }
+
+    // Para que Android Studio encuentre los archivos generados (generatedJava).
+    output = file("src/generated")
+
 }
 
 android {
