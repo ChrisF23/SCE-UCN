@@ -7,7 +7,7 @@ slice {
         // Compilar todos los archivos Ice que esten en este directorio.
         //srcDir = "../slice/"
 
-        files = [file("../slice/Model.ice")]
+        files = [file("../../Model.ice")]
         //args = "--debug"
         logger.lifecycle("File: ${files}")
     }
