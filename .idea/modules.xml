@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/SCE-UCN.iml" filepath="$PROJECT_DIR$/.idea/SCE-UCN.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/SCEUCN.iml" filepath="$PROJECT_DIR$/.idea/SCEUCN.iml" />
-    </modules>
-  </component>
-</project>
