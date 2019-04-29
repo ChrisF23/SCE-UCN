@@ -90,3 +90,5 @@ fastlane/screenshots
 fastlane/test_output
 fastlane/readme.md
 
+# SQLite database
+database.db

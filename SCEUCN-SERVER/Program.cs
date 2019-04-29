@@ -8,26 +8,22 @@ namespace SCEUCN_SERVER
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Starting Main Program ..");
 
+            // Opciones de la base de datos.
             var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
             optionsBuilder.UseSqlite("Data Source=database.db");
 
-            using (var db = new DatabaseContext(optionsBuilder.Options))
+            // Controlador
+            ISystem system = new SystemImpl(optionsBuilder.Options);
+
+            system.Save(new Persona { Rut = "130144918", Nombres = "Diego Patricio", Apellidos = "Urrutia Astorga" });
+
+            foreach (var persona in system.getPersonas())
             {
-
-                db.Personas.Add(new Persona { Rut = "130144918", Nombres = "Diego Patricio", Apellidos = "Urrutia Astorga" });
-
-                var count = db.SaveChanges();
-
-                Console.WriteLine("{0} Personas saved into database.", count);
-
-                foreach (var persona in db.Personas)
-                {
-                    Console.WriteLine("{0}", persona.Rut);
-                }
-
+                Console.WriteLine("{0}", persona.Rut);
             }
+
 
         }
     }
