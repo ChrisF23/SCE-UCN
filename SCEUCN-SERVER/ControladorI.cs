@@ -22,7 +22,9 @@ namespace SCEUCN_SERVER
 
         public override void registrarIngreso(string patente, Current current = null)
         {
-            //SCEUCN_SERVER.Model.Vehiculo vehiculo = system.GetVehiculo(patente);
+            SCEUCN_SERVER.Model.Vehiculo vehiculo = system.GetVehiculo(patente);
+            
+            
         }
 
         // Adaptadores

@@ -38,7 +38,8 @@ namespace SCEUCN_SERVER
             Console.WriteLine("Mostrando Personas:");
             foreach (var persona in system.GetPersonas())
             {
-                Console.WriteLine("Nombre: {0}, Rut: {1}", (persona.Nombres + persona.Apellidos), persona.Rut);
+                Console.WriteLine("Nombre: {0}, Rut: {1}", (persona.
+                Nombres + " " + persona.Apellidos), persona.Rut);
             }
 
             Console.WriteLine();
@@ -48,10 +49,10 @@ namespace SCEUCN_SERVER
             {
                 Console.WriteLine("Patente: {0}, Marca: {1} (Rut Persona: {2})", vehiculo.Patente, vehiculo.Marca, vehiculo.Persona.Rut);
             }
-            
+
             Console.WriteLine();
 
-            return;
+            //return;
 
             // Initialize Ice communicator
             using(var communicator = Ice.Util.initialize(ref args))
@@ -63,7 +64,7 @@ namespace SCEUCN_SERVER
                 servant.System = system;
 
                 // Create object adapter - a container for your servants. Listens on port 10000
-                var adapter = communicator.createObjectAdapterWithEndpoints("ControladorAdapter", "tcp -p 10000");
+                var adapter = communicator.createObjectAdapterWithEndpoints("ControladorAdapter", "default -p 10000 -z");
 
                 // Add the servant object to the object adapter with identity "Controlador"
                 adapter.add(servant, communicator.stringToIdentity("Controlador"));
