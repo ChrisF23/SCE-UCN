@@ -18,13 +18,40 @@ namespace SCEUCN_SERVER
             ISystem system = new SystemImpl(optionsBuilder.Options);
 
             // Datos demo
-            
-            system.Save(new Persona { Rut = "130144918", Nombres = "Diego Patricio", Apellidos = "Urrutia Astorga" });
+            Persona p = new Persona { 
+                Rut = "130144918", 
+                Nombres = "Diego Patricio", 
+                Apellidos = "Urrutia Astorga" 
+            };
 
-            foreach (var persona in system.getPersonas())
+            Vehiculo v = new Vehiculo {
+                Persona = p,
+                Patente = "DP-UA-13",
+                Marca = "AUDI"
+            };
+
+            system.Save(p);
+            system.Save(v);
+
+            Console.WriteLine();
+
+            Console.WriteLine("Mostrando Personas:");
+            foreach (var persona in system.GetPersonas())
             {
-                Console.WriteLine("{0}", persona.Rut);
+                Console.WriteLine("Nombre: {0}, Rut: {1}", (persona.Nombres + persona.Apellidos), persona.Rut);
             }
+
+            Console.WriteLine();
+
+            Console.WriteLine("Mostrando Vehiculos:");
+            foreach (var vehiculo in system.GetVehiculos())
+            {
+                Console.WriteLine("Patente: {0}, Marca: {1} (Rut Persona: {2})", vehiculo.Patente, vehiculo.Marca, vehiculo.Persona.Rut);
+            }
+            
+            Console.WriteLine();
+
+            return;
 
             // Initialize Ice communicator
             using(var communicator = Ice.Util.initialize(ref args))

@@ -37,7 +37,7 @@ namespace SCEUCN_SERVER.Model
 
     public class Vehiculo
     {
-
+        public string Id { get; set; }
         public string Patente { get; set; }
 
         public Persona Persona { get; set; }
@@ -59,6 +59,9 @@ namespace SCEUCN_SERVER.Model
 
     public class Registro
     {
+
+        public string Id { get; set; }
+
         public Vehiculo Vehiculo { get; set; }
         
         public string Fecha { get; set; }
