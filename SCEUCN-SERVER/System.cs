@@ -8,10 +8,27 @@ namespace SCEUCN_SERVER
 
     interface ISystem
     {
+        // Personas
         void Save(Persona persona);
 
-        List<Persona> getPersonas();
+        List<Persona> GetPersonas();
 
+        // Vehiculos
+        void Save(Vehiculo vehiculo);
+
+        Vehiculo GetVehiculo(string patente);
+
+        List<Vehiculo> GetVehiculos();
+
+        // Logos
+        void Save(Logo logo);
+
+        List<Logo> GetLogos();
+
+        // Registros
+        void Save(Registro registro);
+
+        List<Registro> GetRegistros();
     }
 
     class SystemImpl : ISystem
@@ -38,12 +55,53 @@ namespace SCEUCN_SERVER
             // }
         }
 
-        public List<Persona> getPersonas()
+
+
+        public List<Persona> GetPersonas()
         {
             // using (databaseContext)
             // {
             return databaseContext.Personas.ToList();
             // }
+        }
+
+        public void Save(Vehiculo vehiculo)
+        {
+            databaseContext.Vehiculos.Add(vehiculo);
+            databaseContext.SaveChanges();
+        }
+
+        public Vehiculo GetVehiculo(string patente)
+        {
+            // Retorna la entidad si la encuentra. Nulo en otro caso.
+            return databaseContext.Vehiculos.Find(patente);
+        }
+
+        public List<Vehiculo> GetVehiculos()
+        {
+            return databaseContext.Vehiculos.ToList();
+        }
+
+        public void Save(Logo logo)
+        {
+            databaseContext.Logos.Add(logo);
+            databaseContext.SaveChanges();
+        }
+
+        public List<Logo> GetLogos()
+        {
+            return databaseContext.Logos.ToList();
+        }
+
+        public void Save(Registro registro)
+        {
+            databaseContext.Registros.Add(registro);
+            databaseContext.SaveChanges();
+        }
+
+        public List<Registro> GetRegistros()
+        {
+            return databaseContext.Registros.ToList();
         }
 
     }

@@ -13,6 +13,8 @@ namespace SCEUCN_SERVER.Model
 
         public DbSet<Registro> Registros { get; set; }
 
+        public DbSet<Logo> Logos { get; set; }
+
     }
 
     public enum TipoVehiculo { Auto, Camioneta, Moto }
