@@ -8,13 +8,18 @@ namespace SCEUCN_SERVER.Model
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
         public DbSet<Persona> Personas { get; set; }
+
+        public DbSet<Vehiculo> Vehiculos { get; set; }
+
+        public DbSet<Registro> Registros { get; set; }
+
     }
 
     public enum TipoVehiculo { Auto, Camioneta, Moto }
     
-    public enum TipoLogo {Funcionario, Estudiante}
+    public enum TipoLogo { Funcionario, Estudiante }
     
-    public enum Planta {Oficial, Fija, Temporal}
+    public enum Planta { Oficial, Fija, Temporal }
 
     public class Persona
     {
@@ -24,30 +29,37 @@ namespace SCEUCN_SERVER.Model
         public string Rut { get; set; }
 
         public string Nombres { get; set; }
-        
+
         public string Apellidos { get; set; }
     }
 
     public class Vehiculo
     {
 
-        public Persona persona;
+        public string Patente { get; set; }
+
+        public Persona Persona { get; set; }
+                
+        public string Marca { get; set; }
         
-        public string patente;
-        
-        public string marca;
-        
-        public TipoVehiculo tipo;
+        public TipoVehiculo Tipo { get; set; }
     }
 
     public class Logo
     {
 
-        public string id;
+        public string Id { get; set; }
         
-        public string fecha;
+        public string Fecha { get; set; }
         
-        public TipoLogo tipo;
+        public TipoLogo Tipo { get; set; }
+    }
+
+    public class Registro
+    {
+        public Vehiculo Vehiculo { get; set; }
+        
+        public string Fecha { get; set; }
     }
 
 }
