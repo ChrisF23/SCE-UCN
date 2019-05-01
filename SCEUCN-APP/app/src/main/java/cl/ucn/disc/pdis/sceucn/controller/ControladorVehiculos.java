@@ -35,12 +35,12 @@ public class ControladorVehiculos {
         return INSTANCE;
     }
 
-    private static ControladorPrx controladorPrx;
+    public ControladorPrx controladorPrx;
 
     private void establecerConexion(){
         // Properties
         final Properties properties = Util.createProperties();
-        properties.setProperty("Ice.Package.model", "cl.disc.ucn.pdis.news.zeroice");
+
         // https://doc.zeroc.com/ice/latest/property-reference/ice-trace
         properties.setProperty("Ice.Trace.Admin.Properties", "1");
         properties.setProperty("Ice.Trace.Locator", "2");
@@ -57,7 +57,7 @@ public class ControladorVehiculos {
 
         try (Communicator communicator = Util.initialize(initializationData)) {
 
-            final ObjectPrx proxy = communicator.stringToProxy(Controlador.class.getName() + ":default -p 10000 -z");
+            final ObjectPrx proxy = communicator.stringToProxy("Controlador:default -p 10000 -z");
             final ControladorPrx ctrlPrx = ControladorPrx.checkedCast(proxy);
 
             if (ctrlPrx == null) {
@@ -67,9 +67,6 @@ public class ControladorVehiculos {
             log.debug("Conexion establecida.");
 
             controladorPrx = ctrlPrx;
-
-            //final Article[] articles = controladorPrx.getTopArticles();
-            //log.debug("Articles: {}", articles.length);
         }
 
         log.debug("Ok.");
