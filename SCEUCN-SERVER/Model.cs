@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 
 namespace SCEUCN_SERVER.Model
@@ -52,7 +53,7 @@ namespace SCEUCN_SERVER.Model
 
         public string Id { get; set; }
         
-        public string Fecha { get; set; }
+        public DateTime Fecha { get; set; }
         
         public TipoLogo Tipo { get; set; }
     }
@@ -64,7 +65,7 @@ namespace SCEUCN_SERVER.Model
 
         public Vehiculo Vehiculo { get; set; }
         
-        public string Fecha { get; set; }
+        public DateTime Fecha { get; set; }
     }
 
 }

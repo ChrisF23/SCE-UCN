@@ -7,9 +7,9 @@ namespace SCEUCN_SERVER
     class Program
     {
 
-        public static void PrintMessage(String message)
+        public static void PrintMessage(string message, params object[] args)
         {
-            Console.WriteLine(message);
+            Console.WriteLine(message, args);
         }
 
         static void Main(string[] args)
@@ -59,13 +59,7 @@ namespace SCEUCN_SERVER
 
             Console.WriteLine();
 
-            Console.WriteLine("Buscando vehiculo con patente "+v.Patente+".");
-
-            Vehiculo v1 = system.GetVehiculo(v.Patente);
-            Console.WriteLine("Patente: {0}, Marca: {1} (Rut Persona: {2})", v1.Patente, v1.Marca, "v1.Persona.Rut");
-
-
-            return;
+            //return;
 
             // Initialize Ice communicator
             using(var communicator = Ice.Util.initialize(ref args))

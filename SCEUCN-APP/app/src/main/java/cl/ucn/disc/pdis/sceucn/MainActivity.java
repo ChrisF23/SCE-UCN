@@ -9,6 +9,9 @@ import com.zeroc.Ice.InitializationData;
 import com.zeroc.Ice.Properties;
 import com.zeroc.Ice.Util;
 
+import java.time.LocalDateTime;
+import java.util.Date;
+
 import cl.ucn.disc.pdis.sceucn.controller.ControladorVehiculos;
 import cl.ucn.disc.pdis.sceucn.ice.model.*;
 import lombok.extern.slf4j.Slf4j;
@@ -60,35 +63,39 @@ public class MainActivity extends AppCompatActivity {
                 com.zeroc.Ice.ObjectPrx obj = communicator.stringToProxy("Controlador:tcp -h " + SERVER_IP + " -p 10000 -z");
 
                 // Importante: Establecer tiempo de espera (10 segundos).
-                obj = obj.ice_timeout(10);
+                obj = obj.ice_timeout(10000);
 
                 // Downcast obj to Printer proxy
                 ControladorPrx controlador = ControladorPrx.checkedCast(obj);
 
                 if (controlador == null)
                 {
-                    throw new IllegalStateException("Proxy invalido!");
+                    throw new IllegalStateException("Invalid Proxy.");
                 }
 
                 // Patente del vehiculo que se desea registrar.
                 String patenteIngreso = "DP-UA-13";
 
-                controlador.registrarIngreso(patenteIngreso);
+                // Requiere API 26, asi que usaremos Date.
+                //LocalDateTime fecha = LocalDateTime.now();
+
+                Date fecha = new Date();
+
+                controlador.registrarIngreso(patenteIngreso, String.valueOf(fecha.getTime()));
 
                 runOnUiThread(() -> {
-                    log.debug("Se ha registrado el ingreso de {0}.", patenteIngreso);
-                    Toast.makeText(this, "Se ha registrado el ingreso de " + patenteIngreso + ".", Toast.LENGTH_LONG).show();
+                    //log.debug("Fecha date: "+ fecha.toString());
+                    //log.debug("Fecha unix millisec: " + fecha.getTime());
+                    Toast.makeText(this, "Ok: Se ha registrado el ingreso del vehiculo '" + patenteIngreso + "'.", Toast.LENGTH_LONG).show();
                 });
 
             } catch (Exception e) {
                 runOnUiThread(() -> {
                     log.debug("No se pudo establecer la conexion...");
-                    Toast.makeText(this, "No se pudo establecer la conexion...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Error: No se pudo establecer la conexion...", Toast.LENGTH_LONG).show();
                 });
             }
 
         });
-
-        //Toast.makeText(this, p.toString(), Toast.LENGTH_LONG).show();
     }
 }
