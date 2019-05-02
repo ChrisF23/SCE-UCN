@@ -48,21 +48,19 @@ namespace SCEUCN_SERVER
 
         public void Save(Persona persona)
         {
-            // using (databaseContext)
-            // {
+            if (persona == null){
+                throw new System.Exception("Persona fue null.");
+            }
+
             databaseContext.Personas.Add(persona);
             databaseContext.SaveChanges();
-            // }
         }
 
 
 
         public List<Persona> GetPersonas()
         {
-            // using (databaseContext)
-            // {
             return databaseContext.Personas.ToList();
-            // }
         }
 
         public void Save(Vehiculo vehiculo)
@@ -74,7 +72,7 @@ namespace SCEUCN_SERVER
         public Vehiculo GetVehiculo(string patente)
         {
             // Retorna la entidad si la encuentra. Nulo en otro caso.
-            return databaseContext.Vehiculos.Find(patente);
+            return databaseContext.Vehiculos.Where(v => v.Patente == patente).First();
         }
 
         public List<Vehiculo> GetVehiculos()

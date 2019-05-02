@@ -6,8 +6,15 @@ namespace SCEUCN_SERVER
 {
     class Program
     {
+
+        public static void PrintMessage(String message)
+        {
+            Console.WriteLine(message);
+        }
+
         static void Main(string[] args)
         {
+            
             Console.WriteLine("Starting Main Program ..");
 
             // Opciones de la base de datos.
@@ -52,7 +59,13 @@ namespace SCEUCN_SERVER
 
             Console.WriteLine();
 
-            //return;
+            Console.WriteLine("Buscando vehiculo con patente "+v.Patente+".");
+
+            Vehiculo v1 = system.GetVehiculo(v.Patente);
+            Console.WriteLine("Patente: {0}, Marca: {1} (Rut Persona: {2})", v1.Patente, v1.Marca, "v1.Persona.Rut");
+
+
+            return;
 
             // Initialize Ice communicator
             using(var communicator = Ice.Util.initialize(ref args))
