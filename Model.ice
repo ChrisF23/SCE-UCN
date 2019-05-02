@@ -53,6 +53,6 @@ module model
         Vehiculo buscarVehiculo(string patente);
 
         // Registra el ingreso de un vehiculo dada su patente.
-        void registrarIngreso(string patente);
+        void registrarIngreso(string patente, string fecha);
     }
 }
