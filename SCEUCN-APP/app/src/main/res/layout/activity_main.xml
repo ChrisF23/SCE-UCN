@@ -11,7 +11,7 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
         android:layout_weight="1"
         android:text="Registrar"
@@ -19,11 +19,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <AutoCompleteTextView
-        android:id="@+id/tv_patente"
+        android:id="@+id/actv_patente"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="8dp"
         android:completionThreshold="1"
         android:hint="Escriba una patente"
@@ -33,5 +33,85 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/ll_detalles"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginEnd="24dp"
+        android:orientation="vertical"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/actv_patente">
+
+        <TextView
+            android:id="@+id/tv_patente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Patente"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_marca"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Marca" />
+
+        <TextView
+            android:id="@+id/tv_tipo_vehiculo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tipo Vehiculo" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:id="@+id/tv_nombre_persona"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nombres Apellidos"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_rut_persona"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rut"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_planta_persona"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Planta" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="10dp" />
+
+        <TextView
+            android:id="@+id/tv_id_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ID Logo"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_fecha_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Fecha" />
+
+        <TextView
+            android:id="@+id/tv_tipo_logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tipo Logo" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

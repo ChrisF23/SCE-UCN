@@ -3,24 +3,26 @@ package cl.ucn.disc.pdis.sceucn;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zeroc.Ice.InitializationData;
 import com.zeroc.Ice.Properties;
 import com.zeroc.Ice.Util;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.BindViews;
 import butterknife.ButterKnife;
-import cl.ucn.disc.pdis.sceucn.controller.ControladorVehiculos;
 import cl.ucn.disc.pdis.sceucn.ice.model.*;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,11 +31,17 @@ public class MainActivity extends AppCompatActivity {
 
     public static String SERVER_IP = "192.168.0.3";
 
-    @BindView(R.id.tv_patente)
+    @BindView(R.id.actv_patente)
     AutoCompleteTextView actvPatente;
 
     @BindView(R.id.b_registrar_ingreso)
     Button bRegistrarIngreso;
+
+    @BindView(R.id.ll_detalles)
+    LinearLayout llDetalles;
+
+    @BindViews({R.id.tv_patente, R.id.tv_marca, R.id.tv_tipo_vehiculo})
+    List<TextView> tvDetallesVehiculo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +49,46 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        // Hacer invisibles los detalles.
+        llDetalles.setVisibility(View.INVISIBLE);
+
+        // Al seleccionar una patente de la lista, mostrar los detalles asociados a esta.
+        actvPatente.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mostrarDetalles(parent.getAdapter().getItem(position));
+            }
+        });
+
+        // Agregar metodo registrarIngreso boton.
         bRegistrarIngreso.setOnClickListener((v) -> registrarIngreso(actvPatente.getText().toString()));
 
+        // Crear una lista con datos demo.
         final List<String> patentes = new ArrayList<>();
         patentes.add("CA-FA-23");
         patentes.add("FJ-CM-27");
         patentes.add("DP-UA-13");
 
-
+        // Crear adaptador y asignarle la lista.
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, patentes);
+
+        // Asignar adaptador al actvPatente.
         actvPatente.setAdapter(adapter);
+    }
+
+    private void mostrarDetalles(Object item) {
+        // Si esta invisible, hacerlo visible.
+        if (llDetalles.getVisibility() != View.VISIBLE){
+            llDetalles.setVisibility(View.VISIBLE);
+        }
+
+        // Cargar datos del vehiculo.
+        tvDetallesVehiculo.get(0).setText(String.format("Patente: %s", item.toString()));
+        tvDetallesVehiculo.get(1).setText(String.format("Marca: %s", item.toString()));
+        tvDetallesVehiculo.get(2).setText(String.format("Tipo: %s", item.toString()));
+
+        // TODO: Cargar datos de la persona + logo.
+
     }
 
     @Override
@@ -83,7 +121,6 @@ public class MainActivity extends AppCompatActivity {
 
             InitializationData initializationData = new InitializationData();
             initializationData.properties = properties;
-
 
             try(com.zeroc.Ice.Communicator communicator = com.zeroc.Ice.Util.initialize())
             {
