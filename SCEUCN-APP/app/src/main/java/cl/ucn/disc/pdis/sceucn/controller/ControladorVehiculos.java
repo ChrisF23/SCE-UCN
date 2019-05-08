@@ -21,6 +21,7 @@ import cl.ucn.disc.pdis.sceucn.model.Persona;
 import cl.ucn.disc.pdis.sceucn.model.Vehiculo;
 import lombok.extern.slf4j.Slf4j;
 
+// FIXME: Esta clase tiene una implementacion incorrecta, corregir!
 @Slf4j
 public class ControladorVehiculos {
 
