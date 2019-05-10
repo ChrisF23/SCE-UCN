@@ -6,13 +6,14 @@ module model
     enum TipoLogo {Funcionario, Estudiante}
     enum Planta {Oficial, Fija, Temporal}
 
-
     class Logo
     {
         string id;
         TipoLogo tipo;
         string fecha;
     }
+
+    sequence<Logo> Logos;
 
     class Persona
     {
@@ -40,6 +41,7 @@ module model
         string marca;
         string patente;
         TipoVehiculo tipo;
+        Logos logos;
     }
 
     class Registro
@@ -58,7 +60,7 @@ module model
         Vehiculos obtenerListadoVehiculos();
 
         // Guarda en la base de datos el ingreso de un vehiculo.
-        void guardarRegistro(string patente, string fecha);
+        void guardarRegistro(Registro registro);
 
         // Guarda en la base de datos el ingreso de multiples vehiculos.
         void guardarRegistros(Registros registros);

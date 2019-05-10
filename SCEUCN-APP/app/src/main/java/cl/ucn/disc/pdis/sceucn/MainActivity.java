@@ -28,7 +28,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+import cl.ucn.disc.pdis.sceucn.controller.ModelConverter;
 import cl.ucn.disc.pdis.sceucn.ice.model.*;
+import cl.ucn.disc.pdis.sceucn.model.Registro;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -206,9 +208,10 @@ public class MainActivity extends AppCompatActivity {
                 // Requiere API 26, asi que usaremos Date.
                 //LocalDateTime fecha = LocalDateTime.now();
 
-                Date fecha = new Date();
+                // TODO: Los registros creados deben ser almacenados localmente, para posteriormente ser guardados en el servidor.
+                Registro registro = new Registro(patente.toString(), new Date());
 
-                controlador.guardarRegistro(patente.toString(), String.valueOf(fecha.getTime()));
+                controlador.guardarRegistro(ModelConverter.convert(registro));
 
                 runOnUiThread(() -> {
                     //log.debug("Fecha date: "+ fecha.toString());
