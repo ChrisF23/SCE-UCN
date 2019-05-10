@@ -1,9 +1,13 @@
 package cl.ucn.disc.pdis.sceucn;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -34,6 +38,9 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.actv_patente)
     AutoCompleteTextView actvPatente;
 
+    @BindView(R.id.b_limpiar_campo)
+    Button bLimpiarCampo;
+
     @BindView(R.id.b_registrar_ingreso)
     Button bRegistrarIngreso;
 
@@ -42,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
     @BindViews({R.id.tv_patente, R.id.tv_marca, R.id.tv_tipo_vehiculo})
     List<TextView> tvDetallesVehiculo;
+
+    private Object itemSeleccionado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +65,47 @@ public class MainActivity extends AppCompatActivity {
         actvPatente.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Mostrar los detalles de la patente seleccionada.
                 mostrarDetalles(parent.getAdapter().getItem(position));
+
+                // Dejar de enfocar esta vista.
+                actvPatente.clearFocus();
+
+                // Cerrar el teclado.
+                try {
+                    InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    in.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), 0);
+                } catch (Exception e) {
+
+                }
+            }
+        });
+
+        // Si se deja vacio el campo (manualmente), ocultar los detalles.
+        actvPatente.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (actvPatente.getText().toString().isEmpty()){
+                    ocultarDetalles();
+                }
             }
         });
 
         // Agregar metodo registrarIngreso boton.
-        bRegistrarIngreso.setOnClickListener((v) -> registrarIngreso(actvPatente.getText().toString()));
+        bRegistrarIngreso.setOnClickListener((v) -> {registrarIngreso(itemSeleccionado); limpiarCampo();});
+
+        // Limpiar campo.
+        bLimpiarCampo.setOnClickListener((v) -> limpiarCampo());
 
         // Crear una lista con datos demo.
         final List<String> patentes = new ArrayList<>();
@@ -70,10 +114,15 @@ public class MainActivity extends AppCompatActivity {
         patentes.add("DP-UA-13");
 
         // Crear adaptador y asignarle la lista.
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, patentes);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, patentes);
 
         // Asignar adaptador al actvPatente.
         actvPatente.setAdapter(adapter);
+
+    }
+
+    private void limpiarCampo() {
+        actvPatente.setText("");
     }
 
     private void mostrarDetalles(Object item) {
@@ -82,22 +131,28 @@ public class MainActivity extends AppCompatActivity {
             llDetalles.setVisibility(View.VISIBLE);
         }
 
-        // Cargar datos del vehiculo.
-        tvDetallesVehiculo.get(0).setText(String.format("Patente: %s", item.toString()));
-        tvDetallesVehiculo.get(1).setText(String.format("Marca: %s", item.toString()));
-        tvDetallesVehiculo.get(2).setText(String.format("Tipo: %s", item.toString()));
+        // Asignar item.
+        itemSeleccionado = item;
 
-        // TODO: Cargar datos de la persona + logo.
+        if (itemSeleccionado != null) {
+            // Cargar datos del vehiculo.
+            tvDetallesVehiculo.get(0).setText(String.format("Patente: %s", itemSeleccionado.toString()));
+            tvDetallesVehiculo.get(1).setText(String.format("Marca: %s", itemSeleccionado.toString()));
+            tvDetallesVehiculo.get(2).setText(String.format("Tipo: %s", itemSeleccionado.toString()));
 
+            // TODO: Cargar datos de la persona + logo.
+        }
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
+    private void ocultarDetalles(){
+        if (llDetalles.getVisibility() != View.INVISIBLE){
+            llDetalles.setVisibility(View.INVISIBLE);
+        }
+
+        itemSeleccionado = null;
     }
 
-
-    private void registrarIngreso(final String patente){
+    private void registrarIngreso(final Object patente){
 
         log.debug("Estableciendo conexion...");
         Toast.makeText(this, "Estableciendo conexion...", Toast.LENGTH_LONG).show();
@@ -146,7 +201,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Date fecha = new Date();
 
-                controlador.registrarIngreso(patente, String.valueOf(fecha.getTime()));
+                controlador.registrarIngreso(patente.toString(), String.valueOf(fecha.getTime()));
 
                 runOnUiThread(() -> {
                     //log.debug("Fecha date: "+ fecha.toString());
