@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MainActivity extends AppCompatActivity {
 
-    public static String SERVER_IP = "192.168.0.3";
+    private static String SERVER_IP = "192.168.0.3";
 
     @BindView(R.id.actv_patente)
     AutoCompleteTextView actvPatente;
@@ -49,6 +50,9 @@ public class MainActivity extends AppCompatActivity {
 
     @BindViews({R.id.tv_patente, R.id.tv_marca, R.id.tv_tipo_vehiculo})
     List<TextView> tvDetallesVehiculo;
+
+    @BindView(R.id.et_server_ip)
+    EditText etServerIP;
 
     private Object itemSeleccionado;
 
@@ -154,8 +158,11 @@ public class MainActivity extends AppCompatActivity {
 
     private void registrarIngreso(final Object patente){
 
+        // DEV ONLY.
+        SERVER_IP = etServerIP.getText().toString();
+
         log.debug("Estableciendo conexion...");
-        Toast.makeText(this, "Estableciendo conexion...", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Estableciendo conexion... ("+SERVER_IP+")", Toast.LENGTH_LONG).show();
 
         AsyncTask.execute(() -> {
 
@@ -201,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Date fecha = new Date();
 
-                controlador.registrarIngreso(patente.toString(), String.valueOf(fecha.getTime()));
+                controlador.guardarRegistro(patente.toString(), String.valueOf(fecha.getTime()));
 
                 runOnUiThread(() -> {
                     //log.debug("Fecha date: "+ fecha.toString());

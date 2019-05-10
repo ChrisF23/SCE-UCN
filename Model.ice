@@ -42,17 +42,25 @@ module model
         TipoVehiculo tipo;
     }
 
+    class Registro
+    {
+        string patente;
+        string fechaUnixMilisegundos;
+    }
+
+
+    sequence<Registro> Registros;
     sequence<Vehiculo> Vehiculos;
 
     interface Controlador
     {
-        // Obtiene un listado con todos los vehiculos registrados en la BD.
+        // Obtiene un listado con todos los vehiculos registrados en la base de datos.
         Vehiculos obtenerListadoVehiculos();
 
-        // Busca y retorna un vehiculo dada su patente.
-        Vehiculo buscarVehiculo(string patente);
+        // Guarda en la base de datos el ingreso de un vehiculo.
+        void guardarRegistro(string patente, string fecha);
 
-        // Registra el ingreso de un vehiculo dada su patente.
-        void registrarIngreso(string patente, string fecha);
+        // Guarda en la base de datos el ingreso de multiples vehiculos.
+        void guardarRegistros(Registros registros);
     }
 }
