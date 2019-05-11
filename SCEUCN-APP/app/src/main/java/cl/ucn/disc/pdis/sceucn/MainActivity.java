@@ -28,6 +28,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+import cl.ucn.disc.pdis.sceucn.controller.ControladorVehiculos;
 import cl.ucn.disc.pdis.sceucn.controller.ModelConverter;
 import cl.ucn.disc.pdis.sceucn.ice.model.*;
 import cl.ucn.disc.pdis.sceucn.model.Registro;
@@ -36,7 +37,19 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class MainActivity extends AppCompatActivity {
 
-    private static String SERVER_IP = "192.168.0.3";
+    // Attribs:
+
+    /**
+     * La direccion IP del servidor.
+     */
+    public static String SERVER_IP = "192.168.0.3";
+
+    /**
+     * El item seleccionado.
+     */
+    private Object itemSeleccionado;
+
+    // Vistas:
 
     @BindView(R.id.actv_patente)
     AutoCompleteTextView actvPatente;
@@ -53,10 +66,13 @@ public class MainActivity extends AppCompatActivity {
     @BindViews({R.id.tv_patente, R.id.tv_marca, R.id.tv_tipo_vehiculo})
     List<TextView> tvDetallesVehiculo;
 
+    // DEV ONLY:
+
     @BindView(R.id.et_server_ip)
     EditText etServerIP;
 
-    private Object itemSeleccionado;
+    @BindView(R.id.b_set_server_ip)
+    Button bSetServerIP;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,26 +80,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        // Agregar metodo setServerIP al boton.
+        bSetServerIP.setOnClickListener((v) -> setServerIP());
+
         // Hacer invisibles los detalles.
         llDetalles.setVisibility(View.INVISIBLE);
 
         // Al seleccionar una patente de la lista, mostrar los detalles asociados a esta.
-        actvPatente.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // Mostrar los detalles de la patente seleccionada.
-                mostrarDetalles(parent.getAdapter().getItem(position));
+        actvPatente.setOnItemClickListener((parent, view, position, id) -> {
+            // Mostrar los detalles de la patente seleccionada.
+            mostrarDetalles(parent.getAdapter().getItem(position));
 
-                // Dejar de enfocar esta vista.
-                actvPatente.clearFocus();
+            // Dejar de enfocar esta vista.
+            actvPatente.clearFocus();
 
-                // Cerrar el teclado.
-                try {
-                    InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    in.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), 0);
-                } catch (Exception e) {
+            // Cerrar el teclado.
+            try {
+                InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                in.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), 0);
+            } catch (Exception ignored) {
 
-                }
             }
         });
 
@@ -107,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // Agregar metodo registrarIngreso boton.
+        // Agregar metodo registrarIngreso al boton.
         bRegistrarIngreso.setOnClickListener((v) -> {registrarIngreso(itemSeleccionado); limpiarCampo();});
 
         // Limpiar campo.
@@ -125,12 +141,28 @@ public class MainActivity extends AppCompatActivity {
         // Asignar adaptador al actvPatente.
         actvPatente.setAdapter(adapter);
 
+        ControladorVehiculos.obtenerListadoVehiculos();
     }
 
+    /**
+     * Limpia el campo donde se escribe la patente.
+     */
     private void limpiarCampo() {
         actvPatente.setText("");
     }
 
+    /**
+     * Actualiza la direccion IP del servidor.
+     */
+    private void setServerIP() {
+        SERVER_IP = etServerIP.getText().toString();
+        Toast.makeText(this, "Server IP actualizada.", Toast.LENGTH_SHORT).show();
+    }
+
+    /**
+     * Muestra la vista de detalles del item seleccionado (patente).
+     * @param item
+     */
     private void mostrarDetalles(Object item) {
         // Si esta invisible, hacerlo visible.
         if (llDetalles.getVisibility() != View.VISIBLE){
@@ -150,6 +182,9 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Oculta la vista de detalles y deja nulo al item seleccionado (patente).
+     */
     private void ocultarDetalles(){
         if (llDetalles.getVisibility() != View.INVISIBLE){
             llDetalles.setVisibility(View.INVISIBLE);
@@ -160,28 +195,30 @@ public class MainActivity extends AppCompatActivity {
 
     private void registrarIngreso(final Object patente){
 
-        // DEV ONLY.
-        SERVER_IP = etServerIP.getText().toString();
 
-        log.debug("Estableciendo conexion...");
-        Toast.makeText(this, "Estableciendo conexion... ("+SERVER_IP+")", Toast.LENGTH_LONG).show();
+
+        // DEV ONLY.
+
+        //log.debug("Estableciendo conexion...");
+        //Toast.makeText(this, "Estableciendo conexion... ("+SERVER_IP+")", Toast.LENGTH_LONG).show();
+
+        // TODO: Mover esto a ControladorVehiculos.
 
         AsyncTask.execute(() -> {
-
             // Properties
             final Properties properties = Util.createProperties();
 
             // https://doc.zeroc.com/ice/latest/property-reference/ice-trace
 
-            /*
-            properties.setProperty("Ice.Trace.Admin.Properties", "1");
-            properties.setProperty("Ice.Trace.Locator", "2");
-            properties.setProperty("Ice.Trace.Network", "3");
-            properties.setProperty("Ice.Trace.Protocol", "1");
-            properties.setProperty("Ice.Trace.Slicing", "1");
-            properties.setProperty("Ice.Trace.ThreadPool", "1");
-            properties.setProperty("Ice.Compression.Level", "9");
-            */
+
+            // properties.setProperty("Ice.Trace.Admin.Properties", "1");
+            // properties.setProperty("Ice.Trace.Locator", "2");
+            // properties.setProperty("Ice.Trace.Network", "3");
+            // properties.setProperty("Ice.Trace.Protocol", "1");
+            // properties.setProperty("Ice.Trace.Slicing", "1");
+            // properties.setProperty("Ice.Trace.ThreadPool", "1");
+            // properties.setProperty("Ice.Compression.Level", "9");
+
 
             InitializationData initializationData = new InitializationData();
             initializationData.properties = properties;
