@@ -72,7 +72,14 @@ namespace SCEUCN_SERVER
         public Vehiculo GetVehiculo(string patente)
         {
             // Retorna la entidad si la encuentra. Nulo en otro caso.
-            return databaseContext.Vehiculos.Where(v => v.Patente == patente).First();
+
+            var results = databaseContext.Vehiculos.Where(v => v.Patente == patente);
+
+            if (results.Count() == 1) {
+                return results.First();
+            }
+            
+            return null;
         }
 
         public List<Vehiculo> GetVehiculos()

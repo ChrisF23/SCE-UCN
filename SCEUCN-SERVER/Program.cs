@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using Microsoft.EntityFrameworkCore;
 using SCEUCN_SERVER.Model;
 
@@ -15,7 +16,7 @@ namespace SCEUCN_SERVER
         static void Main(string[] args)
         {
             
-            Console.WriteLine("Starting Main Program ..");
+            Console.WriteLine("Starting Main Program...");
 
             // Opciones de la base de datos.
             var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
