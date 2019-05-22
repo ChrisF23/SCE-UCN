@@ -1,0 +1,8 @@
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+
+# Ignore build from ice
+src/main/java/cl/ucn/disc/pdis/sceucn/ice/
