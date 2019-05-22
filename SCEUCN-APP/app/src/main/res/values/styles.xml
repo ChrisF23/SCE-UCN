@@ -14,6 +14,8 @@
         <item name="colorPrimary">@color/colorA_Primary</item>
         <item name="colorPrimaryDark">@color/colorA_PrimaryDark</item>
         <item name="colorAccent">@color/colorA_Accent</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
 
     <style name="SuccessButton" parent="Widget.AppCompat.Button.Colored">

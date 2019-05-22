@@ -8,7 +8,6 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <!--app:navigationIcon="@drawable/logo_ucn"-->
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
@@ -16,9 +15,11 @@
         android:background="@color/colorPrimaryDark"
         android:elevation="4dp"
         android:minHeight="?attr/actionBarSize"
-        app:contentInsetStart="0dp"
+        app:contentInsetStart="5dp"
+        app:titleMarginStart="10dp"
         app:contentInsetStartWithNavigation="0dp"
         app:layout_constraintTop_toTopOf="parent"
+        app:logo="@mipmap/ic_logo_ucn_1"
 
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:subtitle="Universidad Católica del Norte"
