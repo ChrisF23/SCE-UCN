@@ -7,4 +7,8 @@
     <color name="colorA_Primary">#3F51B5</color>
     <color name="colorA_PrimaryDark">#283593</color>
     <color name="colorA_Accent">#1E88E5</color>
+
+    <color name="colorSuccess">#5cb85c</color>
+    <color name="colorCancel">#d9534f</color>
+
 </resources>

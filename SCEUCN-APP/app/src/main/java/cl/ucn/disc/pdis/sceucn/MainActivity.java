@@ -1,16 +1,15 @@
 package cl.ucn.disc.pdis.sceucn;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -27,10 +26,8 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.BindViews;
 import butterknife.ButterKnife;
 import cl.ucn.disc.pdis.sceucn.adapter.VehiculoAdapter;
-import cl.ucn.disc.pdis.sceucn.controller.ControladorVehiculos;
 import cl.ucn.disc.pdis.sceucn.controller.ModelConverter;
 import cl.ucn.disc.pdis.sceucn.ice.model.*;
 import cl.ucn.disc.pdis.sceucn.model.Persona;
@@ -83,8 +80,8 @@ public class MainActivity extends AppCompatActivity {
 
     //------------------------------------------
 
-    @BindView(R.id.lv_personas)
-    ListView lvPersonas;
+    @BindView(R.id.lv_vehiculos)
+    ListView lvVehiculos;
 
     VehiculoAdapter adapter;
 
@@ -104,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new VehiculoAdapter(this, vehiculos);
 
         // 2.- Asignar el adaptador.
-        lvPersonas.setAdapter(adapter);
+        lvVehiculos.setAdapter(adapter);
 
         // 3.- Actualizar lista.
         Persona persona = new Persona("19691840K", "Christian Farias");
@@ -157,13 +154,54 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        
+        // 5.- Al seleccionar un vehiculo, abrir dialog.
+        lvVehiculos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                Vehiculo v = (Vehiculo) lvVehiculos.getAdapter().getItem(position);
+
+                abrirDialogo(v);
+            }
+        });
+        
         //---------------------------------------------------
 
         // Agregar metodo setServerIP al boton.
         bSetServerIP.setOnClickListener((v) -> setServerIP());
+    }
 
-        ControladorVehiculos.obtenerListadoVehiculos();
+    private void abrirDialogo(Vehiculo v) {
+        //before inflating the custom alert dialog layout, we will get the current activity viewgroup
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+
+        //then we will inflate the custom alert dialog xml that we created
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_vehiculo, viewGroup, false);
+
+
+        //Now we need an AlertDialog.Builder object
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        //setting the view of the builder to our custom view that we already inflated
+        builder.setView(dialogView);
+
+        // Configurar dialogo:
+        LinearLayout llDialog = dialogView.findViewById(R.id.ll_dialog);
+        TextView tvPatente = llDialog.findViewById(R.id.tv_patente);
+        tvPatente.setText(v.getPatente());
+
+        //finally creating the alert dialog and displaying it
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Toast.makeText(this, "Cargando listado de vehiculos...", Toast.LENGTH_LONG).show();
+        //ControladorVehiculos.obtenerListadoVehiculos();
     }
 
     /**

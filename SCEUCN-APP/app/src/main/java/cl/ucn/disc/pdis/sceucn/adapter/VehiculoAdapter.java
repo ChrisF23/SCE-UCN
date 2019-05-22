@@ -41,7 +41,6 @@ public final class VehiculoAdapter extends BaseAdapter {
         this.vehiculos = vehiculos;
     }
 
-
     @Override
     public int getCount() {
         return vehiculos.size();
