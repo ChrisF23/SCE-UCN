@@ -37,6 +37,10 @@ public final class VehiculoAdapter extends BaseAdapter {
         this.vehiculos = vehiculos;
     }
 
+    public void cargar(List<Vehiculo> vehiculos){
+        this.vehiculos = vehiculos;
+    }
+
 
     @Override
     public int getCount() {

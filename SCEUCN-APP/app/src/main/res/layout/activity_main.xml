@@ -8,16 +8,16 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <AutoCompleteTextView
-        android:id="@+id/actv_patente"
+    <EditText
+        android:id="@+id/et_patente"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="24dp"
-        android:completionThreshold="1"
-        android:hint="Escriba una patente"
-        android:singleLine="true"
+        android:ems="10"
+        android:hint="Escriba una patente..."
+        android:inputType="textPersonName"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,13 +28,13 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/et_server_ip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/actv_patente" />
+        app:layout_constraintTop_toBottomOf="@+id/et_patente" />
 
     <EditText
         android:id="@+id/et_server_ip"

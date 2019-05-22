@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
 
     // Vistas:
 
-    @BindView(R.id.actv_patente)
-    AutoCompleteTextView actvPatente;
+    @BindView(R.id.et_patente)
+    EditText etPatente;
 
     /*
     @BindView(R.id.b_limpiar_campo)
@@ -110,38 +110,14 @@ public class MainActivity extends AppCompatActivity {
         Persona persona = new Persona("19691840K", "Christian Farias");
 
         vehiculos.add(new Vehiculo(persona, "CA-FA-23"));
+        vehiculos.add(new Vehiculo(persona, "CA-ES-99"));
+        vehiculos.add(new Vehiculo(persona, "CA-89-23"));
         vehiculos.add(new Vehiculo(persona, "DC-MC-U1"));
         vehiculos.add(new Vehiculo(persona, "FJ-CM-27"));
         vehiculos.add(new Vehiculo(persona, "UC-N1-10"));
 
-
-        //---------------------------------------------------
-
-        // Agregar metodo setServerIP al boton.
-        bSetServerIP.setOnClickListener((v) -> setServerIP());
-
-        // Hacer invisibles los detalles.
-        // TODO: DELETEME llDetalles.setVisibility(View.INVISIBLE);
-
-        // Al seleccionar una patente de la lista, mostrar los detalles asociados a esta.
-        actvPatente.setOnItemClickListener((parent, view, position, id) -> {
-            // Mostrar los detalles de la patente seleccionada.
-            mostrarDetalles(parent.getAdapter().getItem(position));
-
-            // Dejar de enfocar esta vista.
-            actvPatente.clearFocus();
-
-            // Cerrar el teclado.
-            try {
-                InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                in.hideSoftInputFromWindow(getCurrentFocus().getApplicationWindowToken(), 0);
-            } catch (Exception ignored) {
-
-            }
-        });
-
-        // Si se deja vacio el campo (manualmente), ocultar los detalles.
-        actvPatente.addTextChangedListener(new TextWatcher() {
+        // 4.- Filtrado en el ingreso de patente.
+        etPatente.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -149,43 +125,45 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (adapter == null) return;
 
+                String query = String.valueOf(s);
+
+                // Si la busqueda esta vacia, entonces mostrar todos los vehiculos.
+                if (query.isEmpty()){
+                    adapter.cargar(vehiculos);
+
+                } else {
+                    // Si contiene algo, buscar todas las personas que coincidan.
+
+                    List<Vehiculo> tempVehiculos = new ArrayList<>();
+
+                    for (Vehiculo v : vehiculos) {
+
+                        // Ambos en UPPERCASE.
+                        if (v.getPatente().toUpperCase().startsWith(query.toUpperCase())) {
+                            tempVehiculos.add(v);
+                        }
+                    }
+                    adapter.cargar(tempVehiculos);
+                }
+
+                // Notificar al adaptador que los datos han cambiado.
+                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (actvPatente.getText().toString().isEmpty()){
-                    ocultarDetalles();
-                }
+
             }
         });
 
-        // Agregar metodo registrarIngreso al boton.
-        // TODO: DELETEME bRegistrarIngreso.setOnClickListener((v) -> {registrarIngreso(itemSeleccionado); limpiarCampo();});
+        //---------------------------------------------------
 
-        // Limpiar campo.
-        // TODO: DELETEME bLimpiarCampo.setOnClickListener((v) -> limpiarCampo());
-
-        // Crear una lista con datos demo.
-        final List<String> patentes = new ArrayList<>();
-        patentes.add("CA-FA-23");
-        patentes.add("FJ-CM-27");
-        patentes.add("DP-UA-13");
-
-        // Crear adaptador y asignarle la lista.
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, patentes);
-
-        // Asignar adaptador al actvPatente.
-        actvPatente.setAdapter(adapter);
+        // Agregar metodo setServerIP al boton.
+        bSetServerIP.setOnClickListener((v) -> setServerIP());
 
         ControladorVehiculos.obtenerListadoVehiculos();
-    }
-
-    /**
-     * Limpia el campo donde se escribe la patente.
-     */
-    private void limpiarCampo() {
-        actvPatente.setText("");
     }
 
     /**
