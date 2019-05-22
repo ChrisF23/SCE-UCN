@@ -1,6 +1,7 @@
 /**
  * (c) 2019 Proyecto Desarrollo e Integracion de Soluciones.
  */
+ #pragma once
 
 /**
  * Modelo del Dominio del Problema
@@ -90,6 +91,7 @@ module model {
     /**
      * Listado de los logos
      */
+    ["java:type:java.util.ArrayList<Logo>:java.util.List<Logo>"]
     sequence<Logo> Logos;
 
     /**
@@ -143,6 +145,7 @@ module model {
     /**
      * Listado de vehiculos en el sistema
      */
+    ["java:type:java.util.ArrayList<Vehiculo>:java.util.List<Vehiculo>"]
     sequence<Vehiculo> Vehiculos;
 
     /**
@@ -158,7 +161,7 @@ module model {
         /**
          * Obtiene un listado con todos los vehiculos registrados en la base de datos.
          */
-        Vehiculos obtenerVehiculos();
+        idempotent Vehiculos obtenerVehiculos();
  
     };
 
