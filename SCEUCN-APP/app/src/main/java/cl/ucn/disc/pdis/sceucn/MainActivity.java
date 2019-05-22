@@ -14,6 +14,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,10 +29,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.ButterKnife;
+import cl.ucn.disc.pdis.sceucn.adapter.VehiculoAdapter;
 import cl.ucn.disc.pdis.sceucn.controller.ControladorVehiculos;
 import cl.ucn.disc.pdis.sceucn.controller.ModelConverter;
 import cl.ucn.disc.pdis.sceucn.ice.model.*;
+import cl.ucn.disc.pdis.sceucn.model.Persona;
 import cl.ucn.disc.pdis.sceucn.model.Registro;
+import cl.ucn.disc.pdis.sceucn.model.Vehiculo;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -54,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.actv_patente)
     AutoCompleteTextView actvPatente;
 
+    /*
     @BindView(R.id.b_limpiar_campo)
     Button bLimpiarCampo;
 
@@ -65,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
     @BindViews({R.id.tv_patente, R.id.tv_marca, R.id.tv_tipo_vehiculo})
     List<TextView> tvDetallesVehiculo;
+    */
 
     // DEV ONLY:
 
@@ -74,17 +80,48 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.b_set_server_ip)
     Button bSetServerIP;
 
+
+    //------------------------------------------
+
+    @BindView(R.id.lv_personas)
+    ListView lvPersonas;
+
+    VehiculoAdapter adapter;
+
+    static List<Vehiculo> vehiculos = new ArrayList<>();
+
+    //------------------------------------------
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        //---------------------------------------------------
+
+        // 1.- Crear el adaptador.
+        adapter = new VehiculoAdapter(this, vehiculos);
+
+        // 2.- Asignar el adaptador.
+        lvPersonas.setAdapter(adapter);
+
+        // 3.- Actualizar lista.
+        Persona persona = new Persona("19691840K", "Christian Farias");
+
+        vehiculos.add(new Vehiculo(persona, "CA-FA-23"));
+        vehiculos.add(new Vehiculo(persona, "DC-MC-U1"));
+        vehiculos.add(new Vehiculo(persona, "FJ-CM-27"));
+        vehiculos.add(new Vehiculo(persona, "UC-N1-10"));
+
+
+        //---------------------------------------------------
+
         // Agregar metodo setServerIP al boton.
         bSetServerIP.setOnClickListener((v) -> setServerIP());
 
         // Hacer invisibles los detalles.
-        llDetalles.setVisibility(View.INVISIBLE);
+        // TODO: DELETEME llDetalles.setVisibility(View.INVISIBLE);
 
         // Al seleccionar una patente de la lista, mostrar los detalles asociados a esta.
         actvPatente.setOnItemClickListener((parent, view, position, id) -> {
@@ -124,10 +161,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // Agregar metodo registrarIngreso al boton.
-        bRegistrarIngreso.setOnClickListener((v) -> {registrarIngreso(itemSeleccionado); limpiarCampo();});
+        // TODO: DELETEME bRegistrarIngreso.setOnClickListener((v) -> {registrarIngreso(itemSeleccionado); limpiarCampo();});
 
         // Limpiar campo.
-        bLimpiarCampo.setOnClickListener((v) -> limpiarCampo());
+        // TODO: DELETEME bLimpiarCampo.setOnClickListener((v) -> limpiarCampo());
 
         // Crear una lista con datos demo.
         final List<String> patentes = new ArrayList<>();
@@ -165,18 +202,18 @@ public class MainActivity extends AppCompatActivity {
      */
     private void mostrarDetalles(Object item) {
         // Si esta invisible, hacerlo visible.
-        if (llDetalles.getVisibility() != View.VISIBLE){
-            llDetalles.setVisibility(View.VISIBLE);
-        }
+        //if (llDetalles.getVisibility() != View.VISIBLE){
+        //    llDetalles.setVisibility(View.VISIBLE);
+        //}
 
         // Asignar item.
         itemSeleccionado = item;
 
         if (itemSeleccionado != null) {
             // Cargar datos del vehiculo.
-            tvDetallesVehiculo.get(0).setText(String.format("Patente: %s", itemSeleccionado.toString()));
-            tvDetallesVehiculo.get(1).setText(String.format("Marca: %s", itemSeleccionado.toString()));
-            tvDetallesVehiculo.get(2).setText(String.format("Tipo: %s", itemSeleccionado.toString()));
+            //tvDetallesVehiculo.get(0).setText(String.format("Patente: %s", itemSeleccionado.toString()));
+            //tvDetallesVehiculo.get(1).setText(String.format("Marca: %s", itemSeleccionado.toString()));
+            //tvDetallesVehiculo.get(2).setText(String.format("Tipo: %s", itemSeleccionado.toString()));
 
             // TODO: Cargar datos de la persona + logo.
         }
@@ -186,9 +223,9 @@ public class MainActivity extends AppCompatActivity {
      * Oculta la vista de detalles y deja nulo al item seleccionado (patente).
      */
     private void ocultarDetalles(){
-        if (llDetalles.getVisibility() != View.INVISIBLE){
-            llDetalles.setVisibility(View.INVISIBLE);
-        }
+        //if (llDetalles.getVisibility() != View.INVISIBLE){
+        //    llDetalles.setVisibility(View.INVISIBLE);
+        //}
 
         itemSeleccionado = null;
     }

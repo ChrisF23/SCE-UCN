@@ -8,32 +8,6 @@
     android:focusable="true"
     android:focusableInTouchMode="true">
 
-    <Button
-        android:id="@+id/b_limpiar_campo"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
-        android:layout_weight="1"
-        android:text="Limpiar Campo"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/actv_patente" />
-
-    <Button
-        android:id="@+id/b_registrar_ingreso"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:layout_weight="1"
-        android:text="Registrar Ingreso"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/b_limpiar_campo"
-        app:layout_constraintTop_toBottomOf="@+id/actv_patente" />
-
     <AutoCompleteTextView
         android:id="@+id/actv_patente"
         android:layout_width="0dp"
@@ -49,110 +23,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/ll_detalles"
+    <ListView
+        android:id="@+id/lv_personas"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
-        android:orientation="vertical"
-        android:visibility="visible"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/et_server_ip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/b_limpiar_campo">
-
-        <TextView
-            android:id="@+id/tv_patente"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Patente"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_marca"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Marca" />
-
-        <TextView
-            android:id="@+id/tv_tipo_vehiculo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tipo Vehiculo" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <TextView
-            android:id="@+id/tv_nombre_persona"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Nombres Apellidos"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_rut_persona"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Rut"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_planta_persona"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Planta" />
-
-        <Space
-            android:layout_width="match_parent"
-            android:layout_height="10dp" />
-
-        <TextView
-            android:id="@+id/tv_id_logo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ID Logo"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tv_fecha_logo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Fecha" />
-
-        <TextView
-            android:id="@+id/tv_tipo_logo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tipo Logo" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/actv_patente" />
 
     <EditText
         android:id="@+id/et_server_ip"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginBottom="8dp"
         android:digits="0123456789."
         android:ems="10"
         android:hint="Server IP"
         android:inputType="number|numberDecimal"
         android:textAlignment="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ll_detalles" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/b_set_server_ip"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
+        android:layout_marginBottom="8dp"
         android:text="Set IP"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/et_server_ip"
-        app:layout_constraintTop_toBottomOf="@+id/ll_detalles" />
+        app:layout_constraintStart_toEndOf="@+id/et_server_ip" />
 
 </android.support.constraint.ConstraintLayout>
