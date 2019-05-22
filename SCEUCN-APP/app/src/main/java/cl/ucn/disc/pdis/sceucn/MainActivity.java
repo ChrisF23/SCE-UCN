@@ -110,6 +110,7 @@ public class MainActivity extends AppCompatActivity {
         vehiculos.add(new Vehiculo(persona, "CA-ES-99"));
         vehiculos.add(new Vehiculo(persona, "CA-89-23"));
         vehiculos.add(new Vehiculo(persona, "DC-MC-U1"));
+        vehiculos.add(new Vehiculo(persona, "DP-UA-13"));
         vehiculos.add(new Vehiculo(persona, "FJ-CM-27"));
         vehiculos.add(new Vehiculo(persona, "UC-N1-10"));
 
@@ -194,8 +195,28 @@ public class MainActivity extends AppCompatActivity {
         holder.tvNombrePersona.setText(String.format("Nombre: %s", v.getPersona().getNombre()));
         holder.tvRut.setText(String.format("Rut: %s", v.getPersona().getRut()));
 
+
         //finally creating the alert dialog and displaying it
         AlertDialog alertDialog = builder.create();
+
+        // Boton registrar.
+        dialogView.findViewById(R.id.b_registrar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                registrarIngreso(v);
+                alertDialog.dismiss();
+            }
+        });
+
+        // Boton cancelar
+        dialogView.findViewById(R.id.b_cancelar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
+
+
         alertDialog.show();
     }
 
@@ -217,6 +238,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void registrarIngreso(final Object patente){
 
+        Toast.makeText(this, "Registrando ingreso...", Toast.LENGTH_SHORT).show();
+
+        /*
         // DEV ONLY.
 
         //log.debug("Estableciendo conexion...");
@@ -284,6 +308,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+        */
     }
 
     static class VehiculoDetalleViewHolder {
