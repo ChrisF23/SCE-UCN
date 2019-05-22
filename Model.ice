@@ -1,68 +1,165 @@
+/**
+ * (c) 2019 Proyecto Desarrollo e Integracion de Soluciones.
+ */
+
+/**
+ * Modelo del Dominio del Problema
+ */
 ["java:package:cl.ucn.disc.pdis.sceucn.ice"]
+module model {
 
-module model
-{
-    enum TipoVehiculo {Auto, Camioneta, Moto}
-    enum TipoLogo {Funcionario, Estudiante}
-    enum Planta {Oficial, Fija, Temporal}
+    /**
+     * Tipo de Logo/Contrato
+     */
+    enum Rol {
+        Academico,
+        Funcionario,
+        Pregrado,
+        Posgrado
+    };
 
-    class Logo
-    {
-        string id;
-        TipoLogo tipo;
-        string fecha;
-    }
+    /**
+     * Logo: Autoadhesivo pegado en el parabrisas
+     */
+    class Logo {
 
+        //  L1-1210, 19PS0182
+        string identificador;
+
+        // Academico
+        Rol rol;
+
+        // 2019
+        string anio;
+    };
+
+    /**
+     * Tipo de Contrato
+     */
+    enum Contrato {
+        Oficial,
+        Fijo,
+        Temporal
+    };
+
+    /**
+     * Persona en el campus con vehiculo
+     */
+    class Persona {
+        
+        // 12.123.132-3
+        string rut;
+
+        // Juan Andres
+        string nombres;
+
+        // Visalovic Terreas
+        string apellidos;
+
+        // jisalovic@ucn.cl
+        string email;
+
+        // +569 1234 5678
+        string movil;
+
+        // Departamento de Ingenieria de Sistemas y Computacion
+        string unidad;
+
+        // Pabellon Y1, Oficina 305
+        string oficina;
+
+        // +56 2 355 163
+        string anexo;
+
+        // Academico
+        Rol rol;
+
+        // Tipo de Contrato
+        Contrato contrato;
+    };
+
+    /**
+     * Tipo de Vehiculo
+     */
+    enum Tipo {
+        Auto,
+        Camioneta,
+        Moto
+    };
+
+    /**
+     * Listado de los logos
+     */
     sequence<Logo> Logos;
 
-    class Persona
-    {
-        string rut;
-        string nombre;
-        string depto;
-        string unidad;
-        string oficina;
-        string rol;
-        string cargo;
-        string telefono;
-        Planta planta;
+    /**
+     * Vehiculo asociado a una persona
+     */
+    class Vehiculo {
 
-        string inicioContrato;
-        string terminoContrato;
-    }
-
-    // Una persona tiene 1..* vehiculos. -> Lista Vehiculos en Persona.
-    // Un vehiculo pertenece a 1 persona. -> Atributo Persona en Vehiculo.
-
-    class Vehiculo
-    {
-        Persona persona;
+        // 2019
         string anio;
+
+        // Suzuki
         string marca;
-        string patente;
-        TipoVehiculo tipo;
+
+        // FBXS22
+        string placa;
+
+        // Juan Visalovic Terreas
+        Persona persona;
+
+        // Auto
+        Tipo tipo;
+
+        // Logos
         Logos logos;
+    };
+
+    /**
+     * Lugar de ingreso
+     */
+    enum Porteria {
+        Principal,
+        Sur,
+        Norte
+    };
+
+    /**
+     * Registro de acceso
+     */
+    class Registro {
+
+        // Vehiculo
+        Vehiculo vehiculo;
+
+        // Fecha de ingreso
+        string fecha;
+
+        // Porteria
+        Porteria porteria;
     }
 
-    class Registro
-    {
-        string patente;
-        string fechaUnixMilisegundos;
-    }
-
-
-    sequence<Registro> Registros;
+    /**
+     * Listado de vehiculos en el sistema
+     */
     sequence<Vehiculo> Vehiculos;
 
-    interface Controlador
-    {
-        // Obtiene un listado con todos los vehiculos registrados en la base de datos.
-        Vehiculos obtenerListadoVehiculos();
+    /**
+     * Operaciones del Sistema
+     */
+    interface Controlador {
 
-        // Guarda en la base de datos el ingreso de un vehiculo.
-        void guardarRegistro(Registro registro);
+        /**
+         * Registra el ingreso de un vehiculo al campus.
+         */
+        void registrarIngreso(Registro registro);
 
-        // Guarda en la base de datos el ingreso de multiples vehiculos.
-        void guardarRegistros(Registros registros);
-    }
-}
+        /**
+         * Obtiene un listado con todos los vehiculos registrados en la base de datos.
+         */
+        Vehiculos obtenerVehiculos();
+ 
+    };
+
+};
