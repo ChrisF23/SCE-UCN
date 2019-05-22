@@ -188,8 +188,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Configurar dialogo:
         LinearLayout llDialog = dialogView.findViewById(R.id.ll_dialog);
-        TextView tvPatente = llDialog.findViewById(R.id.tv_patente);
-        tvPatente.setText(v.getPatente());
+        VehiculoDetalleViewHolder holder = new VehiculoDetalleViewHolder(llDialog);
+
+        holder.tvPatente.setText(String.format("Patente: %s", v.getPatente()));
+        holder.tvNombrePersona.setText(String.format("Nombre: %s", v.getPersona().getNombre()));
+        holder.tvRut.setText(String.format("Rut: %s", v.getPersona().getRut()));
 
         //finally creating the alert dialog and displaying it
         AlertDialog alertDialog = builder.create();
@@ -212,43 +215,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, "Server IP actualizada.", Toast.LENGTH_SHORT).show();
     }
 
-    /**
-     * Muestra la vista de detalles del item seleccionado (patente).
-     * @param item
-     */
-    private void mostrarDetalles(Object item) {
-        // Si esta invisible, hacerlo visible.
-        //if (llDetalles.getVisibility() != View.VISIBLE){
-        //    llDetalles.setVisibility(View.VISIBLE);
-        //}
-
-        // Asignar item.
-        itemSeleccionado = item;
-
-        if (itemSeleccionado != null) {
-            // Cargar datos del vehiculo.
-            //tvDetallesVehiculo.get(0).setText(String.format("Patente: %s", itemSeleccionado.toString()));
-            //tvDetallesVehiculo.get(1).setText(String.format("Marca: %s", itemSeleccionado.toString()));
-            //tvDetallesVehiculo.get(2).setText(String.format("Tipo: %s", itemSeleccionado.toString()));
-
-            // TODO: Cargar datos de la persona + logo.
-        }
-    }
-
-    /**
-     * Oculta la vista de detalles y deja nulo al item seleccionado (patente).
-     */
-    private void ocultarDetalles(){
-        //if (llDetalles.getVisibility() != View.INVISIBLE){
-        //    llDetalles.setVisibility(View.INVISIBLE);
-        //}
-
-        itemSeleccionado = null;
-    }
-
     private void registrarIngreso(final Object patente){
-
-
 
         // DEV ONLY.
 
@@ -317,5 +284,21 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
+    }
+
+    static class VehiculoDetalleViewHolder {
+
+        @BindView(R.id.tv_patente)
+        TextView tvPatente;
+
+        @BindView(R.id.tv_nombre_persona)
+        TextView tvNombrePersona;
+
+        @BindView(R.id.tv_rut)
+        TextView tvRut;
+
+        public VehiculoDetalleViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
     }
 }
