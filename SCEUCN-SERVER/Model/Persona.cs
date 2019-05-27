@@ -2,7 +2,7 @@
 
 namespace SCEUCN_SERVER.Model
 {
-    public enum Planta { Oficial, Fija, Temporal }
+    public enum Contrato { Oficial, Fijo, Temporal }
 
     public class Persona
     {
@@ -14,5 +14,19 @@ namespace SCEUCN_SERVER.Model
         public string Nombres { get; set; }
 
         public string Apellidos { get; set; }
+
+        public string Email{ get; set;}
+
+        public string Movil{ get; set;}
+
+        public string Unidad{ get; set;}
+
+        public string Oficina{ get; set;}
+
+        public string Anexo{ get; set;}
+
+        public Rol Rol{ get; set;}
+
+        public Contrato Contrato{ get; set;}
     }
 }

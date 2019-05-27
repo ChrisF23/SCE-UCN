@@ -69,11 +69,11 @@ namespace SCEUCN_SERVER
             databaseContext.SaveChanges();
         }
 
-        public Vehiculo GetVehiculo(string patente)
+        public Vehiculo GetVehiculo(string placa)
         {
             // Retorna la entidad si la encuentra. Nulo en otro caso.
 
-            var results = databaseContext.Vehiculos.Where(v => v.Patente == patente);
+            var results = databaseContext.Vehiculos.Where(v => v.Placa == placa);
 
             if (results.Count() == 1) {
                 return results.First();

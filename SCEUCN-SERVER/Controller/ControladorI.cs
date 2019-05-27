@@ -30,10 +30,10 @@ namespace SCEUCN_SERVER
                 return;
             }
 
-            Program.PrintMessage("Verificando patente '" + nuevoRegistro.PatenteVehiculo + "'...");
+            Program.PrintMessage("Verificando patente '" + nuevoRegistro.Vehiculo.Placa + "'...");
             
             // Verificar si la patente existe en la base de datos.
-            if (system.GetVehiculo(nuevoRegistro.PatenteVehiculo) == null){
+            if (system.GetVehiculo(nuevoRegistro.Vehiculo.Placa) == null){
                 Program.PrintMessage("Error: El vehiculo no existe en la base de datos.");
                 return;
             }
@@ -42,7 +42,7 @@ namespace SCEUCN_SERVER
             system.Save(nuevoRegistro);
 
             Program.PrintMessage("Ok: Se ha guardado el registro [Patente: {0}, Fecha: {1}]", 
-                nuevoRegistro.PatenteVehiculo, nuevoRegistro.Fecha.ToString());
+                nuevoRegistro.Vehiculo.Placa, nuevoRegistro.Fecha);
 
         }
 

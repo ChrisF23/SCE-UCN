@@ -34,7 +34,7 @@ namespace SCEUCN_SERVER
 
             Vehiculo v = new Vehiculo {
                 Persona = p,
-                Patente = "DP-UA-13",
+                Placa = "DP-UA-13",
                 Marca = "AUDI"
             };
 
@@ -55,7 +55,7 @@ namespace SCEUCN_SERVER
             Console.WriteLine("Mostrando Vehiculos:");
             foreach (var vehiculo in system.GetVehiculos())
             {
-                Console.WriteLine("Patente: {0}, Marca: {1} (Rut Persona: {2})", vehiculo.Patente, vehiculo.Marca, vehiculo.Persona.Rut);
+                Console.WriteLine("Patente: {0}, Marca: {1} (Rut Persona: {2})", vehiculo.Placa, vehiculo.Marca, vehiculo.Persona.Rut);
             }
 
             Console.WriteLine();

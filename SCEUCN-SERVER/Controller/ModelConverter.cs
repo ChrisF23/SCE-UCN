@@ -12,18 +12,19 @@ namespace SCEUCN_SERVER
             Registro registroCS = new Registro();
 
             // Pasar patente.
-            registroCS.PatenteVehiculo = registroI.patente;
+            registroCS.Vehiculo.Placa = registroI.patente;
 
             try 
             {
                 // https://stackoverflow.com/a/26225744
 
                 // Transformar desde unix-milisegundos.
-                long fechaL = long.Parse(registroI.fechaUnixMilisegundos);
-                DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeMilliseconds(fechaL);
+                /* long fechaL = long.Parse(registroI.fechaUnixMilisegundos);
+                DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeMilliseconds(fechaL); */
 
-                // Pasar fecha.
-                registroCS.Fecha = dateTimeOffset.ToLocalTime().DateTime;
+                // Pasar fecha. 
+                //FIXME: La fecha es string
+                //registroCS.Fecha = dateTimeOffset.ToLocalTime().DateTime;
             } 
             catch (System.Exception)
             {
