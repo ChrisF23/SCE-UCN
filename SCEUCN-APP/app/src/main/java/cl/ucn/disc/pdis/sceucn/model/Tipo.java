@@ -6,8 +6,11 @@
 
 package cl.ucn.disc.pdis.sceucn.model;
 
-public enum TipoVehiculo {
-    AUTO,
-    CAMIONETA,
-    MOTO
+/**
+ * El tipo de vehiculo.
+ */
+public enum Tipo {
+    Auto,
+    Camioneta,
+    Moto
 }

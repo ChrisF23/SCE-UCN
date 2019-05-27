@@ -6,37 +6,61 @@
 
 package cl.ucn.disc.pdis.sceucn.model;
 
-import java.util.Date;
-
-import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 
+/**
+ * La persona duenia de un vehiculo.
+ */
 @Data
-//@Builder
 public class Persona {
 
+    /**
+     * El rut de la persona. Ej: '12.123.132-3'.
+     */
     @NonNull
     private String rut;
 
+    /**
+     * Los nombres de la persona. Ej: 'Juan Andres'.
+     */
     @NonNull
-    private String nombre;
+    private String nombres;
 
-    private String depto;
+    /**
+     * Los apellidos de la persona. Ej: 'Visalovic Terreas'.
+     */
+    @NonNull
+    private String apellidos;
 
-    private String unidad;
+    /**
+     * El correo electronico de la persona. Ej: 'jisalovic@ucn.cl'.
+     */
+    private String email;
 
-    private String oficina;
-
-    private String rol;
-
-    private String cargo;
-
+    /**
+     * El numero telefonico. Ej. '+569 1234 5678'.
+     */
     private String telefono;
 
-    private Planta planta;
+    /**
+     * Unidad a la que pertenece la persona.
+     * Ej: 'Departamento de Ingenieria de Sistemas y Computacion'.
+     */
+    private String unidad;
 
-    private Date inicioContrato;
+    /**
+     * Oficina de esta persona. Ej: 'Pabellon Y1, Oficina 305'.
+     */
+    private String oficina;
 
-    private Date terminoContrato;
+    /**
+     * El rol que desempenia esta persona.
+     */
+    private Rol rol;
+
+    /**
+     * Tipo de contrato.
+     */
+    private Contrato contrato;
 }

@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         lvVehiculos.setAdapter(adapter);
 
         // 3.- Actualizar lista.
-        Persona persona = new Persona("19691840K", "Christian Farias");
+        Persona persona = new Persona("19691840K", "Christian Antonio", "Farias Aguila");
 
         vehiculos.add(new Vehiculo(persona, "CA-FA-23"));
         vehiculos.add(new Vehiculo(persona, "CA-ES-99"));
@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                     for (Vehiculo v : vehiculos) {
 
                         // Ambos en UPPERCASE.
-                        if (v.getPatente().toUpperCase().startsWith(query.toUpperCase())) {
+                        if (v.getPlaca().toUpperCase().startsWith(query.toUpperCase())) {
                             tempVehiculos.add(v);
                         }
                     }
@@ -195,8 +195,9 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout llDialog = dialogView.findViewById(R.id.ll_dialog);
         VehiculoDetalleViewHolder holder = new VehiculoDetalleViewHolder(llDialog);
 
-        holder.tvPatente.setText(String.format("Patente: %s", v.getPatente()));
-        holder.tvNombrePersona.setText(String.format("Nombre: %s", v.getPersona().getNombre()));
+        holder.tvPatente.setText(String.format("Patente: %s", v.getPlaca()));
+        holder.tvNombrePersona.setText(String.format("Nombre: %s",
+               String.format("%s %s", v.getPersona().getNombres(), v.getPersona().getApellidos())));
         holder.tvRut.setText(String.format("Rut: %s", v.getPersona().getRut()));
 
 

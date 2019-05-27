@@ -70,13 +70,15 @@ public final class VehiculoAdapter extends BaseAdapter {
             holder = (VehiculoViewHolder) view.getTag();
         } else {
             // TODO: Inflar una vista personalizada (ej: fila_vehiculo).
-            view = inflater.inflate(android.R.layout.simple_list_item_1, parent, false);
+            view = inflater.inflate(android.R.layout.simple_list_item_2, parent, false);
             holder = new VehiculoViewHolder(view);
             view.setTag(holder);
         }
 
         // Llenar holder con los datos del vehiculo.
-        holder.title.setText(vehiculo.getPatente());
+        holder.title.setText(vehiculo.getPlaca());
+        holder.subtitle.setText(String.format("%s %s",
+                vehiculo.getPersona().getNombres(), vehiculo.getPersona().getApellidos()));
         // ... Etc.
 
         return view;
@@ -84,6 +86,7 @@ public final class VehiculoAdapter extends BaseAdapter {
 
     static class VehiculoViewHolder {
         @BindView(android.R.id.text1) TextView title;
+        @BindView(android.R.id.text2) TextView subtitle;
 
         public VehiculoViewHolder(View view) {
             ButterKnife.bind(this, view);
