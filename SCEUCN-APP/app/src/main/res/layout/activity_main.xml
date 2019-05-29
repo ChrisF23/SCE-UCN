@@ -10,6 +10,7 @@
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
+        android:fontFamily="@font/prod_sans_bold"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorA_Primary"
@@ -47,6 +48,7 @@
 
     <ListView
         android:id="@+id/lv_vehiculos"
+        android:fontFamily="@font/prod_sans_reg"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="24dp"
@@ -75,6 +77,7 @@
     <Button
         android:id="@+id/b_set_server_ip"
         android:layout_width="0dp"
+        android:fontFamily="@font/prod_sans_reg"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="32dp"

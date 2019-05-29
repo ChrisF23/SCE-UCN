@@ -100,8 +100,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
-        //Typeface typeface = Typeface.createFromAsset(getAssets(), "font_conf.ttftf");
-        //etPatente.setTypeface(typeface);
+        //Typeface typeface = Typeface.createFromAsset(getAssets(), "fe_font.ttf");
         //---------------------------------------------------
 
         // 1.- Crear el adaptador.
