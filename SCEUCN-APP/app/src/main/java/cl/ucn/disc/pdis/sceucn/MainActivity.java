@@ -1,5 +1,6 @@
 package cl.ucn.disc.pdis.sceucn;
 
+import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -99,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
 
+        //Typeface typeface = Typeface.createFromAsset(getAssets(), "font_conf.ttftf");
+        //etPatente.setTypeface(typeface);
         //---------------------------------------------------
 
         // 1.- Crear el adaptador.
