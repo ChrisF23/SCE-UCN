@@ -95,3 +95,6 @@ database.db
 
 # Generated code for Android APP.
 SCEUCN-APP/app/src/generated/*
+
+# Node modules
+node_modules
