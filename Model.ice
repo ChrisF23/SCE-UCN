@@ -22,18 +22,19 @@ module model {
     /**
      * Logo: Autoadhesivo pegado en el parabrisas
      */
+    ["clr:property"]
     class Logo {
 
         //  L1-1210, 19PS0182
-        ["java:getset", "protected"]
+        
         string identificador;
 
         // Academico
-        ["java:getset", "protected"]
+        
         Rol rol;
 
         // 2019
-        ["java:getset", "protected"]
+        
         string anio;
     };
 
@@ -49,46 +50,47 @@ module model {
     /**
      * Persona en el campus con vehiculo
      */
+    ["clr:property"]
     class Persona {
         
         // 12.123.132-3
-        ["java:getset", "protected"]
+        
         string rut;
 
         // Juan Andres
-        ["java:getset", "protected"]
+        
         string nombres;
 
         // Visalovic Terreas
-        ["java:getset", "protected"]
+        
         string apellidos;
 
         // jisalovic@ucn.cl
-        ["java:getset", "protected"]
+        
         string email;
 
         // +569 1234 5678
-        ["java:getset", "protected"]
+        
         string movil;
 
         // Departamento de Ingenieria de Sistemas y Computacion
-        ["java:getset", "protected"]
+        
         string unidad;
 
         // Pabellon Y1, Oficina 305
-        ["java:getset", "protected"]
+        
         string oficina;
 
         // +56 2 355 163
-        ["java:getset", "protected"]
+        
         string anexo;
 
         // Academico
-        ["java:getset", "protected"]
+        
         Rol rol;
 
         // Tipo de Contrato
-        ["java:getset", "protected"]
+        
         Contrato contrato;
     };
 
@@ -110,30 +112,31 @@ module model {
     /**
      * Vehiculo asociado a una persona
      */
+    ["clr:property"]
     class Vehiculo {
 
         // 2019
-        ["java:getset", "protected"]
+        
         string anio;
 
         // Suzuki
-        ["java:getset", "protected"]
+        
         string marca;
 
         // FBXS22
-        ["java:getset", "protected"]
+        
         string placa;
 
         // Juan Visalovic Terreas
-        ["java:getset", "protected"]
+        
         Persona persona;
 
         // Auto
-        ["java:getset", "protected"]
+        
         Tipo tipo;
 
         // Logos
-        ["java:getset", "protected"]
+        
         Logos logos;
     };
 
@@ -149,18 +152,19 @@ module model {
     /**
      * Registro de acceso
      */
+    ["clr:property"]
     class Registro {
 
         // Vehiculo
-        ["java:getset", "protected"]
+        
         Vehiculo vehiculo;
 
         // Fecha de ingreso
-        ["java:getset", "protected"]
+        
         string fecha;
 
         // Porteria
-        ["java:getset", "protected"]
+        
         Porteria porteria;
     }
 
@@ -178,7 +182,12 @@ module model {
         /**
          * Registra el ingreso de un vehiculo al campus.
          */
-        void registrarIngreso(Registro registro);
+        void registrarIngreso(string placa, Porteria porteria);
+
+        /**
+         * Registra el ingreso de un vehiculo al campus en caso de estar offline.
+         */
+        void registrarIngresoOffline(string placa, Porteria porteria, string fecha);
 
         /**
          * Obtiene un listado con todos los vehiculos registrados en la base de datos.

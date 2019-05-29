@@ -22,31 +22,30 @@ namespace SCEUCN_SERVER
             var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
             optionsBuilder.UseSqlite("Data Source=database.db");
 
-            // Controlador
+            // Controlador.
             ISystem system = new SystemImpl(optionsBuilder.Options);
 
-            // Datos demo
-            Persona p = new Persona { 
-                Rut = "130144918", 
-                Nombres = "Diego Patricio", 
-                Apellidos = "Urrutia Astorga" 
-            };
+            // Crear la data demo.
+            DemoDataCreator demo = new DemoDataCreator();
 
-            Vehiculo v = new Vehiculo {
-                Persona = p,
-                Placa = "DP-UA-13",
-                Marca = "AUDI"
-            };
+            // Guardar personas en la base de datos.
+            foreach (var persona in demo.Personas)
+            {
+                system.Save(persona);                
+            }
 
-            system.Save(p);
-            system.Save(v);
+            // Guardar vehiculos en la base de datos.
+            foreach (var vehiculo in demo.Vehiculos)
+            {
+                system.Save(vehiculo);                
+            }
 
             Console.WriteLine();
 
             Console.WriteLine("Mostrando Personas:");
             foreach (var persona in system.GetPersonas())
             {
-                Console.WriteLine("Nombre: {0}, Rut: {1}", (persona.
+                Console.WriteLine("Nombre Completo: {0}, Rut: {1}", (persona.
                 Nombres + " " + persona.Apellidos), persona.Rut);
             }
 
@@ -55,7 +54,7 @@ namespace SCEUCN_SERVER
             Console.WriteLine("Mostrando Vehiculos:");
             foreach (var vehiculo in system.GetVehiculos())
             {
-                Console.WriteLine("Patente: {0}, Marca: {1} (Rut Persona: {2})", vehiculo.Placa, vehiculo.Marca, vehiculo.Persona.Rut);
+                Console.WriteLine("Placa: {0}, Marca: {1} (Rut Persona: {2})", vehiculo.Placa, vehiculo.Marca, vehiculo.Persona.Rut);
             }
 
             Console.WriteLine();

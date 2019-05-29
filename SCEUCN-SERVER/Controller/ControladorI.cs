@@ -10,43 +10,58 @@ namespace SCEUCN_SERVER
         private ISystem system;
 
         public ISystem System { get => system; set => system = value; }
-        
-        public override model.Vehiculo[] obtenerListadoVehiculos(Current current = null)
-        {
-            throw new System.NotImplementedException();
-        }      
 
-        public override void guardarRegistro(Registro registro, Current current = null)
-        {
-            
-            Program.PrintMessage("Convirtiendo registro...");
-            
-            // Convertir registro.
-            SCEUCN_SERVER.Model.Registro nuevoRegistro = ModelConverter.convert(registro);
 
-            // Si hubo un error en la conversion, cancelar guardado.
-            if (nuevoRegistro == null){
-                Program.PrintMessage("Hubo un error al convertir el registro...");
+
+        public override Vehiculo[] obtenerVehiculos(Current current = null)
+        {
+            throw new NotImplementedException();
+        }
+        public override void registrarIngreso(string placa, Porteria porteria, Current current = null)
+        {
+            Program.PrintMessage("Generando registro...");
+            
+            // 1.- Verificar si el vehiculo se encuentra registrado.
+            Model.Vehiculo vehiculoRegistro = system.GetVehiculo(placa);
+
+            if (vehiculoRegistro == null) {
+                Program.PrintMessage("Error: El vehiculo [Placa:{0}] no existe en la base de datos.", placa);
                 return;
             }
 
-            Program.PrintMessage("Verificando patente '" + nuevoRegistro.Vehiculo.Placa + "'...");
-            
-            // Verificar si la patente existe en la base de datos.
-            if (system.GetVehiculo(nuevoRegistro.Vehiculo.Placa) == null){
-                Program.PrintMessage("Error: El vehiculo no existe en la base de datos.");
+            // 2.- Intentar parsear la porteria.
+
+            Model.Porteria porteriaRegistro;
+
+            try
+            {
+                porteriaRegistro = (Model.Porteria) Enum.Parse(typeof(Model.Porteria), porteria.ToString());
+            }
+            catch (System.Exception)
+            {
+                Program.PrintMessage("Error: La porteria especificada [{0}] no es valida.", porteria.ToString());
                 return;
             }
 
-            // Si todo salio bien, guardar el registro.
+            // 3.- Crear la fecha del registro.
+            string fechaRegistro = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
+
+            // 4.- Crear el registro.
+            Model.Registro nuevoRegistro = new Model.Registro 
+            {
+                Vehiculo = vehiculoRegistro,
+                Porteria = porteriaRegistro,
+                Fecha = fechaRegistro
+            };
+
+            // 5.- Guardar el registro.
             system.Save(nuevoRegistro);
 
-            Program.PrintMessage("Ok: Se ha guardado el registro [Patente: {0}, Fecha: {1}]", 
-                nuevoRegistro.Vehiculo.Placa, nuevoRegistro.Fecha);
-
+            Program.PrintMessage("Ok: Se ha guardado el registro [Placa: {0}, Porteria: {1}, Fecha: {2}]", 
+                nuevoRegistro.Vehiculo.Placa, nuevoRegistro.Porteria, nuevoRegistro.Fecha);
         }
 
-        public override void guardarRegistros(Registro[] registros, Current current = null)
+        public override void registrarIngresoOffline(string placa, Porteria porteria, string fecha, Current current = null)
         {
             throw new NotImplementedException();
         }
