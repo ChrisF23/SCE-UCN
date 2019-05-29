@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~  Created by Christian Farias on 29/05/19 10:35
+  ~  Copyright (c) 2019 . All rights reserved.
+  ~  Last modified 29/05/19 10:35
+  ~
+  -->
+
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@android:color/transparent"
+    android:layout_height="match_parent">
+
+    <!-- A CardView that contains a TextView -->
+    <android.support.v7.widget.CardView
+        android:id="@+id/card_view"
+        android:layout_gravity="center"
+        android:padding="24dp"
+        android:paddingStart="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        card_view:cardCornerRadius="24dp"
+        tools:ignore="MissingConstraints">
+
+<android.support.constraint.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    android:paddingStart="16dp">
+
+    <TextView
+            android:id="@+id/cv_tv_patente"
+            android:fontFamily="@font/fe_font"
+            android:textColor="@android:color/black"
+            android:text="ca-fa-00"
+            android:textSize="20dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="9dp"
+            android:textAlignment="center"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:background="@drawable/back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/cv_tv_nombre_persona"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/prod_sans_reg"
+        android:text="Christian Farias Echeñique"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="15dp"
+        card_view:layout_constraintTop_toBottomOf="@+id/cv_tv_patente"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <TextView
+        android:id="@+id/cv_tv_ult_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/prod_sans_reg"
+        android:text="2019"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="15dp"
+        card_view:layout_constraintTop_toBottomOf="@+id/cv_tv_nombre_persona"
+        tools:layout_editor_absoluteX="0dp" />
+
+</android.support.constraint.ConstraintLayout>
+
+    </android.support.v7.widget.CardView>
+
+</android.support.constraint.ConstraintLayout>
