@@ -1,5 +1,7 @@
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Ice;
 using model;
 
@@ -13,10 +15,21 @@ namespace SCEUCN_SERVER
 
 
 
-        public override Vehiculo[] obtenerVehiculos(Current current = null)
+        public override List<Vehiculo> obtenerVehiculos(Current current = null)
         {
-            throw new NotImplementedException();
+            Program.PrintMessage("Enviando vehiculos...");
+
+            List<Vehiculo> vehiculos = new List<Vehiculo>();
+
+            foreach (var vehiculo in system.GetVehiculos())
+            {
+                vehiculos.Add(ModelConverter.Convert(vehiculo));        
+            }
+
+            Program.PrintMessage("Se enviaron los vehiculos!");
+            return vehiculos;
         }
+
         public override void registrarIngreso(string placa, Porteria porteria, Current current = null)
         {
             Program.PrintMessage("Generando registro...");
@@ -35,7 +48,12 @@ namespace SCEUCN_SERVER
 
             try
             {
-                porteriaRegistro = (Model.Porteria) Enum.Parse(typeof(Model.Porteria), porteria.ToString());
+                // OLD: 
+                // porteriaRegistro = (Model.Porteria) Enum.Parse(typeof(Model.Porteria), porteria.ToString());
+                
+                // NEW:
+                porteriaRegistro = ModelConverter.Parse<Model.Porteria>(porteria.ToString());
+                
             }
             catch (System.Exception)
             {

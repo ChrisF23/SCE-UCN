@@ -26,15 +26,12 @@ module model {
     class Logo {
 
         //  L1-1210, 19PS0182
-        
         string identificador;
 
         // Academico
-        
         Rol rol;
 
         // 2019
-        
         string anio;
     };
 
@@ -54,43 +51,33 @@ module model {
     class Persona {
         
         // 12.123.132-3
-        
         string rut;
 
         // Juan Andres
-        
         string nombres;
 
         // Visalovic Terreas
-        
         string apellidos;
 
         // jisalovic@ucn.cl
-        
         string email;
 
         // +569 1234 5678
-        
         string movil;
 
         // Departamento de Ingenieria de Sistemas y Computacion
-        
         string unidad;
 
         // Pabellon Y1, Oficina 305
-        
         string oficina;
 
         // +56 2 355 163
-        
         string anexo;
 
         // Academico
-        
         Rol rol;
 
         // Tipo de Contrato
-        
         Contrato contrato;
     };
 
@@ -106,7 +93,7 @@ module model {
     /**
      * Listado de los logos
      */
-    ["java:type:java.util.ArrayList<Logo>:java.util.List<Logo>"]
+    ["java:type:java.util.ArrayList<Logo>:java.util.List<Logo>", "cs:generic:List"]
     sequence<Logo> Logos;
 
     /**
@@ -116,27 +103,21 @@ module model {
     class Vehiculo {
 
         // 2019
-        
         string anio;
 
         // Suzuki
-        
         string marca;
 
         // FBXS22
-        
         string placa;
 
         // Juan Visalovic Terreas
-        
         Persona persona;
 
         // Auto
-        
         Tipo tipo;
 
         // Logos
-        
         Logos logos;
     };
 
@@ -156,22 +137,19 @@ module model {
     class Registro {
 
         // Vehiculo
-        
         Vehiculo vehiculo;
 
         // Fecha de ingreso
-        
         string fecha;
 
         // Porteria
-        
         Porteria porteria;
     }
 
     /**
      * Listado de vehiculos en el sistema
      */
-    ["java:type:java.util.ArrayList<Vehiculo>:java.util.List<Vehiculo>"]
+    ["java:type:java.util.ArrayList<Vehiculo>:java.util.List<Vehiculo>", "cs:generic:List"]
     sequence<Vehiculo> Vehiculos;
 
     /**
