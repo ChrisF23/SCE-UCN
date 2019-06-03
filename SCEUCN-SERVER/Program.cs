@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using Ice;
 using Microsoft.EntityFrameworkCore;
 using SCEUCN_SERVER.Model;
 
@@ -62,8 +63,14 @@ namespace SCEUCN_SERVER
             //return;
 
             // Initialize Ice communicator
-            using(var communicator = Ice.Util.initialize(ref args))
+            
+            var initData = new InitializationData();
+            initData.properties = Util.createProperties();
+            initData.properties.setProperty("Ice.Default.SlicedFormat", "1");
+            
+            using (var communicator = Ice.Util.initialize(initData))
             {
+                
                 // Instantiate a new ControladorI servant - the implementation of your Controlador
                 var servant = new ControladorI();
 

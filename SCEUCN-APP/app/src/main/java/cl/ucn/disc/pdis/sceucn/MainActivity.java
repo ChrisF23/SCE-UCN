@@ -26,13 +26,17 @@ import com.zeroc.Ice.Util;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cl.ucn.disc.pdis.sceucn.adapter.VehiculoAdapter;
+import cl.ucn.disc.pdis.sceucn.controller.ControladorVehiculos;
 import cl.ucn.disc.pdis.sceucn.controller.ModelConverter;
 import cl.ucn.disc.pdis.sceucn.ice.model.*;
 import cl.ucn.disc.pdis.sceucn.model.Persona;
+import cl.ucn.disc.pdis.sceucn.model.Porteria;
 import cl.ucn.disc.pdis.sceucn.model.Registro;
 import cl.ucn.disc.pdis.sceucn.model.Vehiculo;
 import lombok.extern.slf4j.Slf4j;
@@ -57,22 +61,6 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.et_patente)
     EditText etPatente;
 
-    /*
-    @BindView(R.id.b_limpiar_campo)
-    Button bLimpiarCampo;
-
-    @BindView(R.id.b_registrar_ingreso)
-    Button bRegistrarIngreso;
-
-    @BindView(R.id.ll_detalles)
-    LinearLayout llDetalles;
-
-    @BindViews({R.id.tv_patente, R.id.tv_marca, R.id.tv_tipo_vehiculo})
-    List<TextView> tvDetallesVehiculo;
-    */
-
-    // DEV ONLY:
-
     @BindView(R.id.et_server_ip)
     EditText etServerIP;
 
@@ -87,9 +75,40 @@ public class MainActivity extends AppCompatActivity {
 
     VehiculoAdapter adapter;
 
-    static List<Vehiculo> vehiculos = new ArrayList<>();
-
+    List<Vehiculo> listadoVehiculos = new ArrayList<>();
     //------------------------------------------
+
+    ControladorVehiculos controladorVehiculos;
+    ControladorVehiculos.EventListener listener = new ControladorVehiculos.EventListener() {
+
+        @Override
+        public void onListObtained(List<Vehiculo> listVehiculos) {
+            // Notificar al adaptador.
+            listadoVehiculos = listVehiculos;
+            adapter.cargar(listadoVehiculos);
+            adapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void onError(String error) {
+            // TODO: Mover siguiente linea a un nuevo metodo 'MostrarError()'.
+            Toast.makeText(MainActivity.this, "Error: "+error, Toast.LENGTH_LONG).show();
+            log.debug("Error: " + error);
+        }
+
+        @Override
+        public void onProxyObtained() {
+            Toast.makeText(MainActivity.this, "Ok: Se ha establecido la conexion.", Toast.LENGTH_LONG).show();
+            log.debug("Ok: Se ha establecido la conexion");
+
+            controladorVehiculos.obtenerListadoVehiculos();
+
+            // Ejemplo, registrar el ingreso de un vehiculo que NO se encuentra en la base de datos.
+            controladorVehiculos.registrarIngreso("ER-RR-01", Porteria.Norte);
+            // Ejemplo, registrar el ingreso de un vehiculo que SI se encuentra en la base de datos.
+            controladorVehiculos.registrarIngreso("CA-FA-23", Porteria.Norte);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,21 +123,21 @@ public class MainActivity extends AppCompatActivity {
         //---------------------------------------------------
 
         // 1.- Crear el adaptador.
-        adapter = new VehiculoAdapter(this, vehiculos);
+        adapter = new VehiculoAdapter(this, listadoVehiculos);
 
         // 2.- Asignar el adaptador.
         lvVehiculos.setAdapter(adapter);
 
         // 3.- Actualizar lista.
-        Persona persona = new Persona("19691840K", "Christian Antonio", "Farias Aguila");
+        //Persona persona = new Persona("19691840K", "Christian Antonio", "Farias Aguila");
 
-        vehiculos.add(new Vehiculo(persona, "CA-FA-23"));
-        vehiculos.add(new Vehiculo(persona, "CA-ES-99"));
-        vehiculos.add(new Vehiculo(persona, "CA-89-23"));
-        vehiculos.add(new Vehiculo(persona, "DC-MC-U1"));
-        vehiculos.add(new Vehiculo(persona, "DP-UA-13"));
-        vehiculos.add(new Vehiculo(persona, "FJ-CM-27"));
-        vehiculos.add(new Vehiculo(persona, "UC-N1-10"));
+        // vehiculos.add(new Vehiculo(persona, "CA-FA-23"));
+        // vehiculos.add(new Vehiculo(persona, "CA-ES-99"));
+        // vehiculos.add(new Vehiculo(persona, "CA-89-23"));
+        // vehiculos.add(new Vehiculo(persona, "DC-MC-U1"));
+        // vehiculos.add(new Vehiculo(persona, "DP-UA-13"));
+        // vehiculos.add(new Vehiculo(persona, "FJ-CM-27"));
+        // vehiculos.add(new Vehiculo(persona, "UC-N1-10"));
 
         // 4.- Filtrado en el ingreso de patente.
         etPatente.addTextChangedListener(new TextWatcher() {
@@ -135,14 +154,13 @@ public class MainActivity extends AppCompatActivity {
 
                 // Si la busqueda esta vacia, entonces mostrar todos los vehiculos.
                 if (query.isEmpty()){
-                    adapter.cargar(vehiculos);
+                    adapter.cargar(listadoVehiculos);
 
                 } else {
                     // Si contiene algo, buscar todas las personas que coincidan.
-
                     List<Vehiculo> tempVehiculos = new ArrayList<>();
 
-                    for (Vehiculo v : vehiculos) {
+                    for (Vehiculo v : listadoVehiculos) {
 
                         // Ambos en UPPERCASE.
                         if (v.getPlaca().toUpperCase().startsWith(query.toUpperCase())) {
@@ -177,6 +195,9 @@ public class MainActivity extends AppCompatActivity {
 
         // Agregar metodo setServerIP al boton.
         bSetServerIP.setOnClickListener((v) -> setServerIP());
+
+
+
     }
 
     private void abrirDialogo(Vehiculo v) {
@@ -231,8 +252,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        Toast.makeText(this, "Cargando listado de vehiculos...", Toast.LENGTH_LONG).show();
-        //ControladorVehiculos.obtenerListadoVehiculos();
+
     }
 
     /**
@@ -240,7 +260,14 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setServerIP() {
         SERVER_IP = etServerIP.getText().toString();
-        Toast.makeText(this, "Server IP actualizada.", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Server IP actualizada.", Toast.LENGTH_SHORT).show();
+
+        //Toast.makeText(this, "Cargando listado de vehiculos...", Toast.LENGTH_LONG).show();
+
+        Toast.makeText(this, "Estableciendo conexion... ("+SERVER_IP+")", Toast.LENGTH_LONG).show();
+
+        // Controlador de vehiculos:
+        controladorVehiculos = new ControladorVehiculos(listener);
     }
 
     private void registrarIngreso(final Object patente){

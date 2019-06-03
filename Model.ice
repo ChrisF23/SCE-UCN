@@ -170,7 +170,7 @@ module model {
         /**
          * Obtiene un listado con todos los vehiculos registrados en la base de datos.
          */
-        idempotent Vehiculos obtenerVehiculos();
+        Vehiculos obtenerVehiculos();
  
     };
 

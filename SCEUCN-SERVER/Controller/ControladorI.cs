@@ -26,7 +26,7 @@ namespace SCEUCN_SERVER
                 vehiculos.Add(ModelConverter.Convert(vehiculo));        
             }
 
-            Program.PrintMessage("Se enviaron los vehiculos!");
+            Program.PrintMessage("Se enviaron los vehiculos! ({0} Vehiculos)", vehiculos.Count());
             return vehiculos;
         }
 
@@ -62,7 +62,7 @@ namespace SCEUCN_SERVER
             }
 
             // 3.- Crear la fecha del registro.
-            string fechaRegistro = DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ssZ");
+            string fechaRegistro = DateTime.UtcNow.ToLocalTime().ToString("yyyy-MM-ddTHH:mm:ssZ");
 
             // 4.- Crear el registro.
             Model.Registro nuevoRegistro = new Model.Registro 

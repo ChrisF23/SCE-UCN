@@ -19,8 +19,8 @@ public class ModelConverter {
     public static Registro convert(cl.ucn.disc.pdis.sceucn.model.Registro registroJ){
 
         Registro registroI = new Registro();
-        registroI.setVehiculo(convert(registroJ.getVehiculo()));
-        registroI.setPorteria(convert(registroJ.getPorteria()));
+        registroI.vehiculo = convert(registroJ.getVehiculo());
+        registroI.porteria = convert(registroJ.getPorteria());
 
         return registroI;
     }
@@ -42,9 +42,21 @@ public class ModelConverter {
     private static Vehiculo convert(cl.ucn.disc.pdis.sceucn.model.Vehiculo vehiculoJ) {
 
         Vehiculo vehiculoI = new Vehiculo();
-        vehiculoI.setPersona(convert(vehiculoJ.getPersona()));
+        vehiculoI.persona = convert(vehiculoJ.getPersona());
 
         return vehiculoI;
+    }
+
+    /**
+     * Convierte un vehiculo ice a un vehiculo java.
+     * @param vehiculoI el vehiculo ice.
+     * @return el vehiculo java.
+     */
+    public static cl.ucn.disc.pdis.sceucn.model.Vehiculo convert (Vehiculo vehiculoI) {
+
+        cl.ucn.disc.pdis.sceucn.model.Vehiculo vehiculoJ = new cl.ucn.disc.pdis.sceucn.model.Vehiculo(convert(vehiculoI.persona), vehiculoI.placa);
+
+        return vehiculoJ;
     }
 
     /**
@@ -52,14 +64,25 @@ public class ModelConverter {
      * @param personaJ la persona java.
      * @return la persona ice.
      */
-    private static Persona convert(cl.ucn.disc.pdis.sceucn.model.Persona personaJ) {
+    public static Persona convert(cl.ucn.disc.pdis.sceucn.model.Persona personaJ) {
 
         Persona personaI = new Persona();
 
-        personaI.setRut(personaJ.getRut());
-        personaI.setNombres(personaJ.getNombres());
-        personaI.setApellidos(personaJ.getApellidos());
+        personaI.rut = (personaJ.getRut());
+        personaI.nombres = (personaJ.getNombres());
+        personaI.apellidos = (personaJ.getApellidos());
 
         return personaI;
+    }
+
+    /**
+     * Convierte una persona ice a una persona java.
+     * @param personaI la persona ice.
+     * @return la persona java.
+     */
+    public static cl.ucn.disc.pdis.sceucn.model.Persona convert(Persona personaI) {
+
+        cl.ucn.disc.pdis.sceucn.model.Persona personaJ = new cl.ucn.disc.pdis.sceucn.model.Persona(personaI.rut, personaI.nombres, personaI.apellidos);
+        return personaJ;
     }
 }
