@@ -1,0 +1,69 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.zeroc.gradle.ice-builder.slice' version '1.4.7'
+}
+
+group 'cl.ucn.disc.pdis'
+version '1.0.0'
+
+sourceCompatibility = 1.8
+
+buildDir = "${System.env.TEMP}//gradle-build//${project.name}"
+logger.lifecycle("Using buildDir: ${buildDir}")
+
+slice {
+    java {
+        files = [file("../Model.ice")]
+        args = ""
+        logger.lifecycle("File: ${files}")
+    }
+}
+
+repositories {
+    jcenter()
+    mavenCentral()
+}
+
+dependencies {
+
+    // implementation 'com.google.guava:guava:27.0.1-jre'
+
+    // Use JUnit test framework
+    testImplementation 'junit:junit:4.12'
+
+    // ZeroC
+    implementation 'com.zeroc:ice:3.7.2'
+    implementation 'org.apache.commons:commons-compress:1.18'
+
+    // Simple Logging Facade 4 Java
+    implementation 'org.slf4j:slf4j-api:1.7.26'
+
+    // Logback
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+
+    // Lombok!
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+
+    // Apache Commons Lang
+    implementation 'org.apache.commons:commons-lang3:3.9'
+
+    // ZonedTimeDate (Java 8 in Java 7)
+    implementation "org.threeten:threetenbp:1.4.0"
+
+}
+
+// Define the main class for the application
+mainClassName = 'cl.ucn.disc.pdis.sceucn.App'
+
+// The jar config
+jar {
+    manifest {
+        attributes(
+            // "Main-Class": project.name.capitalize(),
+            "Class-Path": configurations.runtime.resolve().collect { it.toURI() }.join(' ')
+        )
+    }
+}
+
