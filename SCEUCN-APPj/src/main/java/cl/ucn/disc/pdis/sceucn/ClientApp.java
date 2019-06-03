@@ -3,6 +3,8 @@
  */
 package cl.ucn.disc.pdis.sceucn;
 
+import java.util.List;
+
 import com.zeroc.Ice.Communicator;
 import com.zeroc.Ice.Identity;
 import com.zeroc.Ice.InitializationData;
@@ -12,23 +14,26 @@ import com.zeroc.Ice.ObjectPrx;
 import com.zeroc.Ice.Properties;
 
 import cl.ucn.disc.pdis.sceucn.ice.model.Controlador;
+import cl.ucn.disc.pdis.sceucn.ice.model.ControladorPrx;
+import cl.ucn.disc.pdis.sceucn.ice.model.Vehiculo;
+import jdk.internal.jline.internal.Log;
 import lombok.extern.slf4j.Slf4j;
 
 /**
  * Main Application
  */
 @Slf4j
-public class App {
+public class ClientApp {
 
     /**
      * Entry point!
      */
     public static void main(String[] args) {
-        log.debug("Starting the server ..");
+        log.debug("Starting the client ..");
 
         // Properties
         final Properties properties = Util.createProperties(args);
-        properties.setProperty("Ice.Package.model", "cl.disc.ucn.pdis.news.zeroice");
+        properties.setProperty("Ice.Package.model", "cl.ucn.disc.pdis.sceucn.ice");
         // https://doc.zeroc.com/ice/latest/property-reference/ice-trace
         properties.setProperty("Ice.Trace.Admin.Properties", "1");
         properties.setProperty("Ice.Trace.Locator", "2");
@@ -44,28 +49,22 @@ public class App {
 
         try (Communicator communicator = Util.initialize(initializationData)) {
 
-            log.debug("Communicator ok, building adapter ..");
-            final ObjectAdapter adapter = communicator.createObjectAdapterWithEndpoints("ControladorAdapter",
-                    "default -p 10000 -z");
-            log.debug("Name [{}].", adapter.getName());
+            // The Proxy
+            final ObjectPrx proxy = communicator.stringToProxy("TheControlador:default -p 10000 -z");
 
-            final Controlador controlador = new ControladorImpl();
+            // The Specific Proxy
+            final ControladorPrx controlador = ControladorPrx.checkedCast(proxy);
 
-            log.debug("Adding controlador to adapter ..");
-            final Identity identity = Util.stringToIdentity("TheControlador");
-            final ObjectPrx objectPrx = adapter.add(controlador, identity);
-            log.debug("Identity Name: [{}].", objectPrx.ice_getIdentity().name);
+            final List<Vehiculo> vehiculos = controlador.obtenerVehiculos();
+            log.debug("Vehiculos size: {}", vehiculos.size());
 
-            adapter.activate();
-
-            log.debug("Waiting for data ..");
-            communicator.waitForShutdown();
-
-            log.debug("Something here?");
+            for (Vehiculo vehiculo : vehiculos) {
+                log.debug("Vehiculo: {}", vehiculo);
+            }
 
         }
 
-        log.debug("Server end.");
+        log.debug("Client end.");
     }
 
 }

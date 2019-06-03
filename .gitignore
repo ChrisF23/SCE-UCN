@@ -98,3 +98,8 @@ SCEUCN-APP/app/src/generated/*
 
 # Node modules
 node_modules
+
+# Java project
+.classpath
+.project
+.settings

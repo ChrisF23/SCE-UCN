@@ -55,7 +55,7 @@ dependencies {
 }
 
 // Define the main class for the application
-mainClassName = 'cl.ucn.disc.pdis.sceucn.App'
+mainClassName = 'cl.ucn.disc.pdis.sceucn.ClientApp'
 
 // The jar config
 jar {

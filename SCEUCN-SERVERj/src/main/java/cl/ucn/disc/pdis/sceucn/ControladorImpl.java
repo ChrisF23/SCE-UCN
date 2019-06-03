@@ -6,7 +6,9 @@ import java.util.List;
 import com.zeroc.Ice.Current;
 
 import cl.ucn.disc.pdis.sceucn.ice.model.Controlador;
+import cl.ucn.disc.pdis.sceucn.ice.model.Porteria;
 import cl.ucn.disc.pdis.sceucn.ice.model.Registro;
+import cl.ucn.disc.pdis.sceucn.ice.model.Tipo;
 import cl.ucn.disc.pdis.sceucn.ice.model.Vehiculo;
 import lombok.extern.slf4j.Slf4j;
 
@@ -19,20 +21,32 @@ import lombok.extern.slf4j.Slf4j;
 public final class ControladorImpl implements Controlador {
 
     /**
-     * 
+     * The List of vehiculos.
      */
-    @Override
-    public void registrarIngreso(Registro registro, Current current) {
-        log.debug("RegistrarIngreso: {}.", registro);
+    private final List<Vehiculo> vehiculos = new ArrayList<>();
+
+    public ControladorImpl() {
+        final Vehiculo vehiculo = new Vehiculo();
+        vehiculo.anio = "2019";
+        vehiculo.marca = "Suzuki";
+        vehiculo.placa = "FBXS44";
+        vehiculo.tipo = Tipo.Auto;
+        vehiculos.add(vehiculo);
     }
 
-    /**
-     * 
-     */
+    @Override
+    public void registrarIngreso(String placa, Porteria porteria, Current current) {
+
+    }
+
+    @Override
+    public void registrarIngresoOffline(String placa, Porteria porteria, String fecha, Current current) {
+
+    }
+
     @Override
     public List<Vehiculo> obtenerVehiculos(Current current) {
-        log.debug("Obteniendo Vehiculos ..");
-        return new ArrayList<>();
+        return this.vehiculos;
     }
 
 }

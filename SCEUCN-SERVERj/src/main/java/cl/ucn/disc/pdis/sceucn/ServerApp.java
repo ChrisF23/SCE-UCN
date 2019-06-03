@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
  * Main Application
  */
 @Slf4j
-public class App {
+public class ServerApp {
 
     /**
      * Entry point!
@@ -28,7 +28,7 @@ public class App {
 
         // Properties
         final Properties properties = Util.createProperties(args);
-        properties.setProperty("Ice.Package.model", "cl.disc.ucn.pdis.news.zeroice");
+        properties.setProperty("Ice.Package.model", "cl.ucn.disc.pdis.sceucn.ice");
         // https://doc.zeroc.com/ice/latest/property-reference/ice-trace
         properties.setProperty("Ice.Trace.Admin.Properties", "1");
         properties.setProperty("Ice.Trace.Locator", "2");
@@ -45,7 +45,7 @@ public class App {
         try (Communicator communicator = Util.initialize(initializationData)) {
 
             log.debug("Communicator ok, building adapter ..");
-            final ObjectAdapter adapter = communicator.createObjectAdapterWithEndpoints("ControladorAdapter",
+            final ObjectAdapter adapter = communicator.createObjectAdapterWithEndpoints("TheServer",
                     "default -p 10000 -z");
             log.debug("Name [{}].", adapter.getName());
 
