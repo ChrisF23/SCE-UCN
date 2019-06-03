@@ -6,7 +6,10 @@
 /**
  * Modelo del Dominio del Problema
  */
-["java:package:cl.ucn.disc.pdis.sceucn.ice"]
+
+//[["java:package:cl.ucn.disc.pdis.sceucn.ice"]]
+["Ice.Package.model=cl.ucn.disc.pdis.sceucn.ice"]
+
 module model {
 
     /**

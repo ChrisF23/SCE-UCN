@@ -1,11 +1,11 @@
 package cl.ucn.disc.pdis.sceucn.controller;
 
 
-import cl.ucn.disc.pdis.sceucn.ice.model.Persona;
-import cl.ucn.disc.pdis.sceucn.ice.model.Porteria;
-import cl.ucn.disc.pdis.sceucn.ice.model.Registro;
-import cl.ucn.disc.pdis.sceucn.ice.model.Vehiculo;
-
+//import cl.ucn.disc.pdis.sceucn.ice.model.Persona;
+//import cl.ucn.disc.pdis.sceucn.ice.model.Porteria;
+//import cl.ucn.disc.pdis.sceucn.ice.model.Registro;
+//import cl.ucn.disc.pdis.sceucn.ice.model.Vehiculo;
+import model.*;
 /**
  * Clase encargada de convertir ciertos objetos del modelo java al modelo ice y viceversa.
  */

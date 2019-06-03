@@ -18,11 +18,12 @@ import com.zeroc.Ice.Util;
 
 import java.util.ArrayList;
 import java.util.List;
-import cl.ucn.disc.pdis.sceucn.ice.model.Controlador;
-import cl.ucn.disc.pdis.sceucn.ice.model.ControladorPrx;
-import cl.ucn.disc.pdis.sceucn.model.Persona;
+//import cl.ucn.disc.pdis.sceucn.ice.model.Controlador;
+//import cl.ucn.disc.pdis.sceucn.ice.model.ControladorPrx;
+//import cl.ucn.disc.pdis.sceucn.model.Persona;
 import cl.ucn.disc.pdis.sceucn.model.Porteria;
 import cl.ucn.disc.pdis.sceucn.model.Vehiculo;
+import model.*;
 
 import static cl.ucn.disc.pdis.sceucn.MainActivity.SERVER_IP;
 
@@ -86,22 +87,22 @@ public class ControladorVehiculos {
         this.handler = new Handler();
         this.listener = listener;
 
+        InitializationData initData = new InitializationData();
+        //initData.properties = Util.createProperties();
 
+        // ..?
+        initData.dispatcher = (Runnable runnable, Connection connection) ->
+        {
+            handler.post(runnable);
+        };
+
+        iceCommunicator = Util.initialize(initData);
 
         // Ice init:
         AsyncTask.execute(()->{
             try {
 
-                InitializationData initData = new InitializationData();
-                initData.properties = Util.createProperties();
-
-                // ..?
-                initData.dispatcher = (Runnable runnable, Connection connection) ->
-                {
-                    handler.post(runnable);
-                };
-
-                iceCommunicator = Util.initialize(initData);
+                //iceCommunicator = Util.initialize(initData);
 
                 // Obtener proxy desde el servidor.
                 ObjectPrx proxy = iceCommunicator.stringToProxy("Controlador:tcp -h " + SERVER_IP + " -p 10000 -z");
@@ -173,13 +174,17 @@ public class ControladorVehiculos {
                     postError(ex.toString());
 
                     // ERROR: NO VALUE FACTORY EXCEPTION...
+                    // Causa: En Model.ice -> ["java:package:cl.ucn.disc.pdis.sceucn.ice"]
+                    // Solucion: Reemplazar por ["Ice.Package.model=cl.ucn.disc.pdis.sceucn.ice"]
+
                 } else {
                     synchronized (this){
                         // Llenar el listado de vehiculos.
-                        //for (cl.ucn.disc.pdis.sceucn.ice.model.Vehiculo vehiculo : res) {
-                        //    Log.d(">>>>>>>>>>>", "Placa: " + vehiculo.placa);
-                        //    this.listadoVehiculos.add(ModelConverter.convert(vehiculo));
-                        //}
+                        for (model.Vehiculo vehiculo : res) {
+                            Log.d(">>>>>>>>>>>", "Placa: " + vehiculo.placa);
+                            this.listadoVehiculos.add(ModelConverter.convert(vehiculo));
+                        }
+
                         // Se obtuvo la lista; Levantar evento.
                         postListObtained(this.listadoVehiculos);
                     }
@@ -193,7 +198,7 @@ public class ControladorVehiculos {
     synchronized public void registrarIngreso(String placa, Porteria porteria){
         if (controladorPrx != null){
             // FIXME: Crear convertidor de enums.
-            cl.ucn.disc.pdis.sceucn.ice.model.Porteria porteriaIce = cl.ucn.disc.pdis.sceucn.ice.model.Porteria.Norte;
+            model.Porteria porteriaIce = model.Porteria.Norte;
             controladorPrx.registrarIngreso(placa, porteriaIce);
         } else {
             postError("No hay conexion...");

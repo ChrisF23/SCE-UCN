@@ -34,7 +34,7 @@ import butterknife.ButterKnife;
 import cl.ucn.disc.pdis.sceucn.adapter.VehiculoAdapter;
 import cl.ucn.disc.pdis.sceucn.controller.ControladorVehiculos;
 import cl.ucn.disc.pdis.sceucn.controller.ModelConverter;
-import cl.ucn.disc.pdis.sceucn.ice.model.*;
+// import cl.ucn.disc.pdis.sceucn.ice.model.*;
 import cl.ucn.disc.pdis.sceucn.model.Persona;
 import cl.ucn.disc.pdis.sceucn.model.Porteria;
 import cl.ucn.disc.pdis.sceucn.model.Registro;

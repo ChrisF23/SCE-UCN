@@ -58,36 +58,49 @@ namespace SCEUCN_SERVER
                 Console.WriteLine("Placa: {0}, Marca: {1} (Rut Persona: {2})", vehiculo.Placa, vehiculo.Marca, vehiculo.Persona.Rut);
             }
 
-            Console.WriteLine();
+            Console.WriteLine("--------------------------------");
 
             //return;
 
             // Initialize Ice communicator
+
+            //var initData = new InitializationData
+            //{
+            //    properties = Util.createProperties()
+            //};
+            //
+            //initData.properties.setProperty("Ice.Default.SlicedFormat", "1");
             
-            var initData = new InitializationData();
-            initData.properties = Util.createProperties();
-            initData.properties.setProperty("Ice.Default.SlicedFormat", "1");
-            
-            using (var communicator = Ice.Util.initialize(initData))
+            Console.WriteLine("Iniciando Servidor...");
+            try 
             {
-                
-                // Instantiate a new ControladorI servant - the implementation of your Controlador
-                var servant = new ControladorI();
+                using (var communicator = Ice.Util.initialize())
+                {
+                    
+                    // Instantiate a new ControladorI servant - the implementation of your Controlador
+                    var servant = new ControladorI();
 
-                // Configure servant
-                servant.System = system;
+                    // Configure servant
+                    servant.System = system;
 
-                // Create object adapter - a container for your servants. Listens on port 10000
-                var adapter = communicator.createObjectAdapterWithEndpoints("ControladorAdapter", "default -p 10000 -z");
+                    // Create object adapter - a container for your servants. Listens on port 10000
+                    var adapter = communicator.createObjectAdapterWithEndpoints("ControladorAdapter", "default -p 10000 -z");
 
-                // Add the servant object to the object adapter with identity "Controlador"
-                adapter.add(servant, communicator.stringToIdentity("Controlador"));
+                    // Add the servant object to the object adapter with identity "Controlador"
+                    adapter.add(servant, Ice.Util.stringToIdentity("Controlador"));
 
-                // Activate object adapter - accept incoming requests and dispatch them to servants
-                adapter.activate();
+                    // Activate object adapter - accept incoming requests and dispatch them to servants
+                    adapter.activate();
 
-                // Wait for communicator to shut down
-                communicator.waitForShutdown();
+                    Console.WriteLine("OK, esperando peticiones...");
+
+                    // Wait for communicator to shut down
+                    communicator.waitForShutdown();
+                }
+            }
+            catch
+            {
+
             }
 
 
