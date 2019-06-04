@@ -7,13 +7,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.Collections;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cl.ucn.disc.pdis.sceucn.R;
+import cl.ucn.disc.pdis.sceucn.model.Logo;
 import cl.ucn.disc.pdis.sceucn.model.Vehiculo;
-import lombok.Getter;
 
 public final class VehiculoAdapter extends BaseAdapter {
 
@@ -70,14 +71,23 @@ public final class VehiculoAdapter extends BaseAdapter {
             holder = (VehiculoViewHolder) view.getTag();
         } else {
             // TODO: Inflar una vista personalizada (ej: fila_vehiculo).
-            view = inflater.inflate(android.R.layout.simple_list_item_2, parent, false);
+            view = inflater.inflate(R.layout.layout_card, parent, false);
             holder = new VehiculoViewHolder(view);
             view.setTag(holder);
         }
 
         // Llenar holder con los datos del vehiculo.
-        holder.title.setText(vehiculo.getPlaca());
-        holder.subtitle.setText(String.format("%s %s",
+        holder.patente.setText(vehiculo.getPlaca());
+        //holder.idLogo.setText(vehiculo.getLogos().get());
+        List<Logo> vs = vehiculo.getLogos();
+        if (vs == null || vs.isEmpty()){
+            holder.idLogo.setText("Sin Logo (WIP)");
+        } else {
+            Collections.sort(vs, (l1, l2) -> l1.getAnio().compareTo(l2.getAnio()));
+            holder.idLogo.setText(vs.get(0).getIdentificador());
+        }
+
+        holder.nombrePersona.setText(String.format("%s %s",
                 vehiculo.getPersona().getNombres(), vehiculo.getPersona().getApellidos()));
         // ... Etc.
 
@@ -85,8 +95,9 @@ public final class VehiculoAdapter extends BaseAdapter {
     }
 
     static class VehiculoViewHolder {
-        @BindView(android.R.id.text1) TextView title;
-        @BindView(android.R.id.text2) TextView subtitle;
+        @BindView(R.id.cv_tv_nombre_persona) TextView nombrePersona;
+        @BindView(R.id.cv_tv_patente) TextView patente;
+        @BindView(R.id.cv_tv_id_logo) TextView idLogo;
 
         public VehiculoViewHolder(View view) {
             ButterKnife.bind(this, view);

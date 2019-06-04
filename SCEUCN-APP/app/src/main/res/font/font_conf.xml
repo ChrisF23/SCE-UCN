@@ -11,6 +11,21 @@
     <font
         android:fontStyle="normal"
         android:fontWeight="400"
+        android:font="@font/myriad" />
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/mp_reg" />
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
+        android:font="@font/myriadpro_light" />
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
         android:font="@font/fe_font" />
 
     <font

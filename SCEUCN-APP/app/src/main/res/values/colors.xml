@@ -330,4 +330,12 @@
     <color name="white">#FFFFFF</color>
     <!-- White -->
 
+    <!-- COLORES UCN -->
+    <color name="ucn_azul">#2c4d60</color>
+    <color name="ucn_azuloscuro">#213946</color>
+    <color name="ucn_blanco">#e8f2f6</color>
+    <color name="ucn_naranjo">#b86125</color>
+
+
+
 </resources>
