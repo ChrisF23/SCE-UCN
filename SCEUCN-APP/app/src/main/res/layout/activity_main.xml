@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/ucn_blanco"
+    android:background="@color/white"
     android:focusable="true"
     android:focusableInTouchMode="true"
     tools:context=".MainActivity">
@@ -53,6 +53,8 @@
         android:layout_width="match_parent"
         android:padding="8dp"
         android:layout_height="0dp"
+        android:divider="@null"
+        android:dividerHeight="0dp"
         app:layout_constraintBottom_toTopOf="@+id/et_server_ip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
