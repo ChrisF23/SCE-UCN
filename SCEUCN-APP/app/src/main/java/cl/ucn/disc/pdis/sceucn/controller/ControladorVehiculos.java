@@ -18,12 +18,9 @@ import com.zeroc.Ice.Util;
 
 import java.util.ArrayList;
 import java.util.List;
-//import cl.ucn.disc.pdis.sceucn.ice.model.Controlador;
-//import cl.ucn.disc.pdis.sceucn.ice.model.ControladorPrx;
-//import cl.ucn.disc.pdis.sceucn.model.Persona;
+import cl.ucn.disc.pdis.sceucn.ice.model.ControladorPrx;
 import cl.ucn.disc.pdis.sceucn.model.Porteria;
 import cl.ucn.disc.pdis.sceucn.model.Vehiculo;
-import model.*;
 
 import static cl.ucn.disc.pdis.sceucn.MainActivity.SERVER_IP;
 
@@ -88,7 +85,10 @@ public class ControladorVehiculos {
         this.listener = listener;
 
         InitializationData initData = new InitializationData();
-        //initData.properties = Util.createProperties();
+        initData.properties = Util.createProperties();
+        // FIXED: Packages.
+        initData.properties.setProperty("Ice.Package.model", "cl.ucn.disc.pdis.sceucn.ice");
+
 
         // ..?
         initData.dispatcher = (Runnable runnable, Connection connection) ->
@@ -180,7 +180,7 @@ public class ControladorVehiculos {
                 } else {
                     synchronized (this){
                         // Llenar el listado de vehiculos.
-                        for (model.Vehiculo vehiculo : res) {
+                        for (cl.ucn.disc.pdis.sceucn.ice.model.Vehiculo vehiculo : res) {
                             Log.d(">>>>>>>>>>>", "Placa: " + vehiculo.placa);
                             this.listadoVehiculos.add(ModelConverter.convert(vehiculo));
                         }
@@ -198,8 +198,8 @@ public class ControladorVehiculos {
     synchronized public void registrarIngreso(String placa, Porteria porteria){
         if (controladorPrx != null){
             // FIXME: Crear convertidor de enums.
-            model.Porteria porteriaIce = model.Porteria.Norte;
-            controladorPrx.registrarIngreso(placa, porteriaIce);
+            //model.Porteria porteriaIce = model.Porteria.Norte;
+            controladorPrx.registrarIngreso(placa, cl.ucn.disc.pdis.sceucn.ice.model.Porteria.Norte);
         } else {
             postError("No hay conexion...");
         }

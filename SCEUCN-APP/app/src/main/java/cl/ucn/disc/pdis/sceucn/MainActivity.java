@@ -24,11 +24,7 @@ import com.zeroc.Ice.Properties;
 import com.zeroc.Ice.Util;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cl.ucn.disc.pdis.sceucn.adapter.VehiculoAdapter;
