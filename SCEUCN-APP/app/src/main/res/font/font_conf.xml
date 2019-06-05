@@ -26,6 +26,11 @@
     <font
         android:fontStyle="normal"
         android:fontWeight="400"
+        android:font="@font/myriadpro_bold" />
+
+    <font
+        android:fontStyle="normal"
+        android:fontWeight="400"
         android:font="@font/fe_font" />
 
     <font

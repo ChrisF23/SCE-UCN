@@ -11,6 +11,7 @@
 
     <TextView
         android:id="@+id/tv_detalles_vehiculo"
+        android:fontFamily="@font/myriadpro_bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
@@ -24,7 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        android:fontFamily="sans-serif"
+        android:fontFamily="@font/myriadpro_light"
         android:paddingLeft="10dp"
         android:text="XX-XX-XX"
         android:textAlignment="textStart"
@@ -35,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        android:fontFamily="sans-serif"
+        android:fontFamily="@font/myriadpro_light"
         android:paddingLeft="10dp"
         android:text="MARCA"
         android:textAlignment="textStart"
@@ -46,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        android:fontFamily="sans-serif"
+        android:fontFamily="@font/myriadpro_light"
         android:paddingLeft="10dp"
         android:text="TIPO"
         android:textAlignment="textStart"
@@ -63,6 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
         android:text="Dueño:"
+        android:fontFamily="@font/myriadpro_bold"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@android:color/secondary_text_light"
         android:textStyle="bold" />
@@ -72,7 +74,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        android:fontFamily="sans-serif"
+        android:fontFamily="@font/myriadpro_light"
         android:paddingLeft="10dp"
         android:text="NOMBRES APELLIDOS"
         android:textAlignment="textStart"
@@ -83,7 +85,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        android:fontFamily="sans-serif"
+        android:fontFamily="@font/myriadpro_light"
         android:paddingLeft="10dp"
         android:text="XX.XXX.XXX-K"
         android:textAlignment="textStart"
@@ -96,6 +98,7 @@
 
     <TextView
         android:id="@+id/tv_detalles_logo"
+        android:fontFamily="@font/myriadpro_bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
@@ -109,7 +112,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        android:fontFamily="sans-serif"
+        android:fontFamily="@font/myriadpro_light"
         android:paddingLeft="10dp"
         android:text="LOGO ID"
         android:textAlignment="textStart"
@@ -132,14 +135,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Cancelar" />
+            android:layout_marginEnd="24dp"
+            android:backgroundTint="@color/blue_grey_200"
+            android:fontFamily="@font/mp_reg"
+            android:text="Cancelar"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/b_registrar"
             style="@style/SuccessButton"
+            android:layout_marginStart="24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:backgroundTint="@color/ucn_azul"
+            android:fontFamily="@font/myriadpro_bold"
             android:text="Registrar Ingreso"
             android:theme="@style/SuccessButton" />
 

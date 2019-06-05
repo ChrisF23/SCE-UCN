@@ -22,7 +22,7 @@
         android:paddingStart="24dp"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        card_view:cardCornerRadius="24dp"
+        card_view:cardCornerRadius="12dp"
         tools:ignore="MissingConstraints">
 
         <android.support.constraint.ConstraintLayout
