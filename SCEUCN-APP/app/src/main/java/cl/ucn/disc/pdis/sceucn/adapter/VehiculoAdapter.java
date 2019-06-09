@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,6 +39,19 @@ public final class VehiculoAdapter extends BaseAdapter {
         this.vehiculos = vehiculos;
     }
 
+    /**
+     * Constructor del adaptador
+     * @param contexto La instancia del activity.
+     */
+    public VehiculoAdapter(Context contexto){
+        inflater = LayoutInflater.from(contexto);
+        this.vehiculos = new ArrayList<>();
+    }
+
+    /**
+     * Carga una lista de vehiculos a este adaptador.
+     * @param vehiculos La lista de vehiculos.
+     */
     public void cargar(List<Vehiculo> vehiculos){
         this.vehiculos = vehiculos;
     }
@@ -54,19 +68,19 @@ public final class VehiculoAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return position;
+        return vehiculos.get(position).hashCode();
     }
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
 
-        // Obtener el vehiculo.
+        // 0.- Obtener el vehiculo.
         final Vehiculo vehiculo = getItem(position);
 
-        // Crear holder.
+        // 1.- Crear holder.
         VehiculoViewHolder holder;
 
-        // Inflar la vista solo si es nula, si no, reutilizarla.
+        // 2.- Inflar la vista solo si es nula, si no, reutilizarla.
         if (view != null) {
             holder = (VehiculoViewHolder) view.getTag();
         } else {
@@ -76,30 +90,36 @@ public final class VehiculoAdapter extends BaseAdapter {
             view.setTag(holder);
         }
 
-        // Llenar holder con los datos del vehiculo.
-        holder.patente.setText(vehiculo.getPlaca());
-        //holder.idLogo.setText(vehiculo.getLogos().get());
-        List<Logo> vs = vehiculo.getLogos();
-        if (vs == null || vs.isEmpty()){
-            holder.idLogo.setText("Sin Logo (WIP)");
-        } else {
-            Collections.sort(vs, (l1, l2) -> l1.getAnio().compareTo(l2.getAnio()));
-            holder.idLogo.setText(vs.get(0).getIdentificador());
-        }
+        // 3.- Llenar holder con los datos del vehiculo.
 
+        // 3.1.- Vehiculo
+        holder.patente.setText(vehiculo.getPlaca());
+
+        // 3.2.- Persona
         holder.nombrePersona.setText(String.format("%s %s",
                 vehiculo.getPersona().getNombres(), vehiculo.getPersona().getApellidos()));
-        // ... Etc.
+
+        // 3.3.- Logo.
+        List<Logo> logos = vehiculo.getLogos();
+        if (logos == null || logos.isEmpty()){
+            holder.idLogo.setText("Sin Logo (WIP)");
+        } else {
+            Collections.sort(logos, (l1, l2) -> l1.getAnio().compareTo(l2.getAnio()));
+            holder.idLogo.setText(logos.get(0).getIdentificador());
+        }
 
         return view;
     }
 
+    /**
+     * View Holder de un vehiculo en este adaptador.
+     */
     static class VehiculoViewHolder {
         @BindView(R.id.cv_tv_nombre_persona) TextView nombrePersona;
         @BindView(R.id.cv_tv_patente) TextView patente;
         @BindView(R.id.cv_tv_id_logo) TextView idLogo;
 
-        public VehiculoViewHolder(View view) {
+        VehiculoViewHolder(View view) {
             ButterKnife.bind(this, view);
         }
     }

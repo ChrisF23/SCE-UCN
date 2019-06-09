@@ -10,6 +10,9 @@
  */
 package cl.ucn.disc.pdis.sceucn.new_controller;
 
+import android.os.AsyncTask;
+import android.os.Handler;
+
 import java.util.List;
 
 import com.zeroc.Ice.Communicator;
@@ -20,10 +23,9 @@ import com.zeroc.Ice.Util;
 import com.zeroc.Ice.ObjectPrx;
 import com.zeroc.Ice.Properties;
 
-import cl.ucn.disc.pdis.sceucn.ice.model.Controlador;
 import cl.ucn.disc.pdis.sceucn.ice.model.ControladorPrx;
+import cl.ucn.disc.pdis.sceucn.ice.model.Porteria;
 import cl.ucn.disc.pdis.sceucn.ice.model.Vehiculo;
-//import jdk.internal.jline.internal.Log;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -46,7 +48,6 @@ public final class Ice {
      * Constructor
      */
     public Ice() {
-
     }
 
     /**
@@ -87,9 +88,7 @@ public final class Ice {
         final ObjectPrx proxy = communicator.stringToProxy(String.format("Controlador:default %s -p 10000 -z", ipconfig));
 
         // The Specific Proxy
-        final ControladorPrx controlador = ControladorPrx.checkedCast(proxy);
-
-        return controlador;
+        return ControladorPrx.checkedCast(proxy);
     }
 
     /**
@@ -118,7 +117,16 @@ public final class Ice {
 
 
     public List<Vehiculo> obtenerVehiculos(){
-        return getControladorProxy().obtenerVehiculos();
+        return this.getControladorProxy().obtenerVehiculos();
+    }
+
+    public void registrarIngreso(String placa, Porteria porteria){
+        //getControladorProxy().registrarIngreso(placa, porteria);
+        this.getControladorProxy().registrarIngreso(placa, porteria);
+    }
+
+    public void registrarIngreso(String placa, Porteria porteria, String fecha){
+        this.getControladorProxy().registrarIngresoOffline(placa, porteria, fecha);
     }
 
     /**
@@ -128,7 +136,7 @@ public final class Ice {
         log.debug("Starting the client ..");
 
         final Ice ice = new Ice();
-        //ice.init();
+        ice.init("192.168.0.10");
 
         final List<Vehiculo> vehiculos = ice.getControladorProxy().obtenerVehiculos();
         log.debug("Vehiculos size: {}", vehiculos.size());

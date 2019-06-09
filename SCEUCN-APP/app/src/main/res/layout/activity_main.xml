@@ -32,7 +32,7 @@
         tools:ignore="MissingConstraints" />
 
     <EditText
-        android:id="@+id/et_patente"
+        android:id="@+id/et_placa"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -58,7 +58,7 @@
         app:layout_constraintBottom_toTopOf="@+id/et_server_ip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_patente" />
+        app:layout_constraintTop_toBottomOf="@+id/et_placa" />
 
     <EditText
         android:id="@+id/et_server_ip"
