@@ -89,7 +89,6 @@ public class ControladorVehiculos {
         // FIXED: Packages.
         initData.properties.setProperty("Ice.Package.model", "cl.ucn.disc.pdis.sceucn.ice");
 
-
         // ..?
         initData.dispatcher = (Runnable runnable, Connection connection) ->
         {

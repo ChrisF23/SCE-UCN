@@ -106,6 +106,11 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
+    // ------- USING ICE APPLICATION.
+
+    IceApplication iceApplication;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -114,6 +119,9 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar myToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
+
+        // 0.- Obtener Ice Application.
+        iceApplication = (IceApplication) getApplicationContext();
 
         //Typeface typeface = Typeface.createFromAsset(getAssets(), "fe_font.ttf");
         //---------------------------------------------------
@@ -227,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
         dialogView.findViewById(R.id.b_registrar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                registrarIngreso(v);
+
                 alertDialog.dismiss();
             }
         });
@@ -256,89 +264,33 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setServerIP() {
         SERVER_IP = etServerIP.getText().toString();
-        //Toast.makeText(this, "Server IP actualizada.", Toast.LENGTH_SHORT).show();
-
-        //Toast.makeText(this, "Cargando listado de vehiculos...", Toast.LENGTH_LONG).show();
-
+        // Controlador de vehiculos:
+        // controladorVehiculos = new ControladorVehiculos(listener);
+        iceApplication.initializeIce(SERVER_IP);
         Toast.makeText(this, "Estableciendo conexion... ("+SERVER_IP+")", Toast.LENGTH_LONG).show();
 
-        // Controlador de vehiculos:
-        controladorVehiculos = new ControladorVehiculos(listener);
-    }
+        AsyncTask.execute(()->{
+            try {
 
-    private void registrarIngreso(final Object patente){
+                List<cl.ucn.disc.pdis.sceucn.ice.model.Vehiculo> _vehiculos = iceApplication.obtenerVehiculos();
+                log.debug("Vehiculos size: {}", _vehiculos.size());
 
-        Toast.makeText(this, "Registrando ingreso...", Toast.LENGTH_SHORT).show();
+                listadoVehiculos.clear();
 
-        /*
-        // DEV ONLY.
-
-        //log.debug("Estableciendo conexion...");
-        //Toast.makeText(this, "Estableciendo conexion... ("+SERVER_IP+")", Toast.LENGTH_LONG).show();
-
-        // TODO: Mover esto a ControladorVehiculos.
-
-        AsyncTask.execute(() -> {
-            // Properties
-            final Properties properties = Util.createProperties();
-
-            // https://doc.zeroc.com/ice/latest/property-reference/ice-trace
-
-
-            // properties.setProperty("Ice.Trace.Admin.Properties", "1");
-            // properties.setProperty("Ice.Trace.Locator", "2");
-            // properties.setProperty("Ice.Trace.Network", "3");
-            // properties.setProperty("Ice.Trace.Protocol", "1");
-            // properties.setProperty("Ice.Trace.Slicing", "1");
-            // properties.setProperty("Ice.Trace.ThreadPool", "1");
-            // properties.setProperty("Ice.Compression.Level", "9");
-
-
-            InitializationData initializationData = new InitializationData();
-            initializationData.properties = properties;
-
-            try(com.zeroc.Ice.Communicator communicator = com.zeroc.Ice.Util.initialize())
-            {
-                // Create a proxy to the remote Printer object
-                com.zeroc.Ice.ObjectPrx obj = communicator.stringToProxy("Controlador:tcp -h " + SERVER_IP + " -p 10000 -z");
-
-                // Importante: Establecer tiempo de espera (10 segundos).
-                obj = obj.ice_timeout(10000);
-
-                // Downcast obj to Printer proxy
-                ControladorPrx controlador = ControladorPrx.checkedCast(obj);
-
-                if (controlador == null)
-                {
-                    throw new IllegalStateException("Invalid Proxy.");
+                for (cl.ucn.disc.pdis.sceucn.ice.model.Vehiculo vehiculo : _vehiculos) {
+                    listadoVehiculos.add(ModelConverter.convert(vehiculo));
                 }
 
-                // Patente del vehiculo que se desea registrar.
-                // String patenteIngreso = "DP-UA-13";
-
-                // Requiere API 26, asi que usaremos Date.
-                //LocalDateTime fecha = LocalDateTime.now();
-
-                // TODO: Los registros creados deben ser almacenados localmente, para posteriormente ser guardados en el servidor.
-                Registro registro = new Registro(patente.toString(), new Date());
-
-                controlador.guardarRegistro(ModelConverter.convert(registro));
-
-                runOnUiThread(() -> {
-                    //log.debug("Fecha date: "+ fecha.toString());
-                    //log.debug("Fecha unix millisec: " + fecha.getTime());
-                    Toast.makeText(this, "Ok: Se ha registrado el ingreso del vehiculo '" + patente + "'.", Toast.LENGTH_LONG).show();
+                runOnUiThread(()->{
+                    adapter.cargar(listadoVehiculos);
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(this, "Vehiculos obtenidos!", Toast.LENGTH_LONG).show();
                 });
 
-            } catch (Exception e) {
-                runOnUiThread(() -> {
-                    log.debug("No se pudo establecer la conexion...");
-                    Toast.makeText(this, "Error: No se pudo establecer la conexion...", Toast.LENGTH_LONG).show();
-                });
+            } catch (Exception e){
+                log.debug(e.toString());
             }
-
         });
-        */
     }
 
     static class VehiculoDetalleViewHolder {
