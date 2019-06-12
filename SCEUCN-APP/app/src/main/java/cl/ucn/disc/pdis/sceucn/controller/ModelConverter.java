@@ -1,8 +1,6 @@
 package cl.ucn.disc.pdis.sceucn.controller;
 
 
-import java.util.Collections;
-
 import cl.ucn.disc.pdis.sceucn.ice.model.Persona;
 import cl.ucn.disc.pdis.sceucn.ice.model.Porteria;
 import cl.ucn.disc.pdis.sceucn.ice.model.Registro;
@@ -86,19 +84,5 @@ public class ModelConverter {
 
         cl.ucn.disc.pdis.sceucn.model.Persona personaJ = new cl.ucn.disc.pdis.sceucn.model.Persona(personaI.rut, personaI.nombres, personaI.apellidos);
         return personaJ;
-    }
-
-    /**
-     * Convierte una porteria java a una porteria ice.
-     * @param porteria La porteria java.
-     * @return La porteria ice.
-     */
-    public static Porteria convertPorteria(cl.ucn.disc.pdis.sceucn.model.Porteria porteria) {
-
-        try {
-            return Porteria.valueOf(Porteria.class, porteria.toString());
-        } catch (Exception e){
-            throw new RuntimeException("Fallo en la conversion de Porteria");
-        }
     }
 }

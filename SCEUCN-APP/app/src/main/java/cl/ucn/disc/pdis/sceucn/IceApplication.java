@@ -8,11 +8,9 @@
 package cl.ucn.disc.pdis.sceucn;
 
 import android.app.Application;
-import android.util.Log;
 
 import java.util.List;
 
-import cl.ucn.disc.pdis.sceucn.ice.model.Porteria;
 import cl.ucn.disc.pdis.sceucn.ice.model.Vehiculo;
 import cl.ucn.disc.pdis.sceucn.new_controller.Ice;
 
@@ -30,6 +28,7 @@ public class IceApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
+        // Iniciar la conexion de ice.
         if (this.ice == null) {
             this.ice = new Ice();
         }
@@ -48,30 +47,12 @@ public class IceApplication extends Application {
         throw new RuntimeException("ICE is null");
     }
 
-    /**
-     *
-     * @return
-     */
     public List<Vehiculo> obtenerVehiculos(){
         if (this.ice != null){
             return this.ice.obtenerVehiculos();
         }
 
-        throw new RuntimeException("Ice is null");
-    }
-
-    /**
-     *
-     * @param placa
-     * @param porteria
-     */
-    public void registrarIngreso(String placa, Porteria porteria){
-        if (this.ice != null){
-            this.ice.registrarIngreso(placa, porteria);
-            return;
-        }
-
-        throw new RuntimeException("Ice is null");
+        throw new RuntimeException("ICE is null");
     }
 
     /**
