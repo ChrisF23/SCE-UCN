@@ -11,28 +11,28 @@
     android:paddingBottom="20dp">
 
     <TextView
-        android:id="@+id/tv_detalles_vehiculo"
-        android:fontFamily="@font/myriadpro_bold"
+        android:id="@+id/tv_server_config"
         android:layout_width="match_parent"
-        android:paddingBottom="20dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
-        android:text="Configuración Server"
+        android:fontFamily="@font/myriadpro_bold"
+        android:paddingBottom="20dp"
+        android:text="Configurar servidor"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textColor="@android:color/secondary_text_light"
         android:textStyle="bold" />
 
     <EditText
         android:id="@+id/et_server_ip"
-        android:padding="8dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:digits="0123456789."
         android:ems="10"
-        android:hint="Server IP"
-        android:inputType="number|numberDecimal" />
+        android:hint="IP del servidor"
+        android:inputType="number|numberDecimal"
+        android:padding="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp" />
 
 
     <Space

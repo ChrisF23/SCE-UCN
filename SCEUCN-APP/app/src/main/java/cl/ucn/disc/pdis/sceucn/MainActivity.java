@@ -8,13 +8,16 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +29,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cl.ucn.disc.pdis.sceucn.adapter.VehiculoAdapter;
 import cl.ucn.disc.pdis.sceucn.controller.ModelConverter;
+import cl.ucn.disc.pdis.sceucn.model.Persona;
 import cl.ucn.disc.pdis.sceucn.model.Porteria;
 import cl.ucn.disc.pdis.sceucn.model.Vehiculo;
 import lombok.extern.slf4j.Slf4j;
@@ -39,20 +43,7 @@ public class MainActivity extends AppCompatActivity {
      * El edit text donde se buscan las placas.
      */
     @BindView(R.id.et_placa)
-    EditText etPatente;
-
-    /**
-     * El edit text donde se escribe la ip del servidor.
-     * Reemplazar por una ip estatica en la fase de produccion.
-     */
-    @BindView(R.id.et_server_ip)
-    EditText etServerIP;
-
-    /**
-     * El boton que establece la ip del servidor.
-     */
-    @BindView(R.id.b_set_server_ip)
-    Button bSetServerIP;
+    EditText etPlaca;
 
     /**
      * El list view que muestra los vehiculos.
@@ -122,9 +113,6 @@ public class MainActivity extends AppCompatActivity {
 
         // 5.- Configurar el list view de vehiculos.
         setupListViewVehiculos();
-
-        // 6.- Agregar metodo setServerIP al boton.
-        bSetServerIP.setOnClickListener((v) -> setServerIP());
     }
 
     /**
@@ -136,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
         lvVehiculos.setOnItemClickListener((parent, view, position, id) -> {
             Vehiculo v = (Vehiculo) lvVehiculos.getAdapter().getItem(position);
-            abrirDialogo(v);
+            abrirDialogoDetalleVehiculo(v);
         });
     }
 
@@ -148,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
         // 0.- Filtrado en el ingreso de patente.
         // TODO: 1.- Formateo de la placa mientras es escrita (Ej: CAFA23 -> CA-FA-23).
 
-        etPatente.addTextChangedListener(new TextWatcher() {
+        etPlaca.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -194,13 +182,12 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param vehiculo El vehiculo seleccionado.
      */
-    private void abrirDialogo(Vehiculo vehiculo) {
+    private void abrirDialogoDetalleVehiculo(Vehiculo vehiculo) {
         // 0.- Obtener el viewgroup del activity actual.
         ViewGroup viewGroup = findViewById(android.R.id.content);
 
         // 1.- Inflar el dialog de detalle del vehiculo.
         View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_vehiculo, viewGroup, false);
-
 
         // 2.- Crear un Builder de AlertDialogs.
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -217,23 +204,10 @@ public class MainActivity extends AppCompatActivity {
         // 6.- Configurar el boton de registrar ingreso.
         dialogView.findViewById(R.id.b_registrar).setOnClickListener(view -> {
 
-            AsyncTask.execute(() -> {
-                try {
-                    iceApplication.registrarIngreso(vehiculo.getPlaca(), ModelConverter.convertPorteria(porteriaActual));
+            // Registrar el ingreso.
+            registrarIngreso(vehiculo);
 
-                    runOnUiThread(() -> {
-                        Toast.makeText(MainActivity.this,
-                                String.format("Se ha registrado el ingreso del vehiculo [%s]", vehiculo.getPlaca()),
-                                Toast.LENGTH_LONG).show();
-                    });
-
-                } catch (Exception e) {
-                    runOnUiThread(() -> {
-                        Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
-                    });
-                }
-            });
-
+            // Cancelar dialog.
             alertDialog.dismiss();
         });
 
@@ -267,12 +241,18 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Actualiza la direccion IP del servidor.
      */
-    private void setServerIP() {
-        SERVER_IP = etServerIP.getText().toString();
-        // Controlador de vehiculos:
-        // controladorVehiculos = new ControladorVehiculos(listener);
-        iceApplication.initializeIce(SERVER_IP);
+    private void setServerIP(String serverIP) {
+        // Establecer la direccion ip del servidor.
+        SERVER_IP = serverIP;
+
+        // Mostrar mensaje.
         Toast.makeText(this, "Estableciendo conexion... (" + SERVER_IP + ")", Toast.LENGTH_LONG).show();
+
+        // Iniciar aplicacion de ice.
+        iceApplication.initializeIce(SERVER_IP);
+    }
+
+    private void obtenerVehiculos(){
 
         AsyncTask.execute(() -> {
             try {
@@ -298,6 +278,101 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void registrarIngreso(Vehiculo vehiculo){
+        AsyncTask.execute(() -> {
+            try {
+                iceApplication.registrarIngreso(vehiculo.getPlaca(), ModelConverter.convertPorteria(porteriaActual));
+
+                runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this,
+                            String.format("Se ha registrado el ingreso del vehiculo [%s]", vehiculo.getPlaca()),
+                            Toast.LENGTH_LONG).show();
+                });
+
+            } catch (Exception e) {
+                runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                });
+            }
+        });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.item_tema_stiletto:
+                Toast.makeText(this, "Aplicando Tema Stiletto...", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.item_tema_desert:
+                Toast.makeText(this, "Aplicando Tema Desert...", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.item_tema_shipcove:
+                Toast.makeText(this, "Aplicando Tema Ship Cove...", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.item_tema_oscuro:
+                Toast.makeText(this, "Aplicando Tema Oscuro...", Toast.LENGTH_SHORT).show();
+                return true;
+
+            case R.id.item_configurar_servidor:
+                abrirDialogConfigurarServidor();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+    private void abrirDialogConfigurarServidor() {
+        // 0.- Obtener el viewgroup del activity actual.
+        ViewGroup viewGroup = findViewById(android.R.id.content);
+
+        // 1.- Inflar el dialog de configuracion del servidor
+        View dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_server_config, viewGroup, false);
+
+        // 2.- Crear un Builder de AlertDialogs.
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        // 3.- Asignar dialog a la vista del builder.
+        builder.setView(dialogView);
+
+        // 4.- Configurar dialog.
+
+        // 5.- Crear el alert dialog a traves del builder..
+        AlertDialog alertDialog = builder.create();
+
+        // 6.- Configurar el boton de registrar ingreso.
+        dialogView.findViewById(R.id.b_conectar).setOnClickListener(view -> {
+
+            // Obtener edit text.
+            EditText etServerIP = dialogView.findViewById(R.id.et_server_ip);
+
+            // Establecer ip.
+            setServerIP(etServerIP.getText().toString());
+
+            // Obtener listado de vehiculos.
+            obtenerVehiculos();
+
+            // Cancelar dialog.
+            alertDialog.dismiss();
+        });
+
+        // 7.- Configurar el boton de cancelar.
+        dialogView.findViewById(R.id.b_cancelar).setOnClickListener(view -> alertDialog.dismiss());
+
+        // 8.- Mostrar el alert dialog.
+        alertDialog.show();
     }
 
     static class VehiculoDetalleViewHolder {

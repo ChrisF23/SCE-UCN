@@ -11,7 +11,7 @@
     android:paddingBottom="20dp">
 
     <TextView
-        android:id="@+id/tv_detalles_vehiculo"
+        android:id="@+id/tv_server_config"
         android:fontFamily="@font/myriadpro_bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
