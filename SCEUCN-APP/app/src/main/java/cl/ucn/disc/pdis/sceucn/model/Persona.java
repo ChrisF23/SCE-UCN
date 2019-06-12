@@ -6,6 +6,10 @@
 
 package cl.ucn.disc.pdis.sceucn.model;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.TypeConverters;
+
 import lombok.Data;
 import lombok.NonNull;
 
@@ -13,12 +17,14 @@ import lombok.NonNull;
  * La persona duenia de un vehiculo.
  */
 @Data
+@Entity(tableName = "persona")
 public class Persona {
 
     /**
      * El rut de la persona. Ej: '12.123.132-3'.
      */
     @NonNull
+    @PrimaryKey
     private String rut;
 
     /**

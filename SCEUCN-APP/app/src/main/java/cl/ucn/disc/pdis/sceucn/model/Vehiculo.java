@@ -6,23 +6,30 @@
 
 package cl.ucn.disc.pdis.sceucn.model;
 
+import android.arch.persistence.room.Embedded;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
 import java.util.List;
 
 import lombok.Data;
 import lombok.NonNull;
 
 @Data
+@Entity(tableName="vehiculo")
 public class Vehiculo {
 
     /**
      * La persona a la cual le pertenece este vehiculo.
      */
+    @Embedded(prefix = "persona_")
     @NonNull
     private Persona persona;
 
     /**
      * La placa del vehiculo. Ej: FBXS22.
      */
+    @PrimaryKey
     @NonNull
     private String placa;
 
@@ -44,5 +51,6 @@ public class Vehiculo {
     /**
      * Los logos de este vehiculo.
      */
+    @Embedded(prefix = "logo_")
     private List<Logo> logos;
 }
