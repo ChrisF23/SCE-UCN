@@ -31,7 +31,8 @@ namespace SCEUCN_WEB
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
+            // Registrar el servicio IceApplication.
+            services.AddSingleton<IIceApplication, IceApplication>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
