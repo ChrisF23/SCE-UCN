@@ -12078,11 +12078,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Desarrollador\\Documents\\SCE-UCN\\SCEUCN-RAZOR\\SCEUCN-RAZOR.csproj",
-      "projectName": "SCEUCN-RAZOR",
-      "projectPath": "C:\\Users\\Desarrollador\\Documents\\SCE-UCN\\SCEUCN-RAZOR\\SCEUCN-RAZOR.csproj",
+      "projectUniqueName": "C:\\Users\\Desarrollador\\Documents\\SCE-UCN\\SCEUCN-WEB\\SCEUCN-WEB.csproj",
+      "projectName": "SCEUCN-WEB",
+      "projectPath": "C:\\Users\\Desarrollador\\Documents\\SCE-UCN\\SCEUCN-WEB\\SCEUCN-WEB.csproj",
       "packagesPath": "C:\\Users\\Desarrollador\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Desarrollador\\Documents\\SCE-UCN\\SCEUCN-RAZOR\\obj\\",
+      "outputPath": "C:\\Users\\Desarrollador\\Documents\\SCE-UCN\\SCEUCN-WEB\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

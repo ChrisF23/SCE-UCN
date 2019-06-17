@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.2</TargetFramework>
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
-    <RootNamespace>SCEUCN_RAZOR</RootNamespace>
+    <RootNamespace>SCEUCN_WEB</RootNamespace>
   </PropertyGroup>
 
 

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace SCEUCN_RAZOR
+namespace SCEUCN_WEB
 {
     public class Program
     {
