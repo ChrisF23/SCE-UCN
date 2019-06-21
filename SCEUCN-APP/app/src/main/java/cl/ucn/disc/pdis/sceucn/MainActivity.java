@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -92,6 +93,16 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+         //-1.- Verificar modo noche
+//        if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+//            setTheme(R.style.Theme_Primary_Base_Dark);
+//        }
+//        else setTheme(R.style.Theme_Primary_Base_Light);
+
+        //FIXME: Deteccion de día y noche
+        setTheme(R.style.Theme_Primary_Base_Dark);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
@@ -113,6 +124,7 @@ public class MainActivity extends AppCompatActivity {
 
         // 5.- Configurar el list view de vehiculos.
         setupListViewVehiculos();
+
     }
 
     /**
@@ -306,24 +318,18 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    //FIXME: Cambio de tema
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.item_tema_stiletto:
-                Toast.makeText(this, "Aplicando Tema Stiletto...", Toast.LENGTH_SHORT).show();
-                return true;
-
-            case R.id.item_tema_desert:
-                Toast.makeText(this, "Aplicando Tema Desert...", Toast.LENGTH_SHORT).show();
-                return true;
-
-            case R.id.item_tema_shipcove:
-                Toast.makeText(this, "Aplicando Tema Ship Cove...", Toast.LENGTH_SHORT).show();
-                return true;
-
             case R.id.item_tema_oscuro:
-                Toast.makeText(this, "Aplicando Tema Oscuro...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Aplicando Modo Noche...", Toast.LENGTH_SHORT).show();
+                setTheme(R.style.Theme_Primary_Base_Dark);
                 return true;
+
+//            case R.id.item_tema_desert:
+//                Toast.makeText(this, "Aplicando Tema Desert...", Toast.LENGTH_SHORT).show();
+//                setTheme(R.style.Theme_Primary_Base_lightTheme);
 
             case R.id.item_configurar_servidor:
                 abrirDialogConfigurarServidor();
@@ -369,7 +375,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // 7.- Configurar el boton de cancelar.
-        dialogView.findViewById(R.id.b_cancelar).setOnClickListener(view -> alertDialog.dismiss());
+        dialogView.findViewById(R.id.b_config_cancelar).setOnClickListener(view -> alertDialog.dismiss());
 
         // 8.- Mostrar el alert dialog.
         alertDialog.show();

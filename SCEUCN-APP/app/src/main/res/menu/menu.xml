@@ -11,22 +11,15 @@
     <item android:id="@+id/item_cambiar_tema"
         android:title="Cambiar tema" >
         <menu>
-            <item android:id="@+id/item_tema_desert"
-                android:title="Desert"/>
-
-            <item android:id="@+id/item_tema_stiletto"
-                android:title="Stiletto"/>
-
-            <item android:id="@+id/item_tema_shipcove"
-                android:title="Ship Cove"/>
 
             <item android:id="@+id/item_tema_oscuro"
-                android:title="Oscuro"/>
+                android:title="Night Mode"/>
+            
         </menu>
     </item>
 
     <item android:id="@+id/item_verificar_conexion"
-        android:title="Verificar conexion" />
+        android:title="Verificar conexión" />
 
     <item android:id="@+id/item_configurar_servidor"
         android:title="Configurar servidor" />

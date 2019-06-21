@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_dialog"
+    android:background="?attr/backgroundcolor"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -18,7 +19,7 @@
         android:layout_marginTop="0dp"
         android:text="Vehiculo:"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/secondary_text_light"
+        android:textColor="?attr/textcolor"
         android:textStyle="bold" />
 
     <TextView
@@ -26,6 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="0dp"
+        android:textColor="?attr/textcolor"
         android:fontFamily="@font/myriadpro_light"
         android:paddingLeft="10dp"
         android:text="XX-XX-XX"
@@ -36,6 +38,7 @@
         android:id="@+id/tv_marca"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="?attr/textcolor"
         android:layout_marginTop="0dp"
         android:fontFamily="@font/myriadpro_light"
         android:paddingLeft="10dp"
@@ -47,6 +50,7 @@
         android:id="@+id/tv_tipo_vehiculo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textColor="?attr/textcolor"
         android:layout_marginTop="0dp"
         android:fontFamily="@font/myriadpro_light"
         android:paddingLeft="10dp"
@@ -67,7 +71,7 @@
         android:text="Dueño:"
         android:fontFamily="@font/myriadpro_bold"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/secondary_text_light"
+        android:textColor="?attr/textcolor"
         android:textStyle="bold" />
 
     <TextView
@@ -79,6 +83,7 @@
         android:paddingLeft="10dp"
         android:text="NOMBRES APELLIDOS"
         android:textAlignment="textStart"
+        android:textColor="?attr/textcolor"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <TextView
@@ -90,6 +95,7 @@
         android:paddingLeft="10dp"
         android:text="XX.XXX.XXX-K"
         android:textAlignment="textStart"
+        android:textColor="?attr/textcolor"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <Space
@@ -105,7 +111,7 @@
         android:layout_marginTop="0dp"
         android:text="Último Logo:"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/secondary_text_light"
+        android:textColor="?attr/textcolor"
         android:textStyle="bold" />
 
     <TextView
@@ -115,6 +121,7 @@
         android:layout_marginTop="0dp"
         android:fontFamily="@font/myriadpro_light"
         android:paddingLeft="10dp"
+        android:textColor="?attr/textcolor"
         android:text="LOGO ID"
         android:textAlignment="textStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
@@ -132,27 +139,27 @@
 
         <Button
             android:id="@+id/b_cancelar"
-            style="@style/CancelButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginEnd="24dp"
-            android:backgroundTint="@color/blue_grey_200"
-            android:fontFamily="@font/mp_reg"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/myriadpro_bold"
             android:text="Cancelar"
-            android:textSize="12sp" />
+            android:textColor="?attr/buttoncolor"
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/b_registrar"
-            style="@style/SuccessButton"
             android:layout_marginStart="24dp"
+            android:textColor="@color/white"
+            android:textSize="16dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="@color/ucn_azul"
+            android:backgroundTint="?attr/buttoncolor"
             android:fontFamily="@font/myriadpro_bold"
-            android:text="Registrar Ingreso"
-            android:theme="@style/SuccessButton" />
+            android:text="Registrar Ingreso" />
 
     </LinearLayout>
 

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="?attr/backgroundcolor"
     android:padding="16dp"
     android:paddingLeft="10dp"
     android:paddingTop="20dp"
@@ -19,7 +20,7 @@
         android:paddingBottom="20dp"
         android:text="Configurar servidor"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="@android:color/secondary_text_light"
+        android:textColor="?attr/textcolor"
         android:textStyle="bold" />
 
     <EditText
@@ -27,6 +28,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:digits="0123456789."
+        android:textColor="?attr/textcolor"
+        android:textColorHint="?attr/textcolor"
         android:ems="10"
         android:hint="IP del servidor"
         android:inputType="number|numberDecimal"
@@ -46,29 +49,30 @@
         android:gravity="center"
         android:orientation="horizontal">
 
+<!--FIXME: Cambiar en activity-->
         <Button
-            android:id="@+id/b_cancelar"
-            style="@style/CancelButton"
+            android:id="@+id/b_config_cancelar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginEnd="24dp"
-            android:backgroundTint="@color/blue_grey_200"
-            android:fontFamily="@font/mp_reg"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/myriadpro_bold"
             android:text="Cancelar"
-            android:textSize="12sp" />
+            android:textSize="14sp"
+            android:textColor="?attr/buttoncolor"/>
 
         <Button
             android:id="@+id/b_conectar"
-            style="@style/SuccessButton"
             android:layout_marginStart="24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="@color/ucn_azul"
+            android:backgroundTint="?attr/buttoncolor"
+            android:textColor="@color/white"
+            android:textSize="16sp"
             android:fontFamily="@font/myriadpro_bold"
-            android:text="Conectar"
-            android:theme="@style/SuccessButton" />
+            android:text="Conectar"/>
 
     </LinearLayout>
 

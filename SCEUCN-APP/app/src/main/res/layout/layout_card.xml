@@ -19,7 +19,9 @@
         android:id="@+id/card_view"
         android:layout_gravity="center"
         android:padding="24dp"
+        android:backgroundTint="?attr/cardbackground"
         android:paddingStart="24dp"
+        android:outlineAmbientShadowColor="@color/black"
         android:paddingEnd="8dp"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -44,7 +46,7 @@
                 android:paddingBottom="9dp"
                 android:text="ca-fa-00"
                 android:textAlignment="center"
-                android:textColor="@android:color/black"
+                android:textColor="@color/black"
                 android:textSize="20dp" />
 
             <TextView
@@ -55,7 +57,7 @@
                 android:fontFamily="@font/mp_reg"
                 android:text="Christian Antonio Farias Echeñique"
                 android:textAlignment="center"
-                android:textColor="@android:color/black"
+                android:textColor="?attr/textcolor"
                 android:textSize="18dp"
                 card_view:layout_constraintTop_toBottomOf="@+id/cv_tv_patente"
                 tools:layout_editor_absoluteX="-2dp" />
@@ -68,7 +70,7 @@
                 android:text="chinoXXX"
                 android:fontFamily="@font/myriadpro_light"
                 android:textAlignment="center"
-                android:textColor="@android:color/black"
+                android:textColor="?attr/textcolor"
                 android:textSize="15dp"
                 card_view:layout_constraintTop_toBottomOf="@+id/cv_tv_nombre_persona"
                 tools:layout_editor_absoluteX="1dp" />

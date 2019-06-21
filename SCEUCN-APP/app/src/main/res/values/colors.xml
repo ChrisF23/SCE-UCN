@@ -11,6 +11,7 @@
     <color name="colorSuccess">#5cb85c</color>
     <color name="colorCancel">#d9534f</color>
 
+
     <!-- Red -->
     <color name="red_50">#FFEBEE</color>
     <color name="red_100">#FFCDD2</color>
@@ -333,6 +334,7 @@
     <!-- COLORES UCN -->
     <color name="ucn_azul">#2c4d60</color>
     <color name="ucn_azuloscuro">#213946</color>
+    <color name="ucn_azulnegro">#1C2F3A</color>
     <color name="ucn_blanco">#e8f2f6</color>
     <color name="ucn_naranjo">#b86125</color>
 
