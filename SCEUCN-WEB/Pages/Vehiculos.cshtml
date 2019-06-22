@@ -1,48 +1,31 @@
-@page
-@model VehiculosModel
-
+﻿@page
+@model SCEUCN_WEB.Pages.VehiculosModel
 @{
     ViewData["Title"] = "Vehiculos";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1>@(ViewData["Title"])</h1>
+<head>
+  <link rel="stylesheet" href="~/css/table.css">
+</head>
 
-<p>TODO: Aqui se mostraran los vehiculos.</p>
 
-<!--Definir el estilo para la tabla-->
-<style>
-table {
-  font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
-}
-
-td, th {
-  border: 1px solid #dddddd;
-  text-align: left;
-  padding: 8px;
-}
-
-tr:nth-child(even) {
-  background-color: #dddddd;
-}
-</style>
-
-<!-- La tabla -->
 <table>
+  <tr>
+    <th>Placa</th>
+    <th>Rut</th>
+    <th>Nombre Completo</th>
+  </tr>
+  
+  <!-- Un loop que itera la lista de vehiculos -->
+  @foreach (var vehiculo in Model.Vehiculos)
+  {
     <tr>
-        <th>Placa</th>
-        <th>Rut</th>
-        <th>Nombre Completo</th>
+      <td>@(vehiculo.Placa)</td>
+      <td>@(vehiculo.Persona.Rut)</td>
+      <td>@(vehiculo.Persona.Nombres) @(vehiculo.Persona.Apellidos)</td>
+      
     </tr>
+  }
 
-<!-- Un loop que itera la lista de vehiculos -->
-@foreach (var vehiculo in Model.vehiculos)
-{
-    <tr>
-        <td>@vehiculo.placa</td>
-        <td>@vehiculo.persona.rut</td>
-        <td>@vehiculo.persona.nombres @vehiculo.persona.apellidos</td>
-    </tr>
-}
 </table>

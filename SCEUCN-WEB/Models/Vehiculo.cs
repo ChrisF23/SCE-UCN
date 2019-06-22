@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace SCEUCN_WEB.Model.Vehiculo
+namespace SCEUCN_WEB.Model
 {
     public enum Tipo { Auto, Camioneta, Moto }
 
@@ -14,7 +14,7 @@ namespace SCEUCN_WEB.Model.Vehiculo
 
         public string Placa { get; set; }
 
-        //public Persona Persona { get; set; }
+        public Persona Persona { get; set; }
                 
         public string Marca { get; set; }
         
