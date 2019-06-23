@@ -149,10 +149,22 @@ module model {
     }
 
     /**
-     * Listado de vehiculos en el sistema
+     * Listado de Vehiculos en el sistema
      */
     ["java:type:java.util.ArrayList<Vehiculo>:java.util.List<Vehiculo>", "cs:generic:List"]
     sequence<Vehiculo> Vehiculos;
+
+    /**
+     * Listado de Personas en el sistema
+     */
+    ["java:type:java.util.ArrayList<Vehiculo>:java.util.List<Vehiculo>", "cs:generic:List"]
+    sequence<Persona> Personas;
+
+    /**
+     * Listado de Registros en el sistema
+     */
+    ["java:type:java.util.ArrayList<Vehiculo>:java.util.List<Vehiculo>", "cs:generic:List"]
+    sequence<Registro> Registros;
 
     /**
      * Operaciones del Sistema
@@ -173,6 +185,35 @@ module model {
          * Obtiene un listado con todos los vehiculos registrados en la base de datos.
          */
         Vehiculos obtenerVehiculos();
+ 
+    };
+
+    interface ControladorWeb {
+
+        /**
+         * Obtiene un listado con todos los registros ingresados en la base de datos.
+         */
+        Registros obtenerRegistros();
+
+        /**
+         * Obtiene un listado con todos los vehiculos registrados en la base de datos.
+         */
+        Vehiculos obtenerVehiculos();
+
+        /**
+         * Dada una placa, obtiene el vehiculo correspondiente.
+         */
+        Vehiculo obtenerVehiculo(string placa);
+
+        /**
+         * Obtiene un listado con todas las personas registradas en la base de datos.
+         */
+        Personas obtenerPersonas();
+
+        /**
+         * Agrega un vehiculo a la base de datos.
+         */
+        void agregarVehiculo(string rutPersona, string placa, string marca, Tipo tipo);
  
     };
 

@@ -40,6 +40,16 @@ namespace SCEUCN_SERVER
             };
         }
 
+        public static model.Registro Convert(Model.Registro registroCS)
+        {
+            return new model.Registro 
+            {
+                vehiculo = Convert(registroCS.Vehiculo),
+                porteria = Parse<model.Porteria>(registroCS.Porteria.ToString()),
+                fecha = registroCS.Fecha
+            };
+        }
+
         public static T Parse<T>(string value) where T : Enum, IConvertible 
         { 
             // https://stackoverflow.com/a/28527552.

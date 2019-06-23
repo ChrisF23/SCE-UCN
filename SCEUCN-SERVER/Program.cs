@@ -78,16 +78,19 @@ namespace SCEUCN_SERVER
                 {
                     
                     // Instantiate a new ControladorI servant - the implementation of your Controlador
-                    var servant = new ControladorI();
+                    var appServant = new ControladorI();
+                    var webServant = new ControladorWebI();
 
                     // Configure servant
-                    servant.System = system;
+                    appServant.System = system;
+                    webServant.System = system;
 
                     // Create object adapter - a container for your servants. Listens on port 10000
                     var adapter = communicator.createObjectAdapterWithEndpoints("ControladorAdapter", "default -p 10000 -z");
 
                     // Add the servant object to the object adapter with identity "Controlador"
-                    adapter.add(servant, Ice.Util.stringToIdentity("Controlador"));
+                    adapter.add(appServant, Ice.Util.stringToIdentity("Controlador"));
+                    adapter.add(webServant, Ice.Util.stringToIdentity("ControladorWeb"));
 
                     // Activate object adapter - accept incoming requests and dispatch them to servants
                     adapter.activate();

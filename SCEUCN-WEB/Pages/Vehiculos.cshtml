@@ -9,23 +9,40 @@
   <link rel="stylesheet" href="~/css/table.css">
 </head>
 
+@using SCEUCN_WEB.Controller;
 
-<table>
-  <tr>
-    <th>Placa</th>
-    <th>Rut</th>
-    <th>Nombre Completo</th>
-  </tr>
-  
-  <!-- Un loop que itera la lista de vehiculos -->
-  @foreach (var vehiculo in Model.Vehiculos)
-  {
-    <tr>
-      <td>@(vehiculo.Placa)</td>
-      <td>@(vehiculo.Persona.Rut)</td>
-      <td>@(vehiculo.Persona.Nombres) @(vehiculo.Persona.Apellidos)</td>
+<!-- Se obtuvo la lista de vehiculos? -->
+@switch (Model.RequestState)
+{
+  // Si, cargar datos en la tabla.
+  case IceRequestState.Completed:
+    <table>
+      <tr>
+        <th>Placa</th>
+        <th>Rut</th>
+        <th>Nombre Completo</th>
+      </tr>
       
-    </tr>
-  }
+      <!-- El detalle del vehiculo. -->
+      @foreach (var vehiculo in Model.Vehiculos)
+      {
+        <tr>
+          <!-- El detalle del vehiculo. -->
+          <td><a asp-page="/vehiculo" asp-route-id="@vehiculo.Placa">@(vehiculo.Placa)</a></td>
+          <td>@(vehiculo.Persona.Rut)</td>
+          <td>@(vehiculo.Persona.Nombres) @(vehiculo.Persona.Apellidos)</td>
+        </tr>
+      }
 
-</table>
+
+    </table>
+    break;
+
+  // No, cargar un mensaje de error.
+  case IceRequestState.Error:
+    <p>No se puede establecer una conexion con el servidor...</p>
+    break;
+  
+  default:
+    break;
+}

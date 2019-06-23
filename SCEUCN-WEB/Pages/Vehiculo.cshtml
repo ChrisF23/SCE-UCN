@@ -1,0 +1,44 @@
+﻿@page "{id:length(8)}"
+@model SCEUCN_WEB.Pages.VehiculoModel
+@{
+    ViewData["Title"] = @Model.Id;
+}
+
+<h1>Detalles del Vehiculo</h1>
+
+<head>
+  <link rel="stylesheet" href="~/css/card.css">
+</head>
+
+@using SCEUCN_WEB.Controller;
+
+<!-- Se obtuvo la lista de vehiculos? -->
+@switch (Model.RequestState)
+{
+  // Si, cargar datos en la tabla.
+  case IceRequestState.Completed:
+    <div class="card">
+      
+      <h2>@(Model.Vehiculo.Placa)</h2>
+      
+      <div class="vehiculoDesc" style="list-style-type:none">
+        <li><strong>Marca:</strong> @(Model.Vehiculo.Marca)</li>
+        <li><strong>Tipo:</strong> @(Model.Vehiculo.Tipo)</li>
+      </div>
+
+      <div class="personaDesc" style="list-style-type:none">
+        <li><strong>Duenio:</strong> @(Model.Vehiculo.Persona.Nombres) @(Model.Vehiculo.Persona.Apellidos)</li>
+        <li><strong>Rut:</strong> @(Model.Vehiculo.Persona.Rut)</li>
+      </div>
+
+    </div>
+    break;
+
+  // No, cargar un mensaje de error.
+  case IceRequestState.Error:
+    <p>Hubo un problema al obtener el vehiculo...</p>
+    break;
+  
+  default:
+    break;
+}
