@@ -157,13 +157,13 @@ module model {
     /**
      * Listado de Personas en el sistema
      */
-    ["java:type:java.util.ArrayList<Personas>:java.util.List<Personas>", "cs:generic:List"]
+    ["java:type:java.util.ArrayList<Persona>:java.util.List<Persona>", "cs:generic:List"]
     sequence<Persona> Personas;
 
     /**
      * Listado de Registros en el sistema
      */
-    ["java:type:java.util.ArrayList<Registros>:java.util.List<Registros>", "cs:generic:List"]
+    ["java:type:java.util.ArrayList<Registro>:java.util.List<Registro>", "cs:generic:List"]
     sequence<Registro> Registros;
 
     /**
