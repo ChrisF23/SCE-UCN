@@ -223,4 +223,10 @@ project.lock.json
 #####
 # End of core ignore list, below put you custom 'per project' settings (patterns or path)
 #####
-/IceModel
+
+# The Ice Model
+ZeroIce.cs
+
+# Model
+Model/*.cs
+Controller/ModelConverter.cs
