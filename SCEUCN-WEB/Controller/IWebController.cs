@@ -1,7 +1,7 @@
 // (c) 2019 Proyecto Desarrollo e Integracion de Soluciones, I semestre 2019.
 
 using System.Collections.Generic;
-using CL.UCN.DISC.PDIS.SCE.Server.Model;
+using CL.UCN.DISC.PDIS.SCE.Server.ZeroIce;
 
 // https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/naming-guidelines
 namespace CL.UCN.DISC.PDIS.SCE.Web.Controllers

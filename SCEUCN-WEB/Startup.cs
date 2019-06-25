@@ -9,8 +9,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using CL.UCN.DISC.PDIS.SCE.Web.Controllers;
 
-namespace SCEUCN_WEB
+namespace CL.UCN.DISC.PDIS.SCE.Web
 {
     public class Startup
     {
@@ -32,7 +33,8 @@ namespace SCEUCN_WEB
             });
 
             // Registrar el servicio IceApplication.
-            services.AddSingleton<IIceApplication, IceApplication>();
+            // services.AddSingleton<IIceApplication, IceApplication>();
+            services.AddSingleton<IWebController>(new WebController("localhost"));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -47,10 +49,10 @@ namespace SCEUCN_WEB
             {
                 app.UseExceptionHandler("/Error");
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
+                // app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            // app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 

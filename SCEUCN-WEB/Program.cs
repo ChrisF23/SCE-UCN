@@ -7,18 +7,14 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Ice;
-using model;
 
-namespace SCEUCN_WEB
+namespace CL.UCN.DISC.PDIS.SCE.Web
 {
     public class Program
     {
         public static void Main(string[] args)
         {
-
             CreateWebHostBuilder(args).Build().Run();
-
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>

@@ -4,23 +4,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using SCEUCN_WEB.Model;
-using SCEUCN_WEB.Controller;
+using CL.UCN.DISC.PDIS.SCE.Web.Controllers;
+using CL.UCN.DISC.PDIS.SCE.Server.ZeroIce;
 
-namespace SCEUCN_WEB.Pages
+namespace CL.UCN.DISC.PDIS.SCE.Web.Pages
 {
     public class VehiculosModel : PageModel
     {
         /// <summary>
         /// La instancia de la aplicacion de Ice.
         /// </summary>
-        private IIceApplication _IceApplication;
+        private IWebController webController;
 
         /// <summary>
         /// Constructor.
         /// </summary>
         /// <param name="IceApplication"></param>
-        public VehiculosModel([FromServices] IIceApplication IceApplication) => this._IceApplication = IceApplication;
+        public VehiculosModel([FromServices] IWebController webController) => this.webController = webController;
 
         /// <summary>
         /// La lista de vehiculos.
@@ -29,30 +29,9 @@ namespace SCEUCN_WEB.Pages
         /// <returns></returns>
         public List<Vehiculo> Vehiculos { get; set; } = new List<Vehiculo>();
 
-
-        /// <summary>
-        /// Estado de la peticion al servidor. Waiting es el estado por defecto.
-        /// </summary>
-        /// <value></value>
-        public IceRequestState RequestState { get; set; } = IceRequestState.Waiting;
-
-        public async Task OnGetAsync()
+        public void OnGet()
         {
-            try
-            {
-                List<model.Vehiculo> vehiculosIce = await this._IceApplication.obtenerVehiculos();
-            
-                foreach (var vehiculo in vehiculosIce)
-                {
-                    Vehiculos.Add(Controller.ModelConverter.Convert(vehiculo));
-                }
-
-                RequestState = IceRequestState.Completed;
-            }
-            catch (System.Exception)
-            {
-                RequestState = IceRequestState.Error;
-            }
+            Vehiculos = webController.GetVehiculos();
         }
     }
 }
