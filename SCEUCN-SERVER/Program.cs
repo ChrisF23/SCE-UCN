@@ -83,8 +83,8 @@ namespace CL.UCN.DISC.PDIS.SCE.Server
                     adapter.add(backendMain, Ice.Util.stringToIdentity("BackendMain"));
 
                     // The WebBackend
-                    // var backendWeb = new CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.BackendWeb(controller);
-                    // adapter.add(backendWeb, Ice.Util.stringToIdentity("BackendWeb"));
+                    var backendWeb = new CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.BackendWeb(controller);
+                    adapter.add(backendWeb, Ice.Util.stringToIdentity("BackendWeb"));
 
                     // Activate!
                     adapter.activate();
