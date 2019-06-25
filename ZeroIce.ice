@@ -7,9 +7,9 @@
  * Modelo del Dominio del Problema
  */
 
-["java:package:cl.ucn.disc.pdis.sceucn.ice"]
+["java:package:cl.ucn.disc.pdis.sceucn.ice", "cs:namespace:CL.UCN.DISC.PDIS.SCE.Server"]
 // ["Ice.Package.model=cl.ucn.disc.pdis.sceucn.ice"]
-module model {
+module ZeroIce {
 
     /**
      * Tipo de Logo/Contrato
@@ -169,7 +169,7 @@ module model {
     /**
      * Operaciones del Sistema
      */
-    interface Controlador {
+    interface IBackendMain {
 
         /**
          * Registra el ingreso de un vehiculo al campus.
@@ -188,7 +188,10 @@ module model {
  
     };
 
-    interface ControladorWeb {
+    /**
+     * Operaciones de la pagina web.
+     */
+    interface IBackendWeb {
 
         /**
          * Obtiene un listado con todos los registros ingresados en la base de datos.

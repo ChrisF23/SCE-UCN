@@ -226,4 +226,4 @@ project.lock.json
 /IceModel
 
 # Model generated from Ice
-Model.cs
+ZeroIce.cs
