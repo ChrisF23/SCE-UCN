@@ -1,104 +1,75 @@
 ﻿using System;
-using Ice;
-using Microsoft.EntityFrameworkCore;
-using CL.UCN.DISC.PDIS.SCE.Server.DAO;
-using CL.UCN.DISC.PDIS.SCE.Server.Controllers;
-using CL.UCN.DISC.PDIS.SCE.Server.Model;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using CL.UCN.DISC.PDIS.SCE.Server.Controller;
+using CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.Controller;
+using CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.Model;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
-namespace CL.UCN.DISC.PDIS.SCE.Server
-{
+namespace CL.UCN.DISC.PDIS.SCE.Server {
 
     /// <summary>
     /// Main class
     /// </summary>
-    public class Program
-    {
-
-        // The current logger
-        private static ILogger<Program> Logger { get; } = Logging.CreateLogger<Program>();
+    public class Program {
 
         /// <summary>
         /// Main program!
         /// </summary>
-        static void Main(string[] args)
-        {
-            Logger.LogDebug(LE.Main, "Starting Program ..");
+        static void Main(string[] args) {
 
-            // Configuracion de la base de datos.
-            var optionsBuilder = new DbContextOptionsBuilder<DatabaseContext>();
-            optionsBuilder.UseSqlite("Data Source=database.db");
+            // Logger.LogDebug(LE.Main, "Starting Program ..");
 
-            // The Controller.
-            IMainController controller = new MainController(optionsBuilder.Options);
+            // DI
+            ServiceProvider serviceProvider = Startup.BuildServiceProvider();
 
-            // Generador de data
+            // The Logger
+            ILogger<Program> logger = serviceProvider.GetService<ILoggerFactory>().CreateLogger<Program>();
+            logger.LogInformation("Starting the Program ..");
+
+            // Generate the data!
             {
-                DataGeneratorService dg = new DataGeneratorService();
-                Logger.LogDebug(LE.Generate, "Populating the backend ..");
+                IMainController mainController = serviceProvider.GetService<IMainController>();
+                DataGeneratorService gen = serviceProvider.GetService<DataGeneratorService>();
 
-                // Saving the Personas
-                {
-                    List<Persona> personas = dg.GeneratePersonas();
-                    foreach (var persona in personas)
-                    {
-                        controller.Save(persona);
-                        Logger.LogDebug(LE.Generate, JsonConvert.SerializeObject(persona));
-                    }
+                logger.LogDebug("Saving Personas ..");
+                List<Persona> personas = gen.GeneratePersonas();
+                foreach (var persona in personas) {
+                    mainController.Save(persona);
+                    logger.LogDebug(LE.Generate, JsonConvert.SerializeObject(persona));
                 }
 
-                // TODO: Agregar los vehiculos
-                {
+                logger.LogDebug("Saving Vehiculo ..");
+                Vehiculo vehiculo = new Vehiculo();
+                vehiculo.anio = "2019";
+                vehiculo.marca = "Suzuki";
+                vehiculo.placa = "FBXS44";
+                vehiculo.persona = personas[0];
+                vehiculo.tipo = Tipo.Auto;
+                mainController.Save(vehiculo);
 
-                }
             }
 
-            // ZeroC properties
-            Properties properties = Util.createProperties(ref args);
-            // https://doc.zeroc.com/ice/latest/property-reference/ice-trace
-            properties.setProperty("Ice.Trace.Admin.Properties", "1");
-            properties.setProperty("Ice.Trace.Locator", "2");
-            properties.setProperty("Ice.Trace.Network", "3");
-            properties.setProperty("Ice.Trace.Protocol", "1");
-            properties.setProperty("Ice.Trace.Slicing", "1");
-            properties.setProperty("Ice.Trace.ThreadPool", "1");
-            properties.setProperty("Ice.Compression.Level", "9");
+            // The Netscape Communicator
+            try {
 
-            // The ZeroC framework!
-            InitializationData initializationData = new InitializationData();
-            initializationData.properties = properties;
+                logger.LogDebug("Configuring ZeroIce Communicator ..");
+                using(var communicator = serviceProvider.GetService<ZeroIceCommunicator>()) {
 
-            try
-            {
-                // The Netscapte Communicator
-                using (var communicator = Ice.Util.initialize(initializationData))
-                {
-                    // The Adapter
-                    var adapter = communicator.createObjectAdapterWithEndpoints("BackendAdapter", "default -p 10000 -z");
-
-                    // The MainBackend.
-                    var backendMain = new CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.BackendMain(controller);
-                    adapter.add(backendMain, Ice.Util.stringToIdentity("BackendMain"));
-
-                    // The WebBackend
-                    var backendWeb = new CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.BackendWeb(controller);
-                    adapter.add(backendWeb, Ice.Util.stringToIdentity("BackendWeb"));
-
-                    // Activate!
-                    adapter.activate();
-
-                    Logger.LogDebug(LE.Ice, "OK, esperando peticiones...");
+                    // Initialize in port 10000
+                    communicator.initialize(10000);
 
                     // Wait for communicator to shut down
-                    communicator.waitForShutdown();
+                    logger.LogDebug("Communicator OK, starting the server ..");
+                    communicator.start();
+
                 }
+            } catch (System.Exception e) {
+                logger.LogError("Error", e);
             }
-            catch (System.Exception e)
-            {
-                Logger.LogError(LE.Ice, "Error", e);
-            }
+
+            logger.LogInformation("Done.");
 
         }
     }

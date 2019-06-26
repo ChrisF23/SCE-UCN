@@ -1,122 +1,91 @@
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using CL.UCN.DISC.PDIS.SCE.Server.DAO;
-using CL.UCN.DISC.PDIS.SCE.Server.Model;
+using CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.Data;
+using CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.Model;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
-namespace CL.UCN.DISC.PDIS.SCE.Server.Controllers
-{
+/// <summary>
+/// The Controller
+/// </summary>
+namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
+
     /// <summary>
     /// Implementacion concreta.
     /// </summary>
-    public class MainController : IMainController
-    {
-        /// <summary>
-        /// The Logger
-        /// </summary>
-        private ILogger<MainController> Logger { get; } = Logging.CreateLogger<MainController>();
+    public class MainController : IMainController {
 
         /// <summary>
+        /// The Logger.
         /// </summary>
-        private readonly DatabaseContext databaseContext;
+        private readonly ILogger<MainController> _logger;
 
         /// <summary>
+        /// The access to the database.
         /// </summary>
-        public MainController(DbContextOptions<DatabaseContext> options)
-        {
-            databaseContext = new DatabaseContext(options);
+        private readonly ZeroIceContext _databaseContext;
 
-            Logger.LogWarning(LE.Generate, "Delete and create database!!");
+        /// <summary>
+        /// The Constructor
+        /// </summary>
+        public MainController(ILogger<MainController> logger, ZeroIceContext zeroIceContext) {
 
-            // FIXME: Borrado solamente en tiempo de desarrollo.
-            databaseContext.Database.EnsureDeleted();
+            _logger = logger;
+            _databaseContext = zeroIceContext;
 
-            // Creacion de la base de datos
-            databaseContext.Database.EnsureCreated();
         }
 
-        /// <summary>
-        /// </summary>
-        public void Save(Persona persona)
-        {
-            if (persona == null)
-            {
-                Logger.LogError(LE.Save, "Can't save Persona null");
-                throw new System.Exception("Persona fue null.");
-            }
-
-            databaseContext.Personas.Add(persona);
-            databaseContext.SaveChanges();
+        public void Save(Persona persona) {
+            _logger.LogDebug("Saving Persona: {0}", JsonConvert.SerializeObject(persona));
+            _databaseContext.Personas.Add(persona);
+            _databaseContext.SaveChanges();
         }
 
-        /// <summary>
-        /// </summary>
-        public List<Persona> GetPersonas()
-        {
-            return databaseContext.Personas.ToList();
+        public List<Persona> GetPersonas() {
+            return _databaseContext.Personas.ToList();
         }
 
-        /// <summary>
-        /// </summary>
-        public void Save(Vehiculo vehiculo)
-        {
-            databaseContext.Vehiculos.Add(vehiculo);
-            databaseContext.SaveChanges();
+        public void Save(Vehiculo vehiculo) {
+            _logger.LogDebug("Saving Vehiculo: {0}", JsonConvert.SerializeObject(vehiculo));
+            _databaseContext.Vehiculos.Add(vehiculo);
+            _databaseContext.SaveChanges();
         }
 
-        /// <summary>
-        /// </summary>
-        public Vehiculo GetVehiculo(string placa)
-        {
+        public Vehiculo GetVehiculo(string placa) {
+
             // Retorna la entidad si la encuentra. Nulo en otro caso.
+            var results = _databaseContext.Vehiculos.Where(v => v.placa == placa);
 
-            var results = databaseContext.Vehiculos.Where(v => v.Placa == placa);
-
-            if (results.Count() == 1)
-            {
+            if (results.Count() == 1) {
                 return results.First();
             }
 
-            Logger.LogWarning(LE.Find, "Can't find Vehiculo con placa: {placa}", placa);
+            _logger.LogWarning(LE.Find, "Can't find Vehiculo con placa: {placa}", placa);
             return null;
         }
 
-        /// <summary>
-        /// </summary>
-        public List<Vehiculo> GetVehiculos()
-        {
-            return databaseContext.Vehiculos.ToList();
+        public List<Vehiculo> GetVehiculos() {
+            return _databaseContext.Vehiculos.ToList();
         }
 
-        /// <summary>
-        /// </summary>
-        public void Save(Logo logo)
-        {
-            databaseContext.Logos.Add(logo);
-            databaseContext.SaveChanges();
+        public void Save(Logo logo) {
+            _logger.LogDebug("Saving Logo: {0}", JsonConvert.SerializeObject(logo));
+            _databaseContext.Logos.Add(logo);
+            _databaseContext.SaveChanges();
         }
 
-        /// <summary>
-        /// </summary>
-        public List<Logo> GetLogos()
-        {
-            return databaseContext.Logos.ToList();
+        public List<Logo> GetLogos() {
+            return _databaseContext.Logos.ToList();
         }
 
-        /// <summary>
-        /// </summary>
-        public void Save(Registro registro)
-        {
-            databaseContext.Registros.Add(registro);
-            databaseContext.SaveChanges();
+        public void Save(Registro registro) {
+            _logger.LogDebug("Saving Registro: {0}", JsonConvert.SerializeObject(registro));
+            _databaseContext.Registros.Add(registro);
+            _databaseContext.SaveChanges();
         }
 
-        /// <summary>
-        /// </summary>
-        public List<Registro> GetRegistros()
-        {
-            return databaseContext.Registros.ToList();
+        public List<Registro> GetRegistros() {
+            return _databaseContext.Registros.ToList();
         }
 
     }

@@ -2,15 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.Model;
+using CL.UCN.DISC.PDIS.SCE.Web.Controller;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using CL.UCN.DISC.PDIS.SCE.Web.Controllers;
-using CL.UCN.DISC.PDIS.SCE.Server.ZeroIce;
 
-namespace CL.UCN.DISC.PDIS.SCE.Web.Pages
-{
-    public class VehiculosModel : PageModel
-    {
+namespace CL.UCN.DISC.PDIS.SCE.Web.Pages {
+
+    public class VehiculosModel : PageModel {
+
         /// <summary>
         /// La instancia de la aplicacion de Ice.
         /// </summary>
@@ -29,8 +29,7 @@ namespace CL.UCN.DISC.PDIS.SCE.Web.Pages
         /// <returns></returns>
         public List<Vehiculo> Vehiculos { get; set; } = new List<Vehiculo>();
 
-        public void OnGet()
-        {
+        public void OnGet() {
             Vehiculos = webController.GetVehiculos();
         }
     }
