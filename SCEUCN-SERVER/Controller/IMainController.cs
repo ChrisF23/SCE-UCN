@@ -1,17 +1,16 @@
-// (c) 2019 Proyecto Desarrollo e Integracion de Soluciones, I semestre 2019.
-
 using System.Collections.Generic;
-using CL.UCN.DISC.PDIS.SCE.Server.Model;
+using CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.Model;
 
-// https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/naming-guidelines
-namespace CL.UCN.DISC.PDIS.SCE.Server.Controllers
-{
+/// <summary>
+/// The Controller
+/// </summary>
+namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
 
     /// <summary>
     /// Declaracion de las operaciones del sistema.
     /// </summary>
-    public interface IMainController
-    {
+    public interface IMainController {
+
         /// <summary>
         /// Almacena una Persona en el sistema.
         /// </summary>
