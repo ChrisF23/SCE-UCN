@@ -196,7 +196,7 @@ module ZeroIce {
             /**
              * Obtiene un listado con todos los vehiculos registrados en la base de datos.
              */
-            Model::Vehiculos obtenerVehiculos();
+            idempotent Model::Vehiculos obtenerVehiculos();
     
         };
 
@@ -213,17 +213,17 @@ module ZeroIce {
             /**
              * Obtiene un listado con todos los vehiculos registrados en la base de datos.
              */
-            Model::Vehiculos obtenerVehiculos();
+            idempotent Model::Vehiculos obtenerVehiculos();
 
             /**
              * Dada una placa, obtiene el vehiculo correspondiente.
              */
-            Model::Vehiculo obtenerVehiculo(string placa);
+            idempotent Model::Vehiculo obtenerVehiculo(string placa);
 
             /**
              * Obtiene un listado con todas las personas registradas en la base de datos.
              */
-            Model::Personas obtenerPersonas();
+            idempotent Model::Personas obtenerPersonas();
 
             /**
              * Agrega un vehiculo a la base de datos.
