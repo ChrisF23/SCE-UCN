@@ -8,7 +8,6 @@
  */
 
 ["java:package:cl.ucn.disc.pdis.sce.app", "cs:namespace:CL.UCN.DISC.PDIS.SCE.Server"]
-// ["Ice.Package.model=cl.ucn.disc.pdis.sceucn.ice"]
 module ZeroIce {
 
     /**
@@ -17,8 +16,8 @@ module ZeroIce {
     module Model {
 
         /**
-        * Tipo de Logo/Contrato
-        */
+         * Tipo de Logo/Contrato
+         */
         enum Rol {
             Academico,
             Funcionario,
@@ -53,8 +52,8 @@ module ZeroIce {
         };
 
         /**
-        * Persona en el campus con vehiculo
-        */
+         * Persona en el campus con vehiculo
+         */
         ["cs:property"]
         class Persona {
             
@@ -202,8 +201,8 @@ module ZeroIce {
         };
 
         /**
-        * Operaciones de la pagina web.
-        */
+         * Operaciones de la pagina web.
+         */
         interface IBackendWeb {
 
             /**
