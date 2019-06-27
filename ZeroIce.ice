@@ -7,7 +7,7 @@
  * Modelo del Dominio del Problema
  */
 
-["java:package:cl.ucn.disc.pdis.sceucn.ice", "cs:namespace:CL.UCN.DISC.PDIS.SCE.Server"]
+["java:package:cl.ucn.disc.pdis.sce.app", "cs:namespace:CL.UCN.DISC.PDIS.SCE.Server"]
 // ["Ice.Package.model=cl.ucn.disc.pdis.sceucn.ice"]
 module ZeroIce {
 
@@ -157,19 +157,19 @@ module ZeroIce {
         /**
          * Listado de Vehiculos en el sistema
          */
-        ["java:type:java.util.ArrayList<Vehiculo>:java.util.List<Vehiculo>", "cs:generic:List"]
+        ["java:type:java.util.ArrayList<cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Vehiculo>:java.util.List<cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Vehiculo>", "cs:generic:List"]
         sequence<Vehiculo> Vehiculos;
 
         /**
          * Listado de Personas en el sistema
          */
-        ["java:type:java.util.ArrayList<Persona>:java.util.List<Persona>", "cs:generic:List"]
+        ["java:type:java.util.ArrayList<cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Persona>:java.util.List<cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Persona>", "cs:generic:List"]
         sequence<Persona> Personas;
 
         /**
          * Listado de Registros en el sistema
          */
-        ["java:type:java.util.ArrayList<Registro>:java.util.List<Registro>", "cs:generic:List"]
+        ["java:type:java.util.ArrayList<cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Registro>:java.util.List<cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Registro>", "cs:generic:List"]
         sequence<Registro> Registros;
 
     };

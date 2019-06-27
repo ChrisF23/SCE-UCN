@@ -1,11 +1,11 @@
 /*
- *  Created by Christian Farias on 05-06-19 10:13
+ *  Created by Christian Farias on 6/26/19 6:51 PM
  *  Copyright (c) 2019 . All rights reserved.
- *  Last modified 05-06-19 1:33
+ *  Last modified 6/12/19 10:43 AM
  *
  */
 
-package cl.ucn.disc.pdis.sceucn.new_controller;
+package cl.ucn.disc.pdis.sce.app.ZeroIce;
 
 import com.zeroc.Ice.*;
 import lombok.extern.slf4j.Slf4j;
