@@ -1,4 +1,4 @@
-package cl.ucn.disc.pdis.sceucn.adapter;
+package cl.ucn.disc.pdis.sce.app.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -13,16 +13,19 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import cl.ucn.disc.pdis.sceucn.R;
-import cl.ucn.disc.pdis.sceucn.model.Logo;
-import cl.ucn.disc.pdis.sceucn.model.Vehiculo;
+import cl.ucn.disc.pdis.sce.app.R;
+import cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Logo;
+import cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Vehiculo;
 
+/**
+ * The Adapter of {@link Vehiculo}.
+ */
 public final class VehiculoAdapter extends BaseAdapter {
 
     /**
      * La lista de vehiculos.
      */
-    private List<Vehiculo> vehiculos;
+    private List<Vehiculo> vehiculos = new ArrayList<>();
 
     /**
      * El inflador.
@@ -31,46 +34,52 @@ public final class VehiculoAdapter extends BaseAdapter {
 
     /**
      * Constructor del adaptador
+     *
      * @param contexto La instancia del activity.
-     * @param vehiculos La lista de personas a manejar.
      */
-    public VehiculoAdapter(Context contexto, List<Vehiculo> vehiculos) {
-        inflater = LayoutInflater.from(contexto);
+    public VehiculoAdapter(final Context contexto) {
+        this.inflater = LayoutInflater.from(contexto);
+    }
+
+    /**
+     * @param vehiculos a cargar.
+     */
+    public void setVehiculos(final List<Vehiculo> vehiculos) {
         this.vehiculos = vehiculos;
     }
 
     /**
-     * Constructor del adaptador
-     * @param contexto La instancia del activity.
+     * @return the size of the vehicles.
      */
-    public VehiculoAdapter(Context contexto){
-        inflater = LayoutInflater.from(contexto);
-        this.vehiculos = new ArrayList<>();
-    }
-
-    /**
-     * Carga una lista de vehiculos a este adaptador.
-     * @param vehiculos La lista de vehiculos.
-     */
-    public void cargar(List<Vehiculo> vehiculos){
-        this.vehiculos = vehiculos;
-    }
-
     @Override
     public int getCount() {
-        return vehiculos.size();
+        return this.vehiculos.size();
     }
 
+    /**
+     * @param position to get.
+     * @return the {@link Vehiculo}
+     */
     @Override
     public Vehiculo getItem(int position) {
         return vehiculos.get(position);
     }
 
+    /**
+     * @param position
+     * @return the position
+     */
     @Override
     public long getItemId(int position) {
-        return vehiculos.get(position).hashCode();
+        return position;
     }
 
+    /**
+     * @param position
+     * @param view
+     * @param parent
+     * @return the View.
+     */
     @Override
     public View getView(int position, View view, ViewGroup parent) {
 
@@ -93,19 +102,20 @@ public final class VehiculoAdapter extends BaseAdapter {
         // 3.- Llenar holder con los datos del vehiculo.
 
         // 3.1.- Vehiculo
-        holder.patente.setText(vehiculo.getPlaca());
+        holder.patente.setText(vehiculo.placa);
 
         // 3.2.- Persona
         holder.nombrePersona.setText(String.format("%s %s",
-                vehiculo.getPersona().getNombres(), vehiculo.getPersona().getApellidos()));
+                vehiculo.persona.nombres, vehiculo.persona.apellidos));
 
         // 3.3.- Logo.
-        List<Logo> logos = vehiculo.getLogos();
-        if (logos == null || logos.isEmpty()){
+        List<Logo> logos = vehiculo.logos;
+        if (logos == null || logos.isEmpty()) {
             holder.idLogo.setText("Sin Logo (WIP)");
         } else {
-            Collections.sort(logos, (l1, l2) -> l1.getAnio().compareTo(l2.getAnio()));
-            holder.idLogo.setText(logos.get(0).getIdentificador());
+            // FIXME: Cada vez que se despliegue la lista los logos se van a ordenar?
+            Collections.sort(logos, (l1, l2) -> l1.anio.compareTo(l2.anio));
+            holder.idLogo.setText(logos.get(0).identificador);
         }
 
         return view;
@@ -115,9 +125,15 @@ public final class VehiculoAdapter extends BaseAdapter {
      * View Holder de un vehiculo en este adaptador.
      */
     static class VehiculoViewHolder {
-        @BindView(R.id.cv_tv_nombre_persona) TextView nombrePersona;
-        @BindView(R.id.cv_tv_patente) TextView patente;
-        @BindView(R.id.cv_tv_id_logo) TextView idLogo;
+
+        @BindView(R.id.cv_tv_nombre_persona)
+        TextView nombrePersona;
+
+        @BindView(R.id.cv_tv_patente)
+        TextView patente;
+
+        @BindView(R.id.cv_tv_id_logo)
+        TextView idLogo;
 
         VehiculoViewHolder(View view) {
             ButterKnife.bind(this, view);

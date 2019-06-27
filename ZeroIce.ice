@@ -7,8 +7,7 @@
  * Modelo del Dominio del Problema
  */
 
-["java:package:cl.ucn.disc.pdis.sceucn.ice", "cs:namespace:CL.UCN.DISC.PDIS.SCE.Server"]
-// ["Ice.Package.model=cl.ucn.disc.pdis.sceucn.ice"]
+["java:package:cl.ucn.disc.pdis.sce.app", "cs:namespace:CL.UCN.DISC.PDIS.SCE.Server"]
 module ZeroIce {
 
     /**
@@ -17,8 +16,8 @@ module ZeroIce {
     module Model {
 
         /**
-        * Tipo de Logo/Contrato
-        */
+         * Tipo de Logo/Contrato
+         */
         enum Rol {
             Academico,
             Funcionario,
@@ -53,8 +52,8 @@ module ZeroIce {
         };
 
         /**
-        * Persona en el campus con vehiculo
-        */
+         * Persona en el campus con vehiculo
+         */
         ["cs:property"]
         class Persona {
             
@@ -157,19 +156,19 @@ module ZeroIce {
         /**
          * Listado de Vehiculos en el sistema
          */
-        ["java:type:java.util.ArrayList<Vehiculo>:java.util.List<Vehiculo>", "cs:generic:List"]
+        ["java:type:java.util.ArrayList<cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Vehiculo>:java.util.List<cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Vehiculo>", "cs:generic:List"]
         sequence<Vehiculo> Vehiculos;
 
         /**
          * Listado de Personas en el sistema
          */
-        ["java:type:java.util.ArrayList<Persona>:java.util.List<Persona>", "cs:generic:List"]
+        ["java:type:java.util.ArrayList<cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Persona>:java.util.List<cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Persona>", "cs:generic:List"]
         sequence<Persona> Personas;
 
         /**
          * Listado de Registros en el sistema
          */
-        ["java:type:java.util.ArrayList<Registro>:java.util.List<Registro>", "cs:generic:List"]
+        ["java:type:java.util.ArrayList<cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Registro>:java.util.List<cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Registro>", "cs:generic:List"]
         sequence<Registro> Registros;
 
     };
@@ -202,8 +201,8 @@ module ZeroIce {
         };
 
         /**
-        * Operaciones de la pagina web.
-        */
+         * Operaciones de la pagina web.
+         */
         interface IBackendWeb {
 
             /**

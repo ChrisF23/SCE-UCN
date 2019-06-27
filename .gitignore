@@ -92,6 +92,7 @@ fastlane/readme.md
 
 # SQLite database
 database.db
+zeroice.db
 
 # Generated code for Android APP.
 SCEUCN-APP/app/src/generated/*
