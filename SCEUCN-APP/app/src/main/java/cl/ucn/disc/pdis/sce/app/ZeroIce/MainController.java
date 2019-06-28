@@ -1,7 +1,13 @@
 package cl.ucn.disc.pdis.sce.app.ZeroIce;
 
 import com.zeroc.Ice.Communicator;
+import com.zeroc.Ice.ConnectTimeoutException;
+import com.zeroc.Ice.ConnectionRefusedException;
+import com.zeroc.Ice.InitializationData;
+import com.zeroc.Ice.Logger;
 import com.zeroc.Ice.ObjectPrx;
+import com.zeroc.Ice.Properties;
+import com.zeroc.Ice.Util;
 
 import java.util.List;
 
@@ -17,6 +23,16 @@ import lombok.extern.slf4j.Slf4j;
 public final class MainController implements IMainController {
 
     /**
+     * Timeout time.
+     */
+    private static final int TIMEOUT_MILLIS = 10000;
+
+    /**
+     * The current status
+     */
+    private State state = State.Idle;
+
+    /**
      * The {@link Communicator}.
      */
     private Communicator communicator;
@@ -27,20 +43,120 @@ public final class MainController implements IMainController {
     private IBackendMainPrx backenMain;
 
     /**
-     * @param communicator to use.
-     * @param server       to use.
-     * @param port         to use.
+     * The Constructor.
      */
-    public MainController(final Communicator communicator, final String server, final int port) {
+    public MainController() {
+    }
 
-        this.communicator = communicator;
+    /**
+     * @return the {@link Communicator}.
+     */
+    private static Communicator buildCommunicator() {
 
-        log.debug("Using Server {}:{}", server, port);
+        // ZeroC properties
+        Properties properties = Util.createProperties();
+
+        // https://doc.zeroc.com/ice/latest/property-reference/ice-trace
+        properties.setProperty("Ice.Trace.Admin.Properties", "1");
+        properties.setProperty("Ice.Trace.Locator", "2");
+        properties.setProperty("Ice.Trace.Network", "3");
+        properties.setProperty("Ice.Trace.Protocol", "1");
+        properties.setProperty("Ice.Trace.Slicing", "1");
+        // https://doc.zeroc.com/ice/3.7/client-side-features/automatic-retries
+        properties.setProperty("Ice.Trace.Retry", "2");
+        properties.setProperty("Ice.Trace.ThreadPool", "1");
+        properties.setProperty("Ice.Compression.Level", "9");
+        properties.setProperty("Ice.Package.ZeroIce", "cl.ucn.disc.pdis.sce.app");
+
+        // The ZeroC framework!
+        InitializationData initializationData = new InitializationData();
+        initializationData.properties = properties;
+        initializationData.logger = new Logger() {
+
+            @Override
+            public void print(String message) {
+                log.debug(message);
+            }
+
+            @Override
+            public void trace(String category, String message) {
+                log.trace(category + " -> " + message);
+            }
+
+            @Override
+            public void warning(String message) {
+                log.warn(message);
+            }
+
+            @Override
+            public void error(String message) {
+                log.error(message);
+            }
+
+            @Override
+            public String getPrefix() {
+                return "ZeroIceLogger";
+            }
+
+            @Override
+            public Logger cloneWithPrefix(String prefix) {
+                return this;
+            }
+        };
+
+        return Util.initialize(initializationData);
+
+    }
+
+    /**
+     * @return The State.
+     */
+    @Override
+    public State getState() {
+        return this.state;
+    }
+
+    /**
+     * Initialize the ZeroIce code.
+     *
+     * @param host to use.
+     * @param port to use.
+     */
+    public synchronized void initialize(final String host, final int port) {
+
+        // Connecting -> error
+        if (this.state == State.Connecting) {
+            throw new RuntimeException("Can't re-initialice while it's connecting!");
+        }
+
+        // Si ya estoy connectado, destruir!
+        if (this.state == State.Ready) {
+            this.destroy();
+        }
+
+        log.debug("Using Server {}:{}", host, port);
+
+        this.state = State.Connecting;
+
+        // The communicator
+        this.communicator = buildCommunicator();
 
         // The Proxy
-        final ObjectPrx proxy = communicator.stringToProxy(String.format("BackendMain:default -h %s -p %s -z", server, port));
+        // https://doc.zeroc.com/ice/3.7/client-side-features/proxies/proxy-and-endpoint-syntax
+        final String proxyString = String.format("BackendMain:tcp -h %s -p %s -t %s -z", host, port, TIMEOUT_MILLIS);
+        final ObjectPrx proxy = communicator.stringToProxy(proxyString);
 
-        this.backenMain = IBackendMainPrx.checkedCast(proxy);
+        // Contact the server
+        try {
+            this.backenMain = IBackendMainPrx.checkedCast(proxy);
+            this.state = State.Ready;
+        } catch (final ConnectTimeoutException ex) {
+            this.destroy();
+            throw ex;
+        } catch (final ConnectionRefusedException ex) {
+            this.destroy();
+            throw ex;
+        }
 
     }
 
@@ -67,24 +183,12 @@ public final class MainController implements IMainController {
     @Override
     public void destroy() {
         this.backenMain = null;
-        this.communicator.destroy();
-        this.communicator = null;
-    }
-
-    /**
-     * @param args
-     */
-    public static void main(String[] args) {
-
-        log.debug("The Main!");
-
-        final IMainController mainController = new MainController(IceController.buildCommunicator(), "localhost", 10000);
-        for (Vehiculo vehiculo : mainController.obtenerVehiculos()) {
-            log.debug("Vehiculo: {}", vehiculo);
+        if (this.communicator != null) {
+            this.communicator.destroy();
+            this.communicator = null;
         }
-
-        log.debug("End.");
-
+        this.state = State.Destroyed;
     }
+
 
 }

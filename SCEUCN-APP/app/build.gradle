@@ -56,12 +56,16 @@ dependencies {
 
     // Zero ICE
     implementation 'com.zeroc:ice:3.7.2'
+    // ZeroIce Compression:
+    // https://doc.zeroc.com/ice/3.7/ice-release-notes/building-ice-applications-in-java
+    implementation 'org.apache.commons:commons-compress:1.18'
 
     // Simple Logging Facade 4 Java
     implementation 'org.slf4j:slf4j-api:1.7.26'
+    implementation 'com.github.tony19:logback-android:2.0.0'
 
     // Logback
-    implementation 'ch.qos.logback:logback-classic:1.2.3'
+    // implementation 'ch.qos.logback:logback-classic:1.2.3'
 
     // Lombok!
     compileOnly 'org.projectlombok:lombok:1.18.8'
