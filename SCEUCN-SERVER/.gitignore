@@ -227,3 +227,6 @@ project.lock.json
 
 # Model generated from Ice
 ZeroIce.cs
+
+# The Ice database
+zeroice.db
