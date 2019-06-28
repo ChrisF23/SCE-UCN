@@ -13,19 +13,30 @@ import cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Porteria;
 import cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Vehiculo;
 
 /**
- *
+ * The Main Controller.
  */
 public interface IMainController {
 
     /**
-     *
+     * @return the State.
+     */
+    State getState();
+
+    /**
+     * @param host to use.
+     * @param port to use.
+     */
+    void initialize(final String host, final int port);
+
+    /**
      * @return the {@link List} of {@link Vehiculo}.
      */
     List<Vehiculo> obtenerVehiculos();
 
     /**
      * Registra un ingreso en el sistema.
-     * @param placa a registrar.
+     *
+     * @param placa    a registrar.
      * @param porteria por donde ingreso.
      */
     void registrarIngreso(String placa, Porteria porteria);
@@ -34,5 +45,15 @@ public interface IMainController {
      * Destroy the world!
      */
     void destroy();
+
+    /**
+     * Status of the Communicator
+     */
+    enum State {
+        Idle,
+        Connecting,
+        Ready,
+        Destroyed
+    }
 
 }

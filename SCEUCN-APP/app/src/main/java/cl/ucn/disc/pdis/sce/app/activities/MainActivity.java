@@ -31,7 +31,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import cl.ucn.disc.pdis.sce.app.R;
 import cl.ucn.disc.pdis.sce.app.ZeroIce.IMainController;
-import cl.ucn.disc.pdis.sce.app.ZeroIce.IceController;
 import cl.ucn.disc.pdis.sce.app.ZeroIce.MainController;
 import cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Porteria;
 import cl.ucn.disc.pdis.sce.app.ZeroIce.Model.Vehiculo;
@@ -43,16 +42,6 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class MainActivity extends AppCompatActivity {
-
-    /**
-     * The state of the controller.
-     */
-    enum State {
-        Standby,
-        Initializing,
-        Initialized,
-        Destroyed
-    }
 
     /**
      * El edit text donde se buscan las placas.
@@ -78,11 +67,6 @@ public class MainActivity extends AppCompatActivity {
     private IMainController mainController;
 
     /**
-     * Initialized?
-     */
-    private State state = State.Standby;
-
-    /**
      * El adaptador de vehiculos.
      */
     private VehiculoAdapter vehiculoAdapter;
@@ -90,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * La direccion IP del servidor.
      */
-    private String server = "192.168.0.16";
+    private String host = "192.168.0.16";
 
     /**
      * El puerto del servidor.
@@ -116,8 +100,6 @@ public class MainActivity extends AppCompatActivity {
         // .. con mantequilla?
         ButterKnife.bind(this);
 
-        this.state = State.Standby;
-
         // 0.- Asignar el toolbar.
         this.setSupportActionBar(myToolbar);
 
@@ -136,11 +118,10 @@ public class MainActivity extends AppCompatActivity {
         // 5.- Configurar el list view de vehiculos.
         this.setupListViewVehiculos();
 
-        // 6.- Create the controller in background
-        AsyncTask.execute(() -> {
-            this.setServer(this.server);
-            this.obtenerVehiculos();
-        });
+        // 6.- Creacion del main controller.
+        this.mainController = new MainController();
+
+        this.initializeAndLoad();
 
     }
 
@@ -278,49 +259,33 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Actualiza la direccion IP del servidor.
-     *
-     * @param server to use.
      */
-    private void setServer(final String server) {
+    private void initializeAndLoad() {
 
-        // FIXME: Agregar mensaje en caso de que server sea null o vacio
-        if (StringUtils.isEmpty(server)) {
+        if (this.mainController.getState() == IMainController.State.Connecting) {
+            Toast.makeText(this, "Already trying to connect !!", Toast.LENGTH_LONG).show();
+            log.warn("Already trying to connect!!");
             return;
         }
 
-        if (this.state == State.Initializing) {
-            // FIXME: Indicar mediante un mensaje que se esta inicializando
-            return;
-        }
+        // Destroy!
+        this.mainController.destroy();
 
-        // Destruir el controlador
-        if (this.mainController != null) {
-            this.mainController.destroy();
-            this.mainController = null;
-            this.state = State.Destroyed;
-        }
+        runOnUiThread(() -> Toast.makeText(this, "Connecting to " + this.host + " ..", Toast.LENGTH_LONG).show());
 
-        // Setter the server
-        this.server = server;
+        AsyncTask.execute(() -> {
+            try {
+                this.mainController.initialize(this.host, this.port);
+                this.obtenerVehiculos();
+            } catch (final ConnectTimeoutException ex) {
+                runOnUiThread(() -> Toast.makeText(this, "ConnectTimeoutException! to host " + this.host, Toast.LENGTH_LONG).show());
+                log.error("Error 1", ex);
+            } catch (final ConnectionRefusedException ex) {
+                runOnUiThread(() -> Toast.makeText(this, "ConnectionRefusedException! to host " + this.host, Toast.LENGTH_LONG).show());
+                log.error("Error 2", ex);
+            }
+        });
 
-        try {
-
-            this.state = State.Initializing;
-
-            // Build the controller in background
-            this.mainController = new MainController(
-                    IceController.buildCommunicator(),
-                    this.server,
-                    this.port
-            );
-
-            this.state = State.Initialized;
-
-        } catch (final ConnectTimeoutException ex) {
-            this.state = State.Standby;
-        } catch (final ConnectionRefusedException ex) {
-            this.state = State.Standby;
-        }
 
         // Mostrar mensaje.
         // Toast.makeText(this, "Estableciendo conexion... (" + this.server + ")", Toast.LENGTH_LONG).show();
@@ -328,21 +293,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * @return if the controller is ready.
+     */
+    private boolean isControllerReady() {
+
+        // Main controller don't exists.
+        if (this.mainController == null) {
+            log.warn("MainController is null !!!");
+            return false;
+        }
+
+        // Not ready?
+        if (this.mainController.getState() != IMainController.State.Ready) {
+            log.warn("Can't get Vehiculos, state: {}", this.mainController.getState());
+            return false;
+        }
+
+        return true;
+
+    }
+
+    /**
      * Obtiene todos los vehiculos desde el server.
+     * Warn: DEBE ejecutarse en segundo plano.
      */
     private void obtenerVehiculos() {
 
-        if (this.mainController != null) {
-
-            final List<Vehiculo> vehiculos = this.mainController.obtenerVehiculos();
-            this.vehiculoAdapter.setVehiculos(vehiculos);
-
-            runOnUiThread(() -> {
-                this.vehiculoAdapter.notifyDataSetChanged();
-                Toast.makeText(this, "Vehiculos obtenidos!", Toast.LENGTH_LONG).show();
-            });
-
+        if (!this.isControllerReady()) {
+            return;
         }
+
+        final List<Vehiculo> vehiculos = this.mainController.obtenerVehiculos();
+        this.vehiculoAdapter.setVehiculos(vehiculos);
+
+        runOnUiThread(() -> {
+            this.vehiculoAdapter.notifyDataSetChanged();
+            Toast.makeText(this, "Vehiculos obtenidos!", Toast.LENGTH_LONG).show();
+        });
+
 
         /*
         AsyncTask.execute(() -> {
@@ -396,9 +384,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *
-     * @param menu
-     * @return
+     * @param menu menu.
+     * @return true if use menu.
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -408,38 +395,42 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     *
-     * @param item
-     * @return
+     * @param item menu.
+     * @return true si fue aceptada.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
 
-            case R.id.item_tema_oscuro:
+            // The Theme
+            case R.id.item_tema_oscuro: {
                 Toast.makeText(this, "Aplicando Modo Noche...", Toast.LENGTH_SHORT).show();
                 setTheme(R.style.Theme_Primary_Base_Dark);
                 return true;
+            }
 
-            case R.id.item_verificar_conexion:
-                Toast.makeText(this, "Reconectando a " + this.server + " ..", Toast.LENGTH_SHORT).show();
-                AsyncTask.execute(() -> {
-                    this.setServer(this.server);
-                    this.obtenerVehiculos();
-                });
+            // Verificando connection
+            case R.id.item_verificar_conexion: {
+
+                initializeAndLoad();
                 return true;
+            }
 
 //            case R.id.item_tema_desert:
 //                Toast.makeText(this, "Aplicando Tema Desert...", Toast.LENGTH_SHORT).show();
 //                setTheme(R.style.Theme_Primary_Base_lightTheme);
 
-            case R.id.item_configurar_servidor:
+            // Configurar servidor
+            case R.id.item_configurar_servidor: {
                 abrirDialogConfigurarServidor();
                 return true;
+            }
 
-            default:
+            // The default
+            default: {
                 return super.onOptionsItemSelected(item);
+            }
 
         }
 
@@ -451,7 +442,8 @@ public class MainActivity extends AppCompatActivity {
     private void abrirDialogConfigurarServidor() {
 
         // FIXME: Enviar mensaje que el proceso de inicializacion se encuentra en marcha.
-        if (this.state == State.Initializing) {
+        if (this.mainController == null || this.mainController.getState() == IMainController.State.Connecting) {
+            log.warn("Connection, please try later!");
             return;
         }
 
@@ -468,8 +460,8 @@ public class MainActivity extends AppCompatActivity {
         builder.setView(dialogView);
 
         // 4.- Configurar dialog.
-        final EditText etServer = dialogView.findViewById(R.id.et_server_ip);
-        etServer.setText(this.server);
+        final EditText etHost = dialogView.findViewById(R.id.et_server_ip);
+        etHost.setText(this.host);
 
         // 5.- Crear el alert dialog a traves del builder..
         final AlertDialog alertDialog = builder.create();
@@ -480,15 +472,14 @@ public class MainActivity extends AppCompatActivity {
             // Cancelar dialog.
             alertDialog.dismiss();
 
-            // Obtener edit text.
-            final EditText etServerIP = dialogView.findViewById(R.id.et_server_ip);
+            // Change the host
+            this.host = StringUtils.trimToEmpty(etHost.getText().toString());
 
             // Running in background
             AsyncTask.execute(() -> {
-                this.setServer(etServerIP.getText().toString());
+                this.mainController.initialize(this.host, this.port);
                 this.obtenerVehiculos();
             });
-
 
         });
 
