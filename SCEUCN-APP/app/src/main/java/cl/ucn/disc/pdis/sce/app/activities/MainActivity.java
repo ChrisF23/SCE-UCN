@@ -24,8 +24,10 @@ import com.zeroc.Ice.ConnectTimeoutException;
 import com.zeroc.Ice.ConnectionRefusedException;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.StopWatch;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * La direccion IP del servidor.
      */
-    private String host = "192.168.0.16";
+    private String host = "20.0.0.107";
 
     /**
      * El puerto del servidor.
@@ -268,21 +270,22 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        // Destroy!
-        this.mainController.destroy();
-
-        runOnUiThread(() -> Toast.makeText(this, "Connecting to " + this.host + " ..", Toast.LENGTH_LONG).show());
+        Toast.makeText(this, "Connecting to " + this.host + " ..", Toast.LENGTH_SHORT).show();
 
         AsyncTask.execute(() -> {
             try {
+
+                // Destroy!
+                this.mainController.destroy();
+
                 this.mainController.initialize(this.host, this.port);
                 this.obtenerVehiculos();
             } catch (final ConnectTimeoutException ex) {
                 runOnUiThread(() -> Toast.makeText(this, "ConnectTimeoutException! to host " + this.host, Toast.LENGTH_LONG).show());
-                log.error("Error 1", ex);
+                log.warn("Error", ex);
             } catch (final ConnectionRefusedException ex) {
                 runOnUiThread(() -> Toast.makeText(this, "ConnectionRefusedException! to host " + this.host, Toast.LENGTH_LONG).show());
-                log.error("Error 2", ex);
+                log.warn("Error", ex);
             }
         });
 
@@ -323,12 +326,22 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        final List<Vehiculo> vehiculos = this.mainController.obtenerVehiculos();
-        this.vehiculoAdapter.setVehiculos(vehiculos);
+        final StopWatch stopWatch = StopWatch.createStarted();
+
+        try {
+            final List<Vehiculo> vehiculos = this.mainController.obtenerVehiculos();
+            this.vehiculoAdapter.setVehiculos(vehiculos);
+        } catch (ConnectTimeoutException ex) {
+            runOnUiThread(() -> Toast.makeText(this, "Error de Timeout!", Toast.LENGTH_LONG).show());
+            return;
+        } catch (final ConnectionRefusedException ex) {
+            runOnUiThread(() -> Toast.makeText(this, "Error de conexion!", Toast.LENGTH_LONG).show());
+            return;
+        }
 
         runOnUiThread(() -> {
             this.vehiculoAdapter.notifyDataSetChanged();
-            Toast.makeText(this, "Vehiculos obtenidos!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Vehiculos obtenidos in " + stopWatch.getTime(TimeUnit.MILLISECONDS) + "ms.", Toast.LENGTH_LONG).show();
         });
 
 
@@ -413,7 +426,23 @@ public class MainActivity extends AppCompatActivity {
             // Verificando connection
             case R.id.item_verificar_conexion: {
 
-                initializeAndLoad();
+                switch (this.mainController.getState()) {
+                    case Ready: {
+                        Toast.makeText(this, "Getting Vehiculos from host " + this.host + " ..", Toast.LENGTH_SHORT).show();
+                        AsyncTask.execute(this::obtenerVehiculos);
+                        return true;
+                    }
+                    case Connecting: {
+                        Toast.makeText(this, "Already trying to connect !!", Toast.LENGTH_LONG).show();
+                        return true;
+                    }
+                    case Idle:
+                    case Destroyed: {
+                        initializeAndLoad();
+                        return true;
+                    }
+
+                }
                 return true;
             }
 
@@ -475,11 +504,7 @@ public class MainActivity extends AppCompatActivity {
             // Change the host
             this.host = StringUtils.trimToEmpty(etHost.getText().toString());
 
-            // Running in background
-            AsyncTask.execute(() -> {
-                this.mainController.initialize(this.host, this.port);
-                this.obtenerVehiculos();
-            });
+            this.initializeAndLoad();
 
         });
 
