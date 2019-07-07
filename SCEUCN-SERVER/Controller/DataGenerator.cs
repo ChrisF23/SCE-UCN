@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.Model;
 using GenFu;
@@ -45,6 +46,11 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
         private readonly IDataGenerator<Persona> _personaGen = new DataGenerator<Persona>();
 
         /// <summary>
+        /// Generador de datos de Vehiculos.
+        /// </summary>
+        private readonly IDataGenerator<Vehiculo> _vehiculoGen = new DataGenerator<Vehiculo>();
+
+        /// <summary>
         /// Constructor del generador de datos.
         /// </summary>
         public DataGeneratorService(ILogger<DataGeneratorService> logger) {
@@ -52,8 +58,9 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
             _logger = logger;
 
             _logger.LogDebug(LE.Generate, "Configuring ..");
+            
             // Contador para avanzar por los ruts.
-            var i = 0;
+            var rutIndex = 0;
 
             // Arreglo no tan al azar de ruts.
             string[] ruts = {
@@ -67,19 +74,53 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
                 "148961345"
             };
 
+            var placaIndex = 0;
+
+            string[] placas = {
+                "CA-FA-23",
+                "BD-JL-10",
+                "FJ-CM-27",
+                "LA-OB-19",
+                "OR-MK-01",
+                "RA-FR-24",
+                "DI-BR-22",
+                "CS-TL-99",
+                "KN-SB-02",
+                "ST-NS-13",
+                "CR-CY-38",
+                "ST-WR-04",
+                "BN-HA-03",
+                "MT-RD-29",
+            };
+
+            // Lista con las definiciones de Tipo.
+            var tipoValues = Enum.GetValues(typeof(Tipo));
+            var rnd = new Random();
+
             _logger.LogDebug(LE.Generate, "Using {0} ruts.", ruts.Length);
 
             // Configuracion del POCO de Persona.
             _logger.LogDebug(LE.Generate, "Configuring ThePersona generator ..");
             A.Configure<Persona>()
                 .Fill(x => x.id, 0)
-                .Fill(x => x.rut, () => ruts[i++])
+                .Fill(x => x.rut, () => ruts[rutIndex++])
                 .Fill(x => x.nombres).AsFirstName()
                 .Fill(x => x.apellidos).AsLastName()
                 .Fill(x => x.email, x => { return string.Format("{0}.{1}@ucn.cl", x.nombres, x.apellidos).ToLower(); })
                 .Fill(x => x.movil).AsPhoneNumber()
                 .Fill(x => x.unidad).AsMusicGenreName()
                 .Fill(x => x.anexo).AsPhoneNumber();
+                //.Fill(x => x.rol () => )
+
+            _logger.LogDebug(LE.Generate, "Using {0} placas.", placas.Length);
+            _logger.LogDebug(LE.Generate, "Configuring TheVehiculo generator ..");
+
+            A.Configure<Vehiculo>()
+                .Fill(x => x.id, 0)
+                .Fill(x => x.placa, () => placas[placaIndex++])
+                .Fill(x => x.marca).AsCanadianProvince()
+                .Fill(x => x.tipo, () => (Tipo) tipoValues.GetValue(rnd.Next(tipoValues.Length)))
+                .Fill(x => x.anio, "2017");
 
         }
 
@@ -88,6 +129,13 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
         /// </summary>
         public List<Persona> GeneratePersonas() {
             return _personaGen.Collection(8);
+        }
+
+        /// <summary>
+        /// Genera un listado de vehiculos de forma dinamica.
+        /// </summary>
+        public List<Vehiculo> GenerateVehiculos() {
+            return _vehiculoGen.Collection(14);
         }
 
     }

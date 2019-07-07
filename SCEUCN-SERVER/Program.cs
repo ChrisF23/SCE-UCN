@@ -30,24 +30,28 @@ namespace CL.UCN.DISC.PDIS.SCE.Server {
 
             // Generate the data!
             {
+                Random rnd = new Random();
+
                 IMainController mainController = serviceProvider.GetService<IMainController>();
                 DataGeneratorService gen = serviceProvider.GetService<DataGeneratorService>();
 
-                logger.LogDebug("Saving Personas ..");
+                logger.LogDebug("Saving Personas...");
                 List<Persona> personas = gen.GeneratePersonas();
                 foreach (var persona in personas) {
                     mainController.Save(persona);
                     logger.LogDebug(LE.Generate, JsonConvert.SerializeObject(persona));
                 }
 
-                logger.LogDebug("Saving Vehiculo ..");
-                Vehiculo vehiculo = new Vehiculo();
-                vehiculo.anio = "2019";
-                vehiculo.marca = "Suzuki";
-                vehiculo.placa = "FBXS44";
-                vehiculo.persona = personas[0];
-                vehiculo.tipo = Tipo.Auto;
-                mainController.Save(vehiculo);
+                logger.LogDebug("Saving Vehiculos...");
+                List<Vehiculo> vehiculos = gen.GenerateVehiculos();
+                foreach (var vehiculo in vehiculos)
+                {
+                    // Set persona:
+                    vehiculo.persona = personas[rnd.Next(personas.Count)];
+                    mainController.Save(vehiculo);
+                    logger.LogDebug(LE.Generate, JsonConvert.SerializeObject(vehiculo));
+
+                }
 
             }
 
