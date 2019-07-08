@@ -1,0 +1,48 @@
+@page "{id:length(8)}"
+@model CL.UCN.DISC.PDIS.SCE.Web.Pages.DetalleVehiculoModel
+@{
+  ViewData["Title"] = @Model.Id;
+}
+
+<h1>Detalles del Vehiculo</h1>
+
+<head>
+  <link rel="stylesheet" href="~/css/card.css">
+</head>
+
+
+<div class="card">
+    
+  <h2>@(Model.Vehiculo.placa)</h2>
+  
+  <div class="vehiculoDesc" style="list-style-type:none">
+    <li><strong>Marca:</strong> @(Model.Vehiculo.marca)</li>
+    <li><strong>Tipo:</strong> @(Model.Vehiculo.tipo)</li>
+  </div>
+
+  @{var persona = Model.Vehiculo.persona;}
+
+  <div class="personaDesc" style="list-style-type:none">
+    <li><strong>Nombre completo:</strong> @(persona.nombres) @(persona.apellidos)</li>
+    <li><strong>Rut:</strong> @(persona.rut)</li>
+
+
+    <li><strong>Unidad:</strong> @(persona.unidad)</li>
+    <li><strong>Oficina:</strong> @(persona.oficina)</li>
+    <li><strong>Rol:</strong> @(persona.rol)</li>
+    <li><strong>Contrato:</strong> @(persona.contrato)</li>    
+
+
+    <li><strong>Email:</strong> @(persona.email)</li>
+    <li><strong>Movil:</strong> @(persona.movil)</li>
+    <li><strong>Anexo:</strong> @(persona.anexo)</li>
+  </div>
+
+  @{var ultimoLogo = Model.Vehiculo.logos.OrderBy(l => l.anio).First();}
+
+  <div class="logosDesc" style="list-style-type:none">
+    <li><strong>Logo ID:</strong> @(ultimoLogo.identificador)</li>
+    <li><strong>Anio:</strong> @(ultimoLogo.anio)</li>
+  </div>
+
+</div>

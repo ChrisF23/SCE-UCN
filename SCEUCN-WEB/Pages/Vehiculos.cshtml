@@ -9,19 +9,25 @@
   <link rel="stylesheet" href="~/css/table.css">
 </head>
 
+
 <body>
   <table>
     <tr>
       <th>Placa</th>
       <th>Rut</th>
       <th>Nombre Completo</th>
+      <th>Ultimo Logo</th>
     </tr>
     
-    <!-- El detalle del vehiculo. -->
+    <!-- Por cada vehiculo... -->
     @foreach (var vehiculo in Model.Vehiculos)
     {
       <tr>
-        <td>@(vehiculo.placa)</td>
+        <!-- Mostrar el detalle del vehiculo. -->
+        <td><a asp-page="/DetalleVehiculo" asp-route-id="@vehiculo.placa">@(vehiculo.placa)</a></td>
+        <td>@(vehiculo.persona.rut)</td>
+        <td>@(vehiculo.persona.nombres) @(vehiculo.persona.apellidos)</td>
+        <td>@(vehiculo.logos.OrderBy(l => l.anio).First().identificador)</td>
       </tr>
     }
 
