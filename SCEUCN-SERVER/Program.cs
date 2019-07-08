@@ -31,6 +31,7 @@ namespace CL.UCN.DISC.PDIS.SCE.Server {
             // Generate the data!
             {
                 Random rnd = new Random();
+                var logoIndex = 0;
 
                 IMainController mainController = serviceProvider.GetService<IMainController>();
                 DataGeneratorService gen = serviceProvider.GetService<DataGeneratorService>();
@@ -42,17 +43,39 @@ namespace CL.UCN.DISC.PDIS.SCE.Server {
                     logger.LogDebug(LE.Generate, JsonConvert.SerializeObject(persona));
                 }
 
+                logger.LogDebug("Saving Logos...");
+                List<Logo> logos = gen.GenerateLogos();
+                foreach (var logo in logos) {
+                    mainController.Save(logo);
+                    logger.LogDebug(LE.Generate, JsonConvert.SerializeObject(logo));
+                }
+
+                // Una vez guardados en la base de datos, obtenerlos.
+                var dbLogos = mainController.GetLogos();
+                var dbPersonas = mainController.GetPersonas();
+
                 logger.LogDebug("Saving Vehiculos...");
                 List<Vehiculo> vehiculos = gen.GenerateVehiculos();
                 foreach (var vehiculo in vehiculos)
                 {
-                    // Set persona:
-                    vehiculo.persona = personas[rnd.Next(personas.Count)];
+                    // Set persona (aleatorio):
+                    vehiculo.persona = dbPersonas[rnd.Next(personas.Count)];
+
+                    // Get logo:
+                    vehiculo.logos = new List<Logo>();
+                    var logo = dbLogos[logoIndex++];
+
+                    // Set rol al logo:
+                    logo.rol = vehiculo.persona.rol;
+
+                    // Set logo:
+                    vehiculo.logos.Add(logo);
+
+                    // Update logo + Save vehiculo:
+                    mainController.Update(logo);
                     mainController.Save(vehiculo);
                     logger.LogDebug(LE.Generate, JsonConvert.SerializeObject(vehiculo));
-
                 }
-
             }
 
             // The Netscape Communicator

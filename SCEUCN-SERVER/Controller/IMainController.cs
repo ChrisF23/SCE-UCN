@@ -43,6 +43,11 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
         /// Almacena un Logo en el sistema.
         /// </summary>
         void Save(Logo logo);
+        
+        /// <summary>
+        /// Actualiza un Logo en el sistema.
+        /// </summary>
+        void Update(Logo logo);
 
         /// <summary>
         /// Obtiene todos los Logos presentes en el sistema.

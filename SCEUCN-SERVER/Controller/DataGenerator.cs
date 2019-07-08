@@ -51,6 +51,12 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
         private readonly IDataGenerator<Vehiculo> _vehiculoGen = new DataGenerator<Vehiculo>();
 
         /// <summary>
+        /// Generador de datos de Logos.
+        /// </summary>
+        private readonly IDataGenerator<Logo> _logosGen = new DataGenerator<Logo>();
+
+
+        /// <summary>
         /// Constructor del generador de datos.
         /// </summary>
         public DataGeneratorService(ILogger<DataGeneratorService> logger) {
@@ -61,7 +67,6 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
             
             // Contador para avanzar por los ruts.
             var rutIndex = 0;
-
             // Arreglo no tan al azar de ruts.
             string[] ruts = {
                 "19691840K",
@@ -75,7 +80,6 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
             };
 
             var placaIndex = 0;
-
             string[] placas = {
                 "CA-FA-23",
                 "BD-JL-10",
@@ -93,14 +97,41 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
                 "MT-RD-29",
             };
 
-            // Lista con las definiciones de Tipo.
-            var tipoValues = Enum.GetValues(typeof(Tipo));
+            var logosIdsIndex = 0;
+            string[] logosIds = {
+                "ACME-20",
+                "ACME-22",
+                "ACME-34",
+                "MCU-13",
+                "MCU-89",
+                "MCU-66",
+                "SWPM-58",
+                "SWPM-22",
+                "SWPM-34",
+                "CCNA-13",
+                "CCNA-89",
+                "CCNA-66",
+                "DARQ-58",
+                "DARQ-59",
+            };
+
+            // Variable rng
             var rnd = new Random();
 
-            _logger.LogDebug(LE.Generate, "Using {0} ruts.", ruts.Length);
+            // Lista con las definiciones de Tipo.
+            var tipoValues = Enum.GetValues(typeof(Tipo));
+
+            // Lista con las definiciones de Rol.
+            var rolValues = Enum.GetValues(typeof(Rol));
+
+            // Lista con las definiciones de Contrato.
+            var contratoValues = Enum.GetValues(typeof(Contrato));
+
 
             // Configuracion del POCO de Persona.
+            _logger.LogDebug(LE.Generate, "Using {0} ruts.", ruts.Length);
             _logger.LogDebug(LE.Generate, "Configuring ThePersona generator ..");
+
             A.Configure<Persona>()
                 .Fill(x => x.id, 0)
                 .Fill(x => x.rut, () => ruts[rutIndex++])
@@ -109,9 +140,10 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
                 .Fill(x => x.email, x => { return string.Format("{0}.{1}@ucn.cl", x.nombres, x.apellidos).ToLower(); })
                 .Fill(x => x.movil).AsPhoneNumber()
                 .Fill(x => x.unidad).AsMusicGenreName()
-                .Fill(x => x.anexo).AsPhoneNumber();
-                //.Fill(x => x.rol () => )
+                .Fill(x => x.anexo).AsPhoneNumber()
+                .Fill(x => x.rol, () => (Rol) rolValues.GetValue(rnd.Next(tipoValues.Length)));
 
+            // Configuracion del POCO de Vehiculo.
             _logger.LogDebug(LE.Generate, "Using {0} placas.", placas.Length);
             _logger.LogDebug(LE.Generate, "Configuring TheVehiculo generator ..");
 
@@ -120,6 +152,15 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
                 .Fill(x => x.placa, () => placas[placaIndex++])
                 .Fill(x => x.marca).AsCanadianProvince()
                 .Fill(x => x.tipo, () => (Tipo) tipoValues.GetValue(rnd.Next(tipoValues.Length)))
+                .Fill(x => x.anio, "2017");
+
+            // Configuracion del POCO de Logo.
+            _logger.LogDebug(LE.Generate, "Using {0} logos id's.", logosIds.Length);
+            _logger.LogDebug(LE.Generate, "Configuring TheLogos generator ..");
+
+            A.Configure<Logo>()
+                .Fill(x => x.id, 0)
+                .Fill(x => x.identificador, () => logosIds[logosIdsIndex++])
                 .Fill(x => x.anio, "2017");
 
         }
@@ -138,5 +179,11 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
             return _vehiculoGen.Collection(14);
         }
 
+        /// <summary>
+        /// Genera un listado de logos de forma dinamica.
+        /// </summary>
+        public List<Logo> GenerateLogos() {
+            return _logosGen.Collection(14);
+        }
     }
 }

@@ -74,6 +74,12 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
             _databaseContext.SaveChanges();
         }
 
+        public void Update(Logo logo){
+            _logger.LogDebug("Updating Logo: {0}", JsonConvert.SerializeObject(logo));
+            _databaseContext.Logos.Update(logo);
+            _databaseContext.SaveChanges();
+        }
+
         public List<Logo> GetLogos() {
             return _databaseContext.Logos.ToList();
         }
