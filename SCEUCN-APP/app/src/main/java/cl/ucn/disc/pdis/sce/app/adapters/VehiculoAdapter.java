@@ -6,11 +6,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cl.ucn.disc.pdis.sce.app.R;
@@ -117,7 +115,6 @@ public final class VehiculoAdapter extends BaseAdapter {
             Collections.sort(logos, (l1, l2) -> l1.anio.compareTo(l2.anio));
             holder.idLogo.setText(logos.get(0).identificador);
         }
-
         return view;
     }
 

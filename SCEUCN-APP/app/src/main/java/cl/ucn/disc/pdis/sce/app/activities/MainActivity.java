@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      * La direccion IP del servidor.
      */
-    private String host = "20.0.0.107";
+    private String host = "172.16.34.126";
 
     /**
      * El puerto del servidor.
@@ -242,12 +242,15 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout llDialog = dialogView.findViewById(R.id.ll_dialog);
         VehiculoDetalleViewHolder holder = new VehiculoDetalleViewHolder(llDialog);
 
-        /*
-        holder.tvPatente.setText(String.format("Patente: %s", vehiculo.getPlaca()));
+
+        holder.tvPatente.setText(String.format(vehiculo.placa));
         holder.tvNombrePersona.setText(String.format("Nombre: %s",
-                String.format("%s %s", vehiculo.getPersona().getNombres(), vehiculo.getPersona().getApellidos())));
-        holder.tvRut.setText(String.format("Rut: %s", vehiculo.getPersona().getRut()));
-        */
+                String.format("%s %s", vehiculo.persona.nombres, vehiculo.persona.apellidos)));
+        holder.tvRut.setText(String.format("Rut: %s", vehiculo.persona.rut));
+        holder.tvMarca.setText(vehiculo.marca);
+        holder.tvTipo.setText(String.format(String.valueOf(vehiculo.tipo)));
+        //holder.tvLogo.setText(vehiculo.);
+
 
         /*
         holder.tvPatente.setText(vehiculo.getPlaca());
@@ -528,6 +531,16 @@ public class MainActivity extends AppCompatActivity {
 
         @BindView(R.id.tv_rut)
         TextView tvRut;
+
+        @BindView(R.id.tv_marca)
+        TextView tvMarca;
+
+        @BindView(R.id.tv_tipo_vehiculo)
+        TextView tvTipo;
+
+        @BindView(R.id.tv_id_logo)
+        TextView tvLogo;
+
 
         VehiculoDetalleViewHolder(View view) {
             ButterKnife.bind(this, view);

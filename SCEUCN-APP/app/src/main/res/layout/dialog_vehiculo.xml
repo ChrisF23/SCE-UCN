@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_dialog"
     android:background="?attr/backgroundcolor"
     android:layout_width="match_parent"
@@ -11,52 +13,32 @@
     android:paddingRight="10dp"
     android:paddingBottom="20dp">
 
-    <TextView
-        android:id="@+id/tv_server_config"
-        android:fontFamily="@font/myriadpro_bold"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:text="Vehiculo:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-        android:textColor="?attr/textcolor"
-        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tv_patente"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="0dp"
-        android:textColor="?attr/textcolor"
-        android:fontFamily="@font/myriadpro_light"
-        android:paddingLeft="10dp"
-        android:text="XX-XX-XX"
-        android:textAlignment="textStart"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        android:background="@color/colorA_Accent"
+        android:layout_height="120dp">
 
-    <TextView
-        android:id="@+id/tv_marca"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="?attr/textcolor"
-        android:layout_marginTop="0dp"
-        android:fontFamily="@font/myriadpro_light"
-        android:paddingLeft="10dp"
-        android:text="MARCA"
-        android:textAlignment="textStart"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+        <TextView
+            android:id="@+id/tv_patente"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/back"
+            android:fontFamily="@font/fe_font"
+            android:paddingStart="4dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="4dp"
+            android:paddingBottom="20dp"
+            android:text="ca-fa-00"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_tipo_vehiculo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="?attr/textcolor"
-        android:layout_marginTop="0dp"
-        android:fontFamily="@font/myriadpro_light"
-        android:paddingLeft="10dp"
-        android:text="TIPO"
-        android:textAlignment="textStart"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <Space
         android:layout_width="match_parent"
@@ -96,6 +78,45 @@
         android:text="XX.XXX.XXX-K"
         android:textAlignment="textStart"
         android:textColor="?attr/textcolor"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginTop="0dp" />
+    <TextView
+        android:id="@+id/tv_server_config"
+        android:fontFamily="@font/myriadpro_bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="0dp"
+        android:text="Vehiculo:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textColor="?attr/textcolor"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tv_marca"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/textcolor"
+        android:layout_marginTop="0dp"
+        android:fontFamily="@font/myriadpro_light"
+        android:paddingLeft="10dp"
+        android:text="MARCA"
+        android:textAlignment="textStart"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <TextView
+        android:id="@+id/tv_tipo_vehiculo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/textcolor"
+        android:layout_marginTop="0dp"
+        android:fontFamily="@font/myriadpro_light"
+        android:paddingLeft="10dp"
+        android:text="TIPO"
+        android:textAlignment="textStart"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
     <Space
