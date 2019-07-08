@@ -1,36 +1,39 @@
-﻿@page
+﻿@page "/vehiculos"
 @model CL.UCN.DISC.PDIS.SCE.Web.Pages.VehiculosModel
 @{
     ViewData["Title"] = "Vehiculos";
 }
-
-<h1>@(ViewData["Title"])</h1>
-<head>
-  <link rel="stylesheet" href="~/css/table.css">
-</head>
-
-
 <body>
-  <table>
-    <tr>
-      <th>Placa</th>
-      <th>Rut</th>
-      <th>Nombre Completo</th>
-      <th>Ultimo Logo</th>
-    </tr>
-    
-    <!-- Por cada vehiculo... -->
-    @foreach (var vehiculo in Model.Vehiculos)
-    {
-      <tr>
-        <!-- Mostrar el detalle del vehiculo. -->
-        <td><a asp-page="/DetalleVehiculo" asp-route-id="@vehiculo.placa">@(vehiculo.placa)</a></td>
-        <td>@(vehiculo.persona.rut)</td>
-        <td>@(vehiculo.persona.nombres) @(vehiculo.persona.apellidos)</td>
-        <td>@(vehiculo.logos.OrderBy(l => l.anio).First().identificador)</td>
-      </tr>
-    }
 
+<div class="card">
+  <div class="card-header">
+    <h4>@(ViewData["Title"])</h4>
+  </div>
+  
+  <div class="card-body">
+    <div class="table-responsive">
+      <table class="table">
+        <tr>
+          <th>Placa</th>
+          <th>Rut</th>
+          <th>Nombre Completo</th>
+          <th>Ultimo Logo</th>
+        </tr>
+        
+        <!-- Por cada vehiculo... -->
+        @foreach (var vehiculo in Model.Vehiculos)
+        {
+        <tr>
+          <!-- Mostrar el detalle del vehiculo. -->
+          <td><a asp-page="DetalleVehiculo" asp-route-id="@vehiculo.placa">@(vehiculo.placa)</a></td>
+          <td>@(vehiculo.persona.rut)</td>
+          <td>@(vehiculo.persona.nombres) @(vehiculo.persona.apellidos)</td>
+          <td>@(vehiculo.logos.OrderBy(l => l.anio).First().identificador)</td>
+        </tr>
+        }
+      </table>
+    </div>
+  </div>
+</div>
 
-  </table>
 </body>

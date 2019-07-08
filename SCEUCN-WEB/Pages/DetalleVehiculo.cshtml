@@ -1,48 +1,131 @@
-@page "{id:length(8)}"
+@page "/vehiculos/{id:length(8)}"
 @model CL.UCN.DISC.PDIS.SCE.Web.Pages.DetalleVehiculoModel
 @{
   ViewData["Title"] = @Model.Id;
+  var persona = Model.Vehiculo.persona;
+  var logos = Model.Vehiculo.logos;
 }
 
-<h1>Detalles del Vehiculo</h1>
 
-<head>
-  <link rel="stylesheet" href="~/css/card.css">
-</head>
+<body>
 
+<!-- Detalles del vehiculo-->
+<div class="card">
+  <div class="card-header">
+    <h4>Datos del Vehiculo</h4>
+  </div>
+  
+  <div class="card-body">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <div class="row justify-content-start" >
+          <div class="col-3">
+            <h6 class="card-title">Placa</h6>
+            <h5 class="card-text">@(Model.Vehiculo.placa)</h5>
+          </div>
+
+          <div class="col-3">
+            <h6 class="card-title">Tipo</h6>
+            <p class="card-text">@(Model.Vehiculo.tipo)</p>
+          </div>
+          
+          <div class="col-4">
+            <h6 class="card-title">Marca</h6>
+            <p class="card-text">@(Model.Vehiculo.marca)</p>
+          </div>
+          
+          <div class="col-2">
+            <h6 class="card-title">Año</h6>
+            <p class="card-text">@(Model.Vehiculo.anio)</p>
+          </div>
+        </div>
+      </li>
+    </ul>    
+  </div>
+</div>
+<!-- Fin detalles del vehiculo -->
+
+
+
+<!-- Detalles del duenio-->
+<div class="card">
+  <div class="card-header">
+    <h4>Datos del Dueño</h4>
+  </div>
+
+  <div class="card-body">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <div class="row justify-content-start" >
+          <div class="col-4">
+            <h6 class="card-title">Nombre Completo</h6>
+            <p class="card-text">@(persona.nombres) @(persona.apellidos)</p>
+          </div>
+          <div class="col-4">
+            <h6 class="card-title">Rut</h6>
+            <p class="card-text">@(persona.rut)</p>
+          </div>
+        </div>
+      </li>
+      
+      <li class="list-group-item">
+        <div class="row justify-content-start" >
+          <div class="col-4">
+            <h6 class="card-title">Rol</h6>
+            <p class="card-text">@(persona.rol)</p>
+          </div>
+          <div class="col-4">
+            <h6 class="card-title">Contrato</h6>
+            <p class="card-text">@(persona.contrato)</p>
+          </div>
+          <div class="col-4">
+            <h6 class="card-title">Unidad</h6>
+            <p class="card-text">@(persona.unidad)</p>
+          </div>
+        </div>
+      </li>
+
+      <li class="list-group-item">
+        <div class="row justify-content-start" >
+          <div class="col-4">
+            <h6 class="card-title">Oficina</h6>
+            <p class="card-text">@(persona.oficina)</p>
+          </div>
+          <div class="col-4">
+            <h6 class="card-title">Email</h6>
+            <p class="card-text">@(persona.email)</p>
+          </div>
+          <div class="col-4">
+            <h6 class="card-title">Movil</h6>
+            <p class="card-text">@(persona.movil)</p>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+  <!-- Fin detalles del duenio-->
 
 <div class="card">
-    
-  <h2>@(Model.Vehiculo.placa)</h2>
+  <div class="card-header">
+    <h4>Logos</h4>
+  </div>
+
+  <!-- Lista de logos-->
+  @foreach (var logo in logos)
+  {
+    <div class="card">
+      <div class="card-body">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <h4 class="card-text">@(logo.identificador)</h4>
+            <h6 class="card-text">@(logo.anio)</h6>
+          </li>
+        </ul>    
+      </div>
+    </div>
+  }
   
-  <div class="vehiculoDesc" style="list-style-type:none">
-    <li><strong>Marca:</strong> @(Model.Vehiculo.marca)</li>
-    <li><strong>Tipo:</strong> @(Model.Vehiculo.tipo)</li>
-  </div>
-
-  @{var persona = Model.Vehiculo.persona;}
-
-  <div class="personaDesc" style="list-style-type:none">
-    <li><strong>Nombre completo:</strong> @(persona.nombres) @(persona.apellidos)</li>
-    <li><strong>Rut:</strong> @(persona.rut)</li>
-
-
-    <li><strong>Unidad:</strong> @(persona.unidad)</li>
-    <li><strong>Oficina:</strong> @(persona.oficina)</li>
-    <li><strong>Rol:</strong> @(persona.rol)</li>
-    <li><strong>Contrato:</strong> @(persona.contrato)</li>    
-
-
-    <li><strong>Email:</strong> @(persona.email)</li>
-    <li><strong>Movil:</strong> @(persona.movil)</li>
-    <li><strong>Anexo:</strong> @(persona.anexo)</li>
-  </div>
-
-  @{var ultimoLogo = Model.Vehiculo.logos.OrderBy(l => l.anio).First();}
-
-  <div class="logosDesc" style="list-style-type:none">
-    <li><strong>Logo ID:</strong> @(ultimoLogo.identificador)</li>
-    <li><strong>Anio:</strong> @(ultimoLogo.anio)</li>
-  </div>
-
 </div>
+
+</body>

@@ -34,8 +34,6 @@ namespace CL.UCN.DISC.PDIS.SCE.Web {
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-            // Registrar el servicio IceApplication.
-            // services.AddSingleton<IIceApplication, IceApplication>();
             services.AddSingleton<Communicator>(s => BuildCommunicator());
             services.AddSingleton<IWebController, WebController>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
