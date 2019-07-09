@@ -29,8 +29,17 @@ namespace CL.UCN.DISC.PDIS.SCE.Web.Pages {
         /// <returns></returns>
         public List<Vehiculo> Vehiculos { get; set; } = new List<Vehiculo>();
 
+
+        /// <summary>
+        /// La lista de personas.
+        /// </summary>
+        /// <typeparam name="Persona"></typeparam>
+        /// <returns></returns>
+        public List<Persona> Personas { get; set; } = new List<Persona>();
+
         public void OnGet() {
             Vehiculos = webController.GetVehiculos();
+            Personas = webController.GetPersonas();
         }
     }
 }

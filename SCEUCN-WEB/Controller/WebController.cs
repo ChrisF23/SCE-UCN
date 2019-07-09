@@ -36,6 +36,11 @@ namespace CL.UCN.DISC.PDIS.SCE.Web.Controller {
 
         }
 
+        public List<Persona> GetPersonas()
+        {
+            return this._backendWeb.obtenerPersonas();
+        }
+
         public Vehiculo GetVehiculo(string patente) {
             return this._backendWeb.obtenerVehiculo(patente);
         }

@@ -24,6 +24,11 @@ namespace CL.UCN.DISC.PDIS.SCE.Web.Controller {
         /// </summary>
         List<Vehiculo> GetVehiculos();
 
+
+        /// <summary>
+        /// Obtiene todos los Vehiculos presentes en el sistema.
+        /// </summary>
+        List<Persona> GetPersonas();
     }
 
 }
