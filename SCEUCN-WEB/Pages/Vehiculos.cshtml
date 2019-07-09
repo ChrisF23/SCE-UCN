@@ -2,19 +2,23 @@
 @model CL.UCN.DISC.PDIS.SCE.Web.Pages.VehiculosModel
 @{
     ViewData["Title"] = "Vehiculos";
+    var anioActual = Int32.Parse(DateTime.Now.Year.ToString());
 }
 
+@using CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.Model
+
 <head>
-  <!--<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
 <body>
 
 <div class="card">
   <div class="card-header">      
     <div class="d-flex justify-content-between">
       <h4>Vehiculos</h4>
-      <button type="button" class="btn btn-primary text-right">
+      <!-- Boton para abrir el modal. Acceder al modal, luego a su form y resetear sus campos -->
+      <button type="button" onclick="$modal = $('#exampleModal'); $modal.find('form')[0].reset();" class="btn btn-primary text-right" data-toggle="modal" data-target="#exampleModal">
           <i class="fa fa-plus" style="vertical-align: middle; margin-top: -0.125em"></i>
           Nuevo Vehiculo
       </button>
@@ -36,13 +40,68 @@
         {
         <tr>
           <!-- Mostrar el detalle del vehiculo. -->
-          <td><a asp-page="DetalleVehiculo" asp-route-id="@vehiculo.placa">@(vehiculo.placa)</a></td>
+          <td><a asp-page="DetalleVehiculo" asp-route-id="@vehiculo.placa" class="badge badge-light"><h5 class="card-text">@(vehiculo.placa)</h5></a></td>
           <td>@(vehiculo.persona.rut)</td>
           <td>@(vehiculo.persona.nombres) @(vehiculo.persona.apellidos)</td>
           <td>@(vehiculo.logos.OrderBy(l => l.anio).First().identificador)</td>
         </tr>
         }
       </table>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <!-- Encabezado: Titulo y boton cerrar modal -->
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Nuevo Vehiculo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- Fin de Encabezado -->
+
+      <!-- Cuerpo -->
+      <div class="modal-body">
+        <form id="form">
+          <div class="form-row">
+            <div class="col">
+              <label for="inputPlaca">Placa</label>
+              <input type="text" class="form-control" id="inputPlaca" placeholder="XX-XX-00">
+            </div>
+            <div class="col">
+              <label for="tipoSelect">Tipo</label>
+              <select class="custom-select mr-sm-2" id="tipoSelect">
+                <option selected>Seleccione...</option>
+                @{
+                  var ind = 1;
+                  foreach (var item in Enum.GetValues(typeof(Tipo)))
+                  {
+                    <option value=@(ind)>@(item.ToString())</option>
+                    ind++;
+                  }
+                }
+              </select>
+            </div>
+            <div class="col">
+              <label for="inputMarca">Marca</label>
+              <input type="text" class="form-control" id="inputMarca" placeholder="Toyota, Hyundai, etc...">
+            </div>
+            <div class="col">
+              <label for="inputAnio">Año</label>
+              <input class="form-control" id="inputAnio" type="number" min="1900" max=@(anioActual) step="1" value="2010"/>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+      <!-- Fin de Cuerpo -->
     </div>
   </div>
 </div>

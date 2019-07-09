@@ -22,7 +22,9 @@
         <div class="row justify-content-start" >
           <div class="col-3">
             <h6 class="card-title">Placa</h6>
-            <h5 class="card-text">@(Model.Vehiculo.placa)</h5>
+            <span class="badge badge-light"><h5 class="card-text">@(Model.Vehiculo.placa)</h5></span>
+
+            
           </div>
 
           <div class="col-3">
@@ -79,16 +81,16 @@
             @switch (persona.rol)
             {
                 case Rol.Academico:
-                  <span class="badge badge-primary"><p class="card-text">@(persona.rol)</p></span>
+                  <span class="badge badge-primary"><h6 class="card-text">@(persona.rol)</h6></span>
                   break;
                 case Rol.Funcionario:
-                  <span class="badge badge-success"><p class="card-text">@(persona.rol)</p></span>
+                  <span class="badge badge-success"><h6 class="card-text">@(persona.rol)</h6></span>
                   break;
                 case Rol.Pregrado:
-                  <span class="badge badge-danger"><p class="card-text">@(persona.rol)</p></span>
+                  <span class="badge badge-danger"><h6 class="card-text">@(persona.rol)</h6></span>
                   break;
                 case Rol.Posgrado:
-                  <span class="badge badge-warning"><p class="card-text">@(persona.rol)</p></span>
+                  <span class="badge badge-warning"><h6 class="card-text">@(persona.rol)</h6></span>
                   break;
             }
           </div>
