@@ -6,13 +6,14 @@
   var logos = Model.Vehiculo.logos;
 }
 
-
 <body>
 
+
+<div class="row">
 <!-- Detalles del vehiculo-->
-<div class="card">
+<div class="card w-100">
   <div class="card-header">
-    <h4>Datos del Vehiculo</h4>
+    Datos del Vehiculo
   </div>
   
   <div class="card-body">
@@ -44,13 +45,13 @@
   </div>
 </div>
 <!-- Fin detalles del vehiculo -->
-
-
+</div>
+<div class="row">
 
 <!-- Detalles del duenio-->
-<div class="card">
+<div class="card w-75">
   <div class="card-header">
-    <h4>Datos del Dueño</h4>
+    Datos del Dueño
   </div>
 
   <div class="card-body">
@@ -72,7 +73,24 @@
         <div class="row justify-content-start" >
           <div class="col-4">
             <h6 class="card-title">Rol</h6>
-            <p class="card-text">@(persona.rol)</p>
+            
+            @using CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.Model
+
+            @switch (persona.rol)
+            {
+                case Rol.Academico:
+                  <span class="badge badge-primary"><p class="card-text">@(persona.rol)</p></span>
+                  break;
+                case Rol.Funcionario:
+                  <span class="badge badge-success"><p class="card-text">@(persona.rol)</p></span>
+                  break;
+                case Rol.Pregrado:
+                  <span class="badge badge-danger"><p class="card-text">@(persona.rol)</p></span>
+                  break;
+                case Rol.Posgrado:
+                  <span class="badge badge-warning"><p class="card-text">@(persona.rol)</p></span>
+                  break;
+            }
           </div>
           <div class="col-4">
             <h6 class="card-title">Contrato</h6>
@@ -106,9 +124,9 @@
 </div>
   <!-- Fin detalles del duenio-->
 
-<div class="card">
+<div class="card w-25">
   <div class="card-header">
-    <h4>Logos</h4>
+    Logos
   </div>
 
   <!-- Lista de logos-->
@@ -127,5 +145,5 @@
   }
   
 </div>
-
+</div> <!-- DELTEME -->
 </body>

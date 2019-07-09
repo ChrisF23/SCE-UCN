@@ -3,11 +3,22 @@
 @{
     ViewData["Title"] = "Vehiculos";
 }
+
+<head>
+  <!--<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">-->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
 <body>
 
 <div class="card">
-  <div class="card-header">
-    <h4>@(ViewData["Title"])</h4>
+  <div class="card-header">      
+    <div class="d-flex justify-content-between">
+      <h4>Vehiculos</h4>
+      <button type="button" class="btn btn-primary text-right">
+          <i class="fa fa-plus" style="vertical-align: middle; margin-top: -0.125em"></i>
+          Nuevo Vehiculo
+      </button>
+    </div>
   </div>
   
   <div class="card-body">
