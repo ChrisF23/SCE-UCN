@@ -26,6 +26,7 @@ import com.zeroc.Ice.ConnectionRefusedException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.StopWatch;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -77,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
      * La direccion IP del servidor.
      */
     private String host = "172.16.34.126";
+
+    List<Vehiculo> vehiculos = new ArrayList<>();
 
     /**
      * El puerto del servidor.
@@ -183,6 +186,33 @@ public class MainActivity extends AppCompatActivity {
                 adapter.notifyDataSetChanged();
 
                  */
+                if (vehiculos == null) return;
+
+                if (vehiculoAdapter == null) return;
+
+                String query = String.valueOf(s);
+
+                // Si la busqueda esta vacia, entonces mostrar todos los vehiculos.
+                if (query.isEmpty()) {
+                    vehiculoAdapter.setVehiculos(vehiculos);
+
+                } else {
+                    // Si contiene algo, buscar todas las personas que coincidan.
+                    List<Vehiculo> tempVehiculos = new ArrayList<>();
+
+                    for (Vehiculo v : vehiculos) {
+
+                        // Ambos en UPPERCASE.
+                        if (v.placa.toUpperCase().startsWith(query.toUpperCase())) {
+                            tempVehiculos.add(v);
+                        }
+                    }
+                    vehiculoAdapter.setVehiculos(tempVehiculos);
+                }
+
+                // Notificar al adaptador que los datos han cambiado.
+                vehiculoAdapter.notifyDataSetChanged();
+
             }
 
             @Override
@@ -332,8 +362,9 @@ public class MainActivity extends AppCompatActivity {
         final StopWatch stopWatch = StopWatch.createStarted();
 
         try {
-            final List<Vehiculo> vehiculos = this.mainController.obtenerVehiculos();
+            this.vehiculos = this.mainController.obtenerVehiculos();
             this.vehiculoAdapter.setVehiculos(vehiculos);
+
         } catch (ConnectTimeoutException ex) {
             runOnUiThread(() -> Toast.makeText(this, "Error de Timeout!", Toast.LENGTH_LONG).show());
             return;
@@ -397,6 +428,22 @@ public class MainActivity extends AppCompatActivity {
         });
 
          */
+        AsyncTask.execute(() -> {
+            try {
+                this.mainController.registrarIngreso(vehiculo.placa,porteriaActual);
+
+                runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this,
+                            String.format("Se ha registrado el ingreso del vehiculo [%s]", vehiculo.placa),
+                            Toast.LENGTH_LONG).show();
+                });
+
+            } catch (Exception e) {
+                runOnUiThread(() -> {
+                    Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                });
+            }
+        });
     }
 
     /**
