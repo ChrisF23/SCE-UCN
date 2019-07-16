@@ -1,0 +1,52 @@
+@page
+@model CL.UCN.DISC.PDIS.SCE.Web.Pages.Vehiculos.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="d-flex justify-content-between">
+  <h2>Vehiculos</h2>
+  <button type="button" class="btn btn-primary text-right">
+    <i class="fa fa-plus" style="vertical-align: middle; margin-top: -0.125em"></i>
+     Nuevo Vehiculo
+  </button>
+</div>
+
+<hr>
+
+<div class="card">
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Placa</th>
+        <th>Rut</th>
+        <th>Nombre Completo</th>
+        <th>Ultimo Logo</th>
+      </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Vehiculos) {
+      <tr>
+        <!-- Mostrar el detalle del vehiculo. -->
+        <td><h5 class="card-text">
+          <a asp-page="./Details" asp-route-id="@item.placa" class="badge badge-light">
+            @Html.DisplayFor(modelItem => item.placa)
+          </a>
+        </h5></td>
+        <td>
+          @Html.DisplayFor(modelItem => item.persona.rut)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.persona.nombres) 
+          @Html.DisplayFor(modelItem => item.persona.apellidos)
+        </td>
+        <td>
+          @Html.DisplayFor(modelItem => item.logos.OrderBy(l => l.anio).First().identificador)
+        </td>
+      </tr>
+    }
+    </tbody>
+  </table>
+</div>
