@@ -77,7 +77,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * La direccion IP del servidor.
      */
-    private String host = "172.16.34.126";
+    //private String host = "172.16.34.126";
+    private String host = "192.168.0.14";
 
     List<Vehiculo> vehiculos = new ArrayList<>();
 
@@ -159,33 +160,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                /*
-                if (adapter == null) return;
-
-                String query = String.valueOf(s);
-
-                // Si la busqueda esta vacia, entonces mostrar todos los vehiculos.
-                if (query.isEmpty()) {
-                    adapter.cargar(listadoVehiculos);
-
-                } else {
-                    // Si contiene algo, buscar todas las personas que coincidan.
-                    List<Vehiculo> tempVehiculos = new ArrayList<>();
-
-                    for (Vehiculo v : listadoVehiculos) {
-
-                        // Ambos en UPPERCASE.
-                        if (v.getPlaca().toUpperCase().startsWith(query.toUpperCase())) {
-                            tempVehiculos.add(v);
-                        }
-                    }
-                    adapter.cargar(tempVehiculos);
-                }
-
-                // Notificar al adaptador que los datos han cambiado.
-                adapter.notifyDataSetChanged();
-
-                 */
                 if (vehiculos == null) return;
 
                 if (vehiculoAdapter == null) return;
@@ -199,6 +173,8 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     // Si contiene algo, buscar todas las personas que coincidan.
                     List<Vehiculo> tempVehiculos = new ArrayList<>();
+
+                    //s.toString().replace(" ","-");
 
                     for (Vehiculo v : vehiculos) {
 
@@ -217,7 +193,13 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                //TODO: Punto 1 de este metodo se realiza aqui.
+                //TODO: Borrar despues de insertar guion
+
+                int largoEt = etPlaca.getText().length();
+
+                if(largoEt==2||largoEt==5)
+                    etPlaca.setText(etPlaca.getText().insert(largoEt, "-"));
+                    etPlaca.setSelection(etPlaca.getText().length());
             }
         });
     }
