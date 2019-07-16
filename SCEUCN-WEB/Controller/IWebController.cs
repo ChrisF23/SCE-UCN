@@ -29,6 +29,9 @@ namespace CL.UCN.DISC.PDIS.SCE.Web.Controller {
         /// Obtiene todos los Vehiculos presentes en el sistema.
         /// </summary>
         List<Persona> GetPersonas();
+
+
+        void AddVehiculo(string rutPersona, string placa, string marca, Tipo tipo);
     }
 
 }

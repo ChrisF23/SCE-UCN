@@ -8,10 +8,13 @@
 
 <div class="d-flex justify-content-between">
   <h2>Vehiculos</h2>
-  <button type="button" class="btn btn-primary text-right">
-    <i class="fa fa-plus" style="vertical-align: middle; margin-top: -0.125em"></i>
-     Nuevo Vehiculo
-  </button>
+  <a asp-page="Create">
+    <button type="button" class="btn btn-primary text-right">
+      <i class="fa fa-plus" style="vertical-align: middle; margin-top: -0.125em"></i>
+      Nuevo Vehiculo
+    </button>
+  </a>
+  
 </div>
 
 <hr>
@@ -43,7 +46,9 @@
           @Html.DisplayFor(modelItem => item.persona.apellidos)
         </td>
         <td>
-          @Html.DisplayFor(modelItem => item.logos.OrderBy(l => l.anio).First().identificador)
+          @if(item.logos!=null && item.logos.Count() > 0) {
+            @Html.DisplayFor(modelItem => item.logos.OrderBy(l => l.anio).First().identificador);
+          }
         </td>
       </tr>
     }

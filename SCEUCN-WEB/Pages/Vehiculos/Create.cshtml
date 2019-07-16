@@ -1,0 +1,77 @@
+@page
+@model CL.UCN.DISC.PDIS.SCE.Web.Pages.Vehiculos.CreateModel
+
+@{
+    ViewData["Title"] = "Nuevo Vehiculo";
+    var anioActual = Int32.Parse(DateTime.Now.Year.ToString());
+}
+
+<h2>Nuevo Vehiculo</h2>
+
+@using CL.UCN.DISC.PDIS.SCE.Web.Pages.Vehiculos
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            
+            <!-- Rut del duenio -->
+            <div class="form-group">
+                <label asp-for="Vehiculo.Rut" class="control-label">Rut del dueño:</label>
+                <select asp-for="Vehiculo.Rut" class="form-control" asp-items="Model.Ruts">
+                    <option selected="selected" value="">Seleccione rut existente...</option>
+                </select>
+                <span asp-validation-for="Vehiculo.Rut" class="text-danger"></span>
+            </div>
+
+            <!-- Placa del vehiculo -->
+            <div class="form-group">
+                <label asp-for="Vehiculo.Placa" class="control-label">Placa:</label>
+                <input asp-for="Vehiculo.Placa" class="form-control" placeholder="Ej: XX-XX-00 o XX-00-00"/>
+                <span asp-validation-for="Vehiculo.Placa" class="text-danger"></span>
+            </div>
+
+            <!-- Tipo de vehiculo -->
+            <div class="form-group">
+
+                <!-- Importar Tipo desde ZeroIce.Model -->
+                @using CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.Model
+
+                <label asp-for="Vehiculo.Tipo" class="control-label">Tipo:</label>
+                <select asp-for="Vehiculo.Tipo" class="form-control" asp-items="Html.GetEnumSelectList<Tipo>()">
+                    <option selected="selected" value="">Seleccione...</option>
+                </select>
+                <span asp-validation-for="Vehiculo.Tipo" class="text-danger"></span>
+            </div>
+
+            <!-- Marca del vehiculo -->
+            <div class="form-group">
+                <label asp-for="Vehiculo.Marca" class="control-label">Marca:</label>
+                <input asp-for="Vehiculo.Marca" class="form-control" placeholder="Ej: Toyota, Hyundai..."/>
+                <span asp-validation-for="Vehiculo.Marca" class="text-danger"></span>
+            </div>
+            
+            <!-- Anio del vehiculo -->
+            <div class="form-group">
+                <label asp-for="Vehiculo.Anio" class="control-label">Año:</label>
+                <!-- <input asp-for="Vehiculo.Anio" class="form-control" type="number" min="1800" max=@(anioActual) step="1" value="2010"/>-->
+                <input asp-for="Vehiculo.Anio" class="form-control" type="number" min="1800" max=@(anioActual) step="1" value="2010"/>
+                <span asp-validation-for="Vehiculo.Anio" class="text-danger"></span>
+            </div>
+
+            <!-- Agregar nuevo vehiculo -->
+            <div class="form-group">
+                <input type="submit" value="Agregar Vehiculo" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Vehiculos</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -5,6 +5,7 @@ using CL.UCN.DISC.PDIS.SCE.Server.Controller;
 using CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.Model;
 using Ice;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.Controller {
 
@@ -32,7 +33,22 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.Controller {
         }
 
         public override void agregarVehiculo(string rutPersona, string placa, string marca, Tipo tipo, Current current = null) {
-            throw new NotImplementedException();
+            
+            _logger.LogDebug(LE.Generate, "Rut: {0}, Placa: {1}, Marca: {2}, Tipo: {3}", rutPersona, placa, marca, tipo);
+
+            Persona duenio = _mainController.GetPersonas().Find(p => p.rut.Equals(rutPersona));
+
+            if (duenio == null){
+                _logger.LogCritical(LE.Find, "Error: La persona [{rutPersona}] no existe en el backend.", rutPersona);
+                return;
+            }
+
+            Vehiculo nuevoVehiculo = new Vehiculo("2015", marca, placa, duenio, tipo, null);
+
+            // Guardar el vehiculo.
+            _mainController.Save(nuevoVehiculo);
+
+            _logger.LogInformation(LE.Save, "Ok: Se ha guardado el vehiculo [Placa: {0}, Rut Duenio: {1}]", nuevoVehiculo.placa, nuevoVehiculo.persona.rut);
         }
 
         public override List<Persona> obtenerPersonas(Current current = null) {
