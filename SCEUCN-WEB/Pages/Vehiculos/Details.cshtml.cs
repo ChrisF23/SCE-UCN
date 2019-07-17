@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.Model;
 using CL.UCN.DISC.PDIS.SCE.Web.Controller;
 
-namespace CL.UCN.DISC.PDIS.SCE.Web.Pages
+namespace CL.UCN.DISC.PDIS.SCE.Web.Pages.Vehiculos
 {
-    public class DetalleVehiculoModel : PageModel
+    public class DetailsModel : PageModel
     {
 
         /// <summary>
@@ -21,7 +21,7 @@ namespace CL.UCN.DISC.PDIS.SCE.Web.Pages
         /// Constructor.
         /// </summary>
         /// <param name="IceApplication"></param>
-        public DetalleVehiculoModel([FromServices] IWebController webController) => this.webController = webController;
+        public DetailsModel([FromServices] IWebController webController) => this.webController = webController;
 
 
         /// <summary>
@@ -34,9 +34,21 @@ namespace CL.UCN.DISC.PDIS.SCE.Web.Pages
 
         public Vehiculo Vehiculo { get; set; }
 
-        public void OnGet() 
+        public IActionResult OnGet() 
         {
+            if (this.Id == null)
+            {
+                return NotFound();
+            }
+
             Vehiculo = this.webController.GetVehiculo(this.Id);
+
+            if (Vehiculo == null)
+            {
+                return NotFound();
+            }
+
+            return Page();
         }
     }
 }

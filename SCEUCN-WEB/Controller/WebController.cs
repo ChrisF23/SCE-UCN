@@ -36,9 +36,9 @@ namespace CL.UCN.DISC.PDIS.SCE.Web.Controller {
 
         }
 
-        public void AddVehiculo(string rutPersona, string placa, string marca, Tipo tipo)
+        public void AddOrUpdateVehiculo(string rutPersona, string placa, string marca, Tipo tipo, string anio)
         {
-            this._backendWeb.agregarVehiculoAsync(rutPersona, placa, marca, tipo);
+            this._backendWeb.agregarOActualizarVehiculoAsync(rutPersona, placa, marca, tipo, anio);
         }
 
         public List<Persona> GetPersonas()

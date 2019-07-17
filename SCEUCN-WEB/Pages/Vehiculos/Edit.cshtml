@@ -1,21 +1,22 @@
-@page
-@model CL.UCN.DISC.PDIS.SCE.Web.Pages.Vehiculos.CreateModel
+@page "{id}"
+@model CL.UCN.DISC.PDIS.SCE.Web.Pages.Vehiculos.EditModel
 
 @{
-    ViewData["Title"] = "Nuevo Vehiculo";
-    var anioActual = Int32.Parse(DateTime.Now.Year.ToString());
+    ViewData["Title"] = "Editar Vehiculo";
+    var anioActual = Int32.Parse(DateTime.Now.Year.ToString());    
 }
 
-<h2>Nuevo Vehiculo</h2>
+<h2>
+    Editar Vehiculo @(Model.Id)
+</h2>
+
+<hr>
 
 @using CL.UCN.DISC.PDIS.SCE.Web.Pages.Vehiculos
 
-<hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            
             <!-- Rut del duenio -->
             <div class="form-group">
                 <label asp-for="Vehiculo.Rut" class="control-label">Rut del dueño:</label>
@@ -23,13 +24,6 @@
                     <option selected="selected" value="">Seleccione rut existente...</option>
                 </select>
                 <span asp-validation-for="Vehiculo.Rut" class="text-danger"></span>
-            </div>
-
-            <!-- Placa del vehiculo -->
-            <div class="form-group">
-                <label asp-for="Vehiculo.Placa" class="control-label">Placa:</label>
-                <input asp-for="Vehiculo.Placa" class="form-control" placeholder="Ej: XX-XX-00 o XX-00-00"/>
-                <span asp-validation-for="Vehiculo.Placa" class="text-danger"></span>
             </div>
 
             <!-- Tipo de vehiculo -->
@@ -56,11 +50,10 @@
             <div class="form-group">
                 <label asp-for="Vehiculo.Anio" class="control-label">Año:</label>
                 <!-- <input asp-for="Vehiculo.Anio" class="form-control" type="number" min="1800" max=@(anioActual) step="1" value="2010"/>-->
-                <input asp-for="Vehiculo.Anio" class="form-control" type="number" min="1800" max=@(anioActual) step="1" value="2010"/>
+                <input asp-for="Vehiculo.Anio" class="form-control" type="number" min="1800" max=@(anioActual) step="1" />
                 <span asp-validation-for="Vehiculo.Anio" class="text-danger"></span>
             </div>
-
-            <!-- Agregar nuevo vehiculo -->
+            
             <div class="form-group">
                 <!-- Cancelar -->
                 <a asp-page="./Index">
@@ -69,9 +62,9 @@
                     Cancelar
                     </button>
                 </a>
-                
+
                 <!-- Guardar -->
-                <input type="submit" value="Agregar Vehiculo" class="btn btn-primary" />
+                <input type="submit" value="Guardar" class="btn btn-primary"/>
             </div>
         </form>
     </div>

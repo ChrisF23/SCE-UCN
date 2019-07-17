@@ -51,6 +51,12 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
             _databaseContext.SaveChanges();
         }
 
+        public void Update(Vehiculo vehiculo) {
+            _logger.LogDebug("Updating Vehiculo: {0}", JsonConvert.SerializeObject(vehiculo));
+            _databaseContext.Vehiculos.Update(vehiculo);
+            _databaseContext.SaveChanges();
+        }
+
         public Vehiculo GetVehiculo(string placa) {
 
             // Retorna la entidad si la encuentra. Nulo en otro caso.

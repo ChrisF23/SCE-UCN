@@ -1,0 +1,167 @@
+@page "{id}"
+@model CL.UCN.DISC.PDIS.SCE.Web.Pages.Vehiculos.DetailsModel
+@{
+  ViewData["Title"] = @Model.Id;
+  var persona = Model.Vehiculo.persona;
+  var logos = Model.Vehiculo.logos;
+}
+
+<div class="d-flex justify-content-between">
+  <h2>Detalles del Vehiculo</h2>
+  <a asp-page="./Edit" asp-route-id="@Model.Id">
+    <button type="button" class="btn btn-warning text-right">
+      <i class="fa fa-edit" style="vertical-align: middle; margin-top: -0.125em"></i>
+      Editar
+    </button>
+  </a>
+</div>
+
+<hr>
+
+<div class="row">
+<!-- Detalles del vehiculo-->
+<div class="card w-100">
+  <div class="card-body">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        <div class="row justify-content-start" >
+          <div class="col-3">
+            <h6 class="card-title">Placa</h6>
+            <span class="badge badge-light"><h5 class="card-text">@(Model.Vehiculo.placa)</h5></span>
+
+            
+          </div>
+
+          <div class="col-3">
+            <h6 class="card-title">Tipo</h6>
+            <p class="card-text">@(Model.Vehiculo.tipo)</p>
+          </div>
+          
+          <div class="col-4">
+            <h6 class="card-title">Marca</h6>
+            <p class="card-text">@(Model.Vehiculo.marca)</p>
+          </div>
+          
+          <div class="col-2">
+            <h6 class="card-title">Año</h6>
+            <p class="card-text">@(Model.Vehiculo.anio)</p>
+          </div>
+        </div>
+      </li>
+    </ul>    
+  </div>
+</div>
+<!-- Fin detalles del vehiculo -->
+
+</div>
+
+<hr>
+
+
+<div class="row">
+  <!-- Detalles del duenio-->
+  <div class="card w-75">
+    <div class="card-header">
+      Datos del Dueño
+    </div>
+
+    <div class="card-body">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <div class="row justify-content-start" >
+            <div class="col-4">
+              <h6 class="card-title">Nombre Completo</h6>
+              <p class="card-text">@(persona.nombres) @(persona.apellidos)</p>
+            </div>
+            <div class="col-4">
+              <h6 class="card-title">Rut</h6>
+              <p class="card-text">@(persona.rut)</p>
+            </div>
+          </div>
+        </li>
+        
+        <li class="list-group-item">
+          <div class="row justify-content-start" >
+            <div class="col-4">
+              <h6 class="card-title">Rol</h6>
+              
+              @using CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.Model
+
+              @switch (persona.rol)
+              {
+                  case Rol.Academico:
+                    <span class="badge badge-primary"><h6 class="card-text">@(persona.rol)</h6></span>
+                    break;
+                  case Rol.Funcionario:
+                    <span class="badge badge-success"><h6 class="card-text">@(persona.rol)</h6></span>
+                    break;
+                  case Rol.Pregrado:
+                    <span class="badge badge-danger"><h6 class="card-text">@(persona.rol)</h6></span>
+                    break;
+                  case Rol.Posgrado:
+                    <span class="badge badge-warning"><h6 class="card-text">@(persona.rol)</h6></span>
+                    break;
+              }
+            </div>
+            <div class="col-4">
+              <h6 class="card-title">Contrato</h6>
+              <p class="card-text">@(persona.contrato)</p>
+            </div>
+            <div class="col-4">
+              <h6 class="card-title">Unidad</h6>
+              <p class="card-text">@(persona.unidad)</p>
+            </div>
+          </div>
+        </li>
+
+        <li class="list-group-item">
+          <div class="row justify-content-start" >
+            <div class="col-4">
+              <h6 class="card-title">Oficina</h6>
+              <p class="card-text">@(persona.oficina)</p>
+            </div>
+            <div class="col-4">
+              <h6 class="card-title">Email</h6>
+              <p class="card-text">@(persona.email)</p>
+            </div>
+            <div class="col-4">
+              <h6 class="card-title">Movil</h6>
+              <p class="card-text">@(persona.movil)</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div> 
+    <!-- Fin Card Body -->
+  </div>
+  <!-- Fin Card detalles del duenio-->
+
+  <div class="card w-25">
+    <div class="card-header">
+      Logos
+    </div>
+
+    <div class="card-body">
+    <!-- Lista de logos-->
+    @if (logos != null && logos.Count() > 0)
+    {
+      @foreach (var logo in logos)
+      {
+        <div class="card bg-light">
+          <div class="card-body">
+            <h4 class="card-title">@(logo.identificador)</h4>
+            <p class="card-text">@(logo.anio)</p>
+          </div>
+        </div>
+      }
+    } else 
+    {
+      <div class="card bg-light">
+        <div class="card-body">
+          <h4 class="card-title">Sin Logos</h4>
+        </div>
+      </div>
+    }
+    </div>
+  </div>
+</div>

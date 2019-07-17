@@ -32,10 +32,11 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.Controller {
             _mainController = mainController;
         }
 
-        public override void agregarVehiculo(string rutPersona, string placa, string marca, Tipo tipo, Current current = null) {
-            
-            _logger.LogDebug(LE.Generate, "Rut: {0}, Placa: {1}, Marca: {2}, Tipo: {3}", rutPersona, placa, marca, tipo);
+        public override void agregarOActualizarVehiculo(string rutPersona, string placa, string marca, Tipo tipo, string anio, Current current = null)
+        {
+            _logger.LogDebug(LE.Generate, "Rut: {0}, Placa: {1}, Marca: {2}, Tipo: {3}, Anio: {4}", rutPersona, placa, marca, tipo, anio);
 
+            // Buscar si existe el duenio de ese vehiculo.
             Persona duenio = _mainController.GetPersonas().Find(p => p.rut.Equals(rutPersona));
 
             if (duenio == null){
@@ -43,12 +44,29 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.ZeroIce.Controller {
                 return;
             }
 
-            Vehiculo nuevoVehiculo = new Vehiculo("2015", marca, placa, duenio, tipo, null);
+            // Buscar si ya existe este vehiculo.
+            Vehiculo vehiculo = _mainController.GetVehiculo(placa);
 
-            // Guardar el vehiculo.
-            _mainController.Save(nuevoVehiculo);
+            if (vehiculo == null){
+                _logger.LogDebug(LE.Find, "Agregando nuevo Vehiculo...");
+                
+                // Crear vehiculo.
+                Vehiculo nuevoVehiculo = new Vehiculo(anio, marca, placa, duenio, tipo, null);
+                
+                // Guardar el vehiculo.
+                _mainController.Save(nuevoVehiculo);
+                _logger.LogInformation(LE.Save, "Ok: Se ha guardado el vehiculo [Placa: {0}, Rut Duenio: {1}]", nuevoVehiculo.placa, nuevoVehiculo.persona.rut);
+            }
 
-            _logger.LogInformation(LE.Save, "Ok: Se ha guardado el vehiculo [Placa: {0}, Rut Duenio: {1}]", nuevoVehiculo.placa, nuevoVehiculo.persona.rut);
+            _logger.LogDebug(LE.Find, "Actualizando Vehiculo...");
+
+            vehiculo.anio = anio;
+            vehiculo.marca = marca;
+            vehiculo.tipo = tipo;
+
+            _mainController.Update(vehiculo);
+            _logger.LogInformation(LE.Save, "Ok: Se ha actualizado el vehiculo [Placa: {0}, Rut Duenio: {1}]", vehiculo.placa, vehiculo.persona.rut);
+            
         }
 
         public override List<Persona> obtenerPersonas(Current current = null) {

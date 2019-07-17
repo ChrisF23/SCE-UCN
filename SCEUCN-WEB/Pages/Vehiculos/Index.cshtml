@@ -14,7 +14,6 @@
       Nuevo Vehiculo
     </button>
   </a>
-  
 </div>
 
 <hr>
@@ -48,6 +47,8 @@
         <td>
           @if(item.logos!=null && item.logos.Count() > 0) {
             @Html.DisplayFor(modelItem => item.logos.OrderBy(l => l.anio).First().identificador);
+          } else {
+            <p>Sin Logos</p>
           }
         </td>
       </tr>

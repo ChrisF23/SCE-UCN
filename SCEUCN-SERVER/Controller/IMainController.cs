@@ -27,6 +27,11 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
         void Save(Vehiculo vehiculo);
 
         /// <summary>
+        /// Actualiza un Vehiculo en el sistema.
+        /// </summary>
+        void Update(Vehiculo vehiculo);
+
+        /// <summary>
         /// Obtiene un Vehiculo a partir de su placa patente.
         /// </summary>
         /// <returns>

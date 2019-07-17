@@ -226,9 +226,9 @@ module ZeroIce {
             idempotent Model::Personas obtenerPersonas();
 
             /**
-             * Agrega un vehiculo a la base de datos.
+             * Agrega un vehiculo a la base de datos, y lo actualiza si es que ya existe.
              */
-            void agregarVehiculo(string rutPersona, string placa, string marca, Model::Tipo tipo);
+            void agregarOActualizarVehiculo(string rutPersona, string placa, string marca, Model::Tipo tipo, string anio);
     
         };
 

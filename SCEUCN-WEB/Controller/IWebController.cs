@@ -31,7 +31,7 @@ namespace CL.UCN.DISC.PDIS.SCE.Web.Controller {
         List<Persona> GetPersonas();
 
 
-        void AddVehiculo(string rutPersona, string placa, string marca, Tipo tipo);
+        void AddOrUpdateVehiculo(string rutPersona, string placa, string marca, Tipo tipo, string anio);
     }
 
 }
