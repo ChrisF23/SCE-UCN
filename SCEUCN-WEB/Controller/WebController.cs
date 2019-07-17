@@ -53,6 +53,11 @@ namespace CL.UCN.DISC.PDIS.SCE.Web.Controller {
         public List<Vehiculo> GetVehiculos() {
             return this._backendWeb.obtenerVehiculos();
         }
+
+        public List<Registro> GetRegistros()
+        {
+            return this._backendWeb.obtenerRegistros();
+        }
     }
 
 }

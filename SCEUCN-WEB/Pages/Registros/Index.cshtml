@@ -1,0 +1,44 @@
+@page
+@model CL.UCN.DISC.PDIS.SCE.Web.Pages.Registros.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="d-flex justify-content-between">
+  <h2>Registros</h2>
+</div>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Porteria</th>
+      <th>Placa</th>
+      <th>Nombre Completo</th>
+    </tr>
+  </thead>
+  <tbody>
+  @foreach (var item in Model.Registros) {
+    <tr>
+      <!-- Mostrar el detalle del registro. -->
+      <td>
+        @Html.DisplayFor(modelItem => item.fecha)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.porteria)
+      </td>
+      <td><h5 class="card-text">
+        <a asp-page="/Vehiculos/Details" asp-route-id="@item.vehiculo.placa" class="badge badge-light">
+          @Html.DisplayFor(modelItem => item.vehiculo.placa)
+        </a>
+      </h5></td>
+      <td>
+        @Html.DisplayFor(modelItem => item.vehiculo.persona.nombres) 
+        @Html.DisplayFor(modelItem => item.vehiculo.persona.apellidos)
+      </td>
+    </tr>
+  }
+  </tbody>
+</table>

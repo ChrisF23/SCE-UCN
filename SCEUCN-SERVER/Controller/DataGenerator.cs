@@ -55,6 +55,11 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
         /// </summary>
         private readonly IDataGenerator<Logo> _logosGen = new DataGenerator<Logo>();
 
+        /// <summary>
+        /// Generador de datos de Logos.
+        /// </summary>
+        private readonly IDataGenerator<Registro> _registrosGen = new DataGenerator<Registro>();
+
 
         /// <summary>
         /// Constructor del generador de datos.
@@ -124,6 +129,8 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
             // Lista con las definiciones de Rol.
             var rolValues = Enum.GetValues(typeof(Rol));
 
+            var porteriaValues = Enum.GetValues(typeof(Porteria));
+
             // Lista con las definiciones de Contrato.
             var contratoValues = Enum.GetValues(typeof(Contrato));
 
@@ -163,6 +170,15 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
                 .Fill(x => x.identificador, () => logosIds[logosIdsIndex++])
                 .Fill(x => x.anio, "2017");
 
+
+            // Valores para registros:
+            var registroMinuteIndex = 5;
+
+            A.Configure<Registro>()
+                .Fill(x => x.id, 0)
+                .Fill(x => x.fecha, DateTime.Now.ToLocalTime().AddMinutes(-(registroMinuteIndex+=5)).ToString())
+                .Fill(x => x.porteria, () => (Porteria) porteriaValues.GetValue(rnd.Next(porteriaValues.Length)));
+
         }
 
         /// <summary>
@@ -184,6 +200,13 @@ namespace CL.UCN.DISC.PDIS.SCE.Server.Controller {
         /// </summary>
         public List<Logo> GenerateLogos() {
             return _logosGen.Collection(14);
+        }
+
+        /// <summary>
+        /// Genera un listado de registros de forma dinamica.
+        /// </summary>
+        public List<Registro> GenerateRegistros(int quantity) {
+            return _registrosGen.Collection(quantity);
         }
     }
 }

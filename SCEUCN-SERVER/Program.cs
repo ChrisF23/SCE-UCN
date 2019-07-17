@@ -76,6 +76,21 @@ namespace CL.UCN.DISC.PDIS.SCE.Server {
                     mainController.Save(vehiculo);
                     logger.LogDebug(LE.Generate, JsonConvert.SerializeObject(vehiculo));
                 }
+
+
+                // Generar registros:
+
+                var dbVehiculos = mainController.GetVehiculos();
+                int registroIndex = 0;
+
+                logger.LogDebug("Saving Registros...");
+                List<Registro> registros = gen.GenerateRegistros(dbVehiculos.Count);
+                foreach (var registro in registros) {
+                    registro.vehiculo = dbVehiculos[registroIndex++];
+                    mainController.Save(registro);
+                    logger.LogDebug(LE.Generate, JsonConvert.SerializeObject(registro));
+                }
+
             }
 
             // The Netscape Communicator

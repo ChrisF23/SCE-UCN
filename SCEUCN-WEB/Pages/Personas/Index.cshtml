@@ -1,0 +1,59 @@
+@page
+@model CL.UCN.DISC.PDIS.SCE.Web.Pages.Personas.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="d-flex justify-content-between">
+  <h2>Personas</h2>
+  <a asp-page="Create">
+    <button type="button" class="btn btn-primary text-right disabled">
+      <i class="fa fa-plus" style="vertical-align: middle; margin-top: -0.125em"></i>
+      Nueva Persona
+    </button>
+  </a>
+</div>
+
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Rut</th>
+      <th>Nombre Completo</th>
+      <th>Contrato</th>
+      <th>Rol</th>
+      <th>Unidad / Oficina</th>
+      <th>Movil</th>
+    </tr>
+  </thead>
+  <tbody>
+  @foreach (var item in Model.Personas) {
+    <tr>
+      <!-- Mostrar el detalle del vehiculo. -->
+      <td>
+        <a asp-page="./Details" asp-route-id="@item.rut">
+          @Html.DisplayFor(modelItem => item.rut)
+        </a>
+      <td>
+        @Html.DisplayFor(modelItem => item.nombres) 
+        @Html.DisplayFor(modelItem => item.apellidos)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.contrato)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.rol)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.unidad) /
+        @Html.DisplayFor(modelItem => item.oficina)
+      </td>
+      <td>
+        @Html.DisplayFor(modelItem => item.movil)
+      </td>
+    </tr>
+  }
+  </tbody>
+</table>

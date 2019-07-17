@@ -32,6 +32,9 @@ namespace CL.UCN.DISC.PDIS.SCE.Web.Controller {
 
 
         void AddOrUpdateVehiculo(string rutPersona, string placa, string marca, Tipo tipo, string anio);
+
+
+        List<Registro> GetRegistros();
     }
 
 }
