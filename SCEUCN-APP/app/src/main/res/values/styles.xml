@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="Theme.Primary.Base.Light" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.Primary.Base.Light" parent="Theme.AppCompat.DayNight">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/ucn_azul</item>
         <item name="colorPrimaryDark">@color/ucn_azuloscuro</item>
@@ -17,7 +17,7 @@
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
     </style>
 
-    <style name="Theme.Primary.Base.Dark" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.Primary.Base.Dark" parent="Theme.AppCompat.DayNight">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/ucn_azul</item>
         <item name="colorPrimaryDark">@color/ucn_azuloscuro</item>

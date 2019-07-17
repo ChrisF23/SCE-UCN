@@ -1,6 +1,7 @@
 package cl.ucn.disc.pdis.sce.app.activities;
 
 import android.app.AlertDialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 
 import com.zeroc.Ice.ConnectTimeoutException;
@@ -105,6 +107,13 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // 1.- Verificar modo noche
+        // setTheme(R.style.Theme_Primary_Base_Dark);
+        if(AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+            setTheme(R.style.Theme_Primary_Base_Dark);
+        }else
+            setTheme(R.style.Theme_Primary_Base_Light);
+
         super.onCreate(savedInstanceState);
 
         this.setContentView(R.layout.activity_main);
@@ -115,8 +124,7 @@ public class MainActivity extends AppCompatActivity {
         // 0.- Asignar el toolbar.
         this.setSupportActionBar(myToolbar);
 
-        // 1.- Verificar modo noche
-        // setTheme(R.style.Theme_Primary_Base_Dark);
+
 
         // 2.- Crear el adaptador. Referencia a este contexto.
         this.vehiculoAdapter = new VehiculoAdapter(this);
@@ -182,8 +190,6 @@ public class MainActivity extends AppCompatActivity {
                     // Si contiene algo, buscar todas las personas que coincidan.
                     List<Vehiculo> tempVehiculos = new ArrayList<>();
 
-                    //s.toString().replace(" ","-");
-
                     for (Vehiculo v : vehiculos) {
 
                         // Ambos en UPPERCASE.
@@ -205,10 +211,13 @@ public class MainActivity extends AppCompatActivity {
 
                 int largoEt = etPlaca.getText().length();
 
-                if(largoEt==2||largoEt==5)
-                    etPlaca.setText(etPlaca.getText().insert(largoEt, "-"));
-                    etPlaca.setSelection(etPlaca.getText().length());
-                    //etPlaca.selectAll();
+//                if(largoEt==2||largoEt==5)
+//                    etPlaca.append("-");
+                if(largoEt==2||largoEt==5) {
+                    etPlaca.append("-");
+                }
+                    //etPlaca.setSelection(etPlaca.getText().length());
+                    //etPlaca.requestFocus(etPlaca.getText().length());
             }
         });
     }
@@ -470,6 +479,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.item_tema_oscuro: {
                 Toast.makeText(this, "Aplicando Modo Noche...", Toast.LENGTH_SHORT).show();
                 setTheme(R.style.Theme_Primary_Base_Dark);
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                restartApp();
                 return true;
             }
 //            case R.id.item_tema_desert:
@@ -516,6 +527,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      *
      */
+
     private void abrirDialogConfigurarServidor() {
 
         // FIXME: Enviar mensaje que el proceso de inicializacion se encuentra en marcha.
@@ -561,6 +573,12 @@ public class MainActivity extends AppCompatActivity {
 
         // 8.- Mostrar el alert dialog.
         alertDialog.show();
+    }
+
+    public void restartApp(){
+        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(i);
+        finish();
     }
 
     /**
