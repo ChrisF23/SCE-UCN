@@ -338,6 +338,12 @@
     <color name="ucn_blanco">#e8f2f6</color>
     <color name="ucn_naranjo">#b86125</color>
 
+    <color name="ucn_academico">#0097A9</color>
+    <color name="ucn_funcionario">#FF9E1B</color>
+    <color name="ucn_pregrado">#009A44</color>
+    <color name="ucn_posgrado">#A15A95</color>
+
+
 
 
 </resources>

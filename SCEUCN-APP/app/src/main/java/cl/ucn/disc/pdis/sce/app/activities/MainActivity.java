@@ -1,6 +1,7 @@
 package cl.ucn.disc.pdis.sce.app.activities;
 
 import android.app.AlertDialog;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -80,6 +82,9 @@ public class MainActivity extends AppCompatActivity {
     //private String host = "172.16.34.126";
     private String host = "192.168.0.14";
 
+    /**
+     * Lista de vehiculos
+     */
     List<Vehiculo> vehiculos = new ArrayList<>();
 
     /**
@@ -142,6 +147,12 @@ public class MainActivity extends AppCompatActivity {
             Vehiculo v = (Vehiculo) lvVehiculos.getAdapter().getItem(position);
             abrirDialogoDetalleVehiculo(v);
         });
+
+        ImageView rolBadge = lvVehiculos.findViewById(R.id.avatar_image);
+
+        int badgeColor = Color.BLACK;
+
+        //if ()
     }
 
     /**
@@ -150,7 +161,6 @@ public class MainActivity extends AppCompatActivity {
     private void setupEditTextPlaca() {
 
         // 0.- Filtrado en el ingreso de patente.
-        // TODO: 1.- Formateo de la placa mientras es escrita (Ej: CAFA23 -> CA-FA-23).
 
         etPlaca.addTextChangedListener(new TextWatcher() {
             @Override
@@ -160,6 +170,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                //TODO:REVISAR
                 if (vehiculos == null) return;
 
                 if (vehiculoAdapter == null) return;
@@ -251,27 +263,41 @@ public class MainActivity extends AppCompatActivity {
      * Configura el dialog para mostrar el detalle de un vehiculo.
      */
     private void setupDialogView(View dialogView, Vehiculo vehiculo) {
+
         LinearLayout llDialog = dialogView.findViewById(R.id.ll_dialog);
+
         VehiculoDetalleViewHolder holder = new VehiculoDetalleViewHolder(llDialog);
 
-
         holder.tvPatente.setText(String.format(vehiculo.placa));
+
         holder.tvNombrePersona.setText(String.format("Nombre: %s",
                 String.format("%s %s", vehiculo.persona.nombres, vehiculo.persona.apellidos)));
+
+        //TODO: COLORES
+        holder.tvRol.setText(String.valueOf(vehiculo.persona.rol));
+
         holder.tvRut.setText(String.format("Rut: %s", vehiculo.persona.rut));
-        holder.tvMarca.setText(vehiculo.marca);
-        holder.tvTipo.setText(String.format(String.valueOf(vehiculo.tipo)));
-        //holder.tvLogo.setText(vehiculo.);
 
+        holder.tvEmail.setText(vehiculo.persona.email);
 
-        /*
-        holder.tvPatente.setText(vehiculo.getPlaca());
-        holder.tvNombrePersona.setText(String.format("%s %s", vehiculo.getPersona().getNombres(),
-                vehiculo.getPersona().getApellidos()));
-        holder.tvRut.setText(vehiculo.getPersona().getRut());
+        holder.tvMovil.setText(vehiculo.persona.movil);
 
+        holder.tvOficina.setText(vehiculo.persona.oficina);
 
+        holder.tvUnidad.setText(vehiculo.persona.unidad);
+
+        holder.tvContrato.setText(String.valueOf(vehiculo.persona.contrato));
+
+        /**
+         * datos del vehiculo
          */
+        holder.tvMarca.setText(vehiculo.marca);
+
+        holder.tvTipo.setText(String.format(String.valueOf(vehiculo.tipo)));
+
+        holder.tvLogo.setText(String.valueOf(vehiculo.logos.get(0)));
+
+        holder.tvAnio.setText(vehiculo.anio);
     }
 
     /**
@@ -285,7 +311,7 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        Toast.makeText(this, "Connecting to " + this.host + " ..", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Estableciendo conexion con " + this.host + " ..", Toast.LENGTH_SHORT).show();
 
         AsyncTask.execute(() -> {
             try {
@@ -303,10 +329,6 @@ public class MainActivity extends AppCompatActivity {
                 log.warn("Error", ex);
             }
         });
-
-
-        // Mostrar mensaje.
-        // Toast.makeText(this, "Estableciendo conexion... (" + this.server + ")", Toast.LENGTH_LONG).show();
 
     }
 
@@ -359,35 +381,6 @@ public class MainActivity extends AppCompatActivity {
             this.vehiculoAdapter.notifyDataSetChanged();
             Toast.makeText(this, "Vehiculos obtenidos in " + stopWatch.getTime(TimeUnit.MILLISECONDS) + "ms.", Toast.LENGTH_LONG).show();
         });
-
-
-        /*
-        AsyncTask.execute(() -> {
-            try {
-
-                List<Vehiculo> _vehiculos = iceApplication.obtenerVehiculos();
-                log.debug("Vehiculos size: {}", _vehiculos.size());
-
-                listadoVehiculos.clear();
-
-                for (cl.ucn.disc.pdis.sceucn.ice.model.Vehiculo vehiculo : _vehiculos) {
-                    listadoVehiculos.add(ModelConverter.convert(vehiculo));
-                }
-
-                runOnUiThread(() -> {
-                    adapter.cargar(listadoVehiculos);
-                    adapter.notifyDataSetChanged();
-                    Toast.makeText(this, "Vehiculos obtenidos!", Toast.LENGTH_LONG).show();
-                });
-
-            } catch (Exception e) {
-                runOnUiThread(() -> {
-                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-                });
-            }
-        });
-
-         */
     }
 
     private void registrarIngreso(Vehiculo vehiculo) {
@@ -454,6 +447,9 @@ public class MainActivity extends AppCompatActivity {
                 setTheme(R.style.Theme_Primary_Base_Dark);
                 return true;
             }
+//            case R.id.item_tema_desert:
+//                Toast.makeText(this, "Aplicando Tema Desert...", Toast.LENGTH_SHORT).show();
+//                setTheme(R.style.Theme_Primary_Base_lightTheme);
 
             // Verificando connection
             case R.id.item_verificar_conexion: {
@@ -477,11 +473,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 return true;
             }
-
-//            case R.id.item_tema_desert:
-//                Toast.makeText(this, "Aplicando Tema Desert...", Toast.LENGTH_SHORT).show();
-//                setTheme(R.style.Theme_Primary_Base_lightTheme);
-
             // Configurar servidor
             case R.id.item_configurar_servidor: {
                 abrirDialogConfigurarServidor();
@@ -552,8 +543,14 @@ public class MainActivity extends AppCompatActivity {
      */
     static class VehiculoDetalleViewHolder {
 
+        /**
+         * Datos del dueño
+         */
         @BindView(R.id.tv_patente)
         TextView tvPatente;
+
+        @BindView(R.id.tv_badge_rol)
+        TextView tvRol;
 
         @BindView(R.id.tv_nombre_persona)
         TextView tvNombrePersona;
@@ -561,6 +558,24 @@ public class MainActivity extends AppCompatActivity {
         @BindView(R.id.tv_rut)
         TextView tvRut;
 
+        @BindView(R.id.tv_email)
+        TextView tvEmail;
+
+        @BindView(R.id.tv_movil)
+        TextView tvMovil;
+
+        @BindView(R.id.tv_oficina)
+        TextView tvOficina;
+
+        @BindView(R.id.tv_unidad)
+        TextView tvUnidad;
+
+        @BindView(R.id.tv_cargo)
+        TextView tvContrato;
+
+        /**
+         * Datos del Vehiculo
+         */
         @BindView(R.id.tv_marca)
         TextView tvMarca;
 
@@ -569,6 +584,13 @@ public class MainActivity extends AppCompatActivity {
 
         @BindView(R.id.tv_id_logo)
         TextView tvLogo;
+
+        @BindView(R.id.tv_anio_vehiculo)
+        TextView tvAnio;
+
+
+
+
 
 
         VehiculoDetalleViewHolder(View view) {
