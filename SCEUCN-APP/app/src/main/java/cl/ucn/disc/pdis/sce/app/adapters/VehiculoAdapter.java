@@ -1,10 +1,12 @@
 package cl.ucn.disc.pdis.sce.app.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -91,7 +93,6 @@ public final class VehiculoAdapter extends BaseAdapter {
         if (view != null) {
             holder = (VehiculoViewHolder) view.getTag();
         } else {
-            // TODO: Inflar una vista personalizada (ej: fila_vehiculo).
             view = inflater.inflate(R.layout.layout_card, parent, false);
             holder = new VehiculoViewHolder(view);
             view.setTag(holder);
@@ -111,11 +112,41 @@ public final class VehiculoAdapter extends BaseAdapter {
         if (logos == null || logos.isEmpty()) {
             holder.idLogo.setText("Sin Logo (WIP)");
         } else {
-            // FIXME: Cada vez que se despliegue la lista los logos se van a ordenar?
             Collections.sort(logos, (l1, l2) -> l1.anio.compareTo(l2.anio));
             holder.idLogo.setText(logos.get(0).identificador);
         }
+
+        int badgeColor = Color.BLACK;
+
+        switch (String.valueOf(vehiculo.persona.rol)){
+
+            case ("Academico"):{
+                badgeColor = android.graphics.Color.parseColor("#0097A9");
+                break;
+            }
+
+            case ("Funcionario"):{
+                badgeColor = android.graphics.Color.parseColor("#FF9E1B");
+                break;
+            }
+
+            case ("Pregrado"):{
+                badgeColor = android.graphics.Color.parseColor("#009A44");
+                break;
+            }
+
+            case ("Posgrado"):{
+                badgeColor = android.graphics.Color.parseColor("#A15A95");
+                break;
+            }
+        };
+
+        if (holder.badge != null) {
+            holder.badge.getBackground().setTint(badgeColor);
+        }
+
         return view;
+
     }
 
     /**
@@ -131,6 +162,9 @@ public final class VehiculoAdapter extends BaseAdapter {
 
         @BindView(R.id.cv_tv_id_logo)
         TextView idLogo;
+
+        @BindView(R.id.avatar_image)
+        ImageView badge;
 
         VehiculoViewHolder(View view) {
             ButterKnife.bind(this, view);

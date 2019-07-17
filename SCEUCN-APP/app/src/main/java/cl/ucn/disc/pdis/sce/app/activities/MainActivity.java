@@ -19,6 +19,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -148,11 +149,6 @@ public class MainActivity extends AppCompatActivity {
             abrirDialogoDetalleVehiculo(v);
         });
 
-        ImageView rolBadge = lvVehiculos.findViewById(R.id.avatar_image);
-
-        int badgeColor = Color.BLACK;
-
-        //if ()
     }
 
     /**
@@ -212,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
                 if(largoEt==2||largoEt==5)
                     etPlaca.setText(etPlaca.getText().insert(largoEt, "-"));
                     etPlaca.setSelection(etPlaca.getText().length());
+                    //etPlaca.selectAll();
             }
         });
     }
@@ -273,7 +270,6 @@ public class MainActivity extends AppCompatActivity {
         holder.tvNombrePersona.setText(String.format("Nombre: %s",
                 String.format("%s %s", vehiculo.persona.nombres, vehiculo.persona.apellidos)));
 
-        //TODO: COLORES
         holder.tvRol.setText(String.valueOf(vehiculo.persona.rol));
 
         holder.tvRut.setText(String.format("Rut: %s", vehiculo.persona.rut));
@@ -295,9 +291,38 @@ public class MainActivity extends AppCompatActivity {
 
         holder.tvTipo.setText(String.format(String.valueOf(vehiculo.tipo)));
 
-        holder.tvLogo.setText(String.valueOf(vehiculo.logos.get(0)));
+        holder.tvLogo.setText(String.valueOf(vehiculo.logos.get(0).identificador));
 
         holder.tvAnio.setText(vehiculo.anio);
+
+        int badgeColor = Color.BLACK;
+
+        switch (String.valueOf(vehiculo.persona.rol)){
+
+            case ("Academico"):{
+                badgeColor = android.graphics.Color.parseColor("#0097A9");
+                break;
+            }
+
+            case ("Funcionario"):{
+                badgeColor = android.graphics.Color.parseColor("#FF9E1B");
+                break;
+            }
+
+            case ("Pregrado"):{
+                badgeColor = android.graphics.Color.parseColor("#009A44");
+                break;
+            }
+
+            case ("Posgrado"):{
+                badgeColor = android.graphics.Color.parseColor("#A15A95");
+                break;
+            }
+        };
+
+        if (holder.tvRol != null) {
+            holder.tvRol.getBackground().setTint(badgeColor);
+        }
     }
 
     /**
@@ -552,6 +577,10 @@ public class MainActivity extends AppCompatActivity {
         @BindView(R.id.tv_badge_rol)
         TextView tvRol;
 
+        @Nullable
+        @BindView(R.id.avatar_image)
+        ImageView badgeRol;
+
         @BindView(R.id.tv_nombre_persona)
         TextView tvNombrePersona;
 
@@ -587,11 +616,6 @@ public class MainActivity extends AppCompatActivity {
 
         @BindView(R.id.tv_anio_vehiculo)
         TextView tvAnio;
-
-
-
-
-
 
         VehiculoDetalleViewHolder(View view) {
             ButterKnife.bind(this, view);
